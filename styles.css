@@ -1,4 +1,4 @@
-/* Cours Matrix v2 — feuille de style pop-math conversational */
+/* Matrix course v2 — conversational pop-math stylesheet */
 
 :root {
   --bg: #fcfaf4;
@@ -31,7 +31,7 @@ body {
   background: var(--bg);
 }
 
-/* === Layout chapitre === */
+/* === Chapter layout === */
 
 .layout {
   display: grid;
@@ -74,7 +74,7 @@ body {
   margin-bottom: 1.1rem;
 }
 
-/* Quand .toc-chapter est un <details>, on le rend repliable */
+/* When .toc-chapter is a <details>, make it collapsible */
 details.toc-chapter > ol {
   display: block;
 }
@@ -89,7 +89,7 @@ details.toc-chapter:not([open]) > ol {
   font-size: 12px;
 }
 
-/* Pour <summary class="toc-chapter-name"> : reset du marker natif */
+/* For <summary class="toc-chapter-name">: reset the native marker */
 summary.toc-chapter-name {
   cursor: pointer;
   list-style: none;
@@ -213,7 +213,7 @@ h3 {
 
 p { margin: 1rem 0; }
 
-/* Drop cap pour le premier paragraphe */
+/* Drop cap for the first paragraph */
 main > p.lede + p::first-letter,
 main > p:first-of-type:not(.lede)::first-letter {
   font-family: "Iowan Old Style", Georgia, serif;
@@ -238,7 +238,7 @@ a {
 strong { font-weight: 600; color: var(--ink); }
 em { font-style: italic; }
 
-/* Pull quote pour les revelations */
+/* Pull quote for key revelations */
 .pull-quote {
   font-family: "Iowan Old Style", Georgia, serif;
   font-size: 1.4rem;
@@ -299,7 +299,7 @@ code, .inline-math {
   max-width: 90%;
 }
 
-/* === Asides : tangentes / approfondissement === */
+/* === Asides: tangents / deeper dives === */
 
 aside.tangent {
   background: var(--bg-accent);
@@ -406,7 +406,7 @@ aside.tangent p:last-child {
   margin-top: 0.6rem;
 }
 
-/* === Galerie de mini-cartes === */
+/* === Mini-cards gallery === */
 
 .gallery {
   display: grid;

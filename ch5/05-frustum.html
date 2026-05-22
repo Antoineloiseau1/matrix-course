@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Le frustum — Chapitre 5 · §5</title>
+  <title>The frustum — Chapter 5 · §5</title>
   <link rel="stylesheet" href="../styles.css" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
@@ -38,127 +38,94 @@
 <body>
   <div class="layout">
     <aside class="toc">
-      <div class="toc-title">Cours</div>
+      <div class="toc-title">Course</div>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
         <ol>
-          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
-          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
-          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
         <ol>
-          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
-          <li><a href="../ch2/02-normes.html">Normes</a></li>
-          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
-          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
         <ol>
-          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
-          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
-          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
         <ol>
-          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
-          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
-          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
-          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter" open>
-        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
         <ol>
-          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
-          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
-          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
-          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
-          <li><a href="../ch5/05-frustum.html" class="current">Le frustum</a></li>
-          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
-          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html" class="current">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
         <ol>
-          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
-          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
-          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
         </ol>
       </details>
 
-      <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
-        <ol>
-          <li><a href="../3b1b/index.html">Sommaire</a></li>
-          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
-          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
-          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
-          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
-          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
-          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
-          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
-          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
-          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
-          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
-          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
-          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
-          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
-          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
-          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
-          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
-        </ol>
-      </details>
-
-      <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
-        <ol>
-          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
-          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
-          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
-          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
-        </ol>
-      </details>
-
-      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
     </aside>
 
     <main>
-      <div class="chapter-meta">Chapitre 5 · §5</div>
-      <h1>Le frustum</h1>
+      <div class="chapter-meta">Chapter 5 · §5</div>
+      <h1>The frustum</h1>
       <p class="lede">
-        On sait maintenant comment encoder la division dans le pipeline matriciel. Avant de construire la matrice elle-même, il reste à délimiter la portion du monde qu'on cherche à peindre : pas tout l'espace 3D infini, mais une boîte bien précise. Cette boîte s'appelle le <em>frustum</em>, et elle se décrit avec quatre nombres seulement.
+        We now know how to encode division inside the matrix pipeline. Before building the matrix itself, we still need to carve out the slice of the world we actually want to paint: not all of infinite 3D space, but one very specific box. That box is called the <em>frustum</em>, and it takes only four numbers to describe.
       </p>
 
       <p>
-        Le monde, dans un moteur 3D, est en principe infini. Tu peux poser des sommets à $z = 1$, à $z = 10$, à $z = 10\,000$. Mais ta caméra, elle, ne voit pas tout. Elle voit un morceau, un cône qui s'ouvre devant elle, et même dans ce cône elle ignore ce qui est trop près ou trop loin. Le rendu doit savoir exactement où est ce morceau, parce qu'il n'a pas l'intention de calculer des choses qu'il ne va pas afficher.
+        In a 3D engine, the world is in principle infinite. You can place vertices at $z = 1$, at $z = 10$, at $z = 10\,000$. But your camera does not see everything. It sees a slice — a cone that opens up in front of it — and even within that cone, it ignores whatever is too close or too far. The renderer needs to know exactly where this slice lives, because it has no intention of computing things it isn't going to display.
       </p>
 
-      <h2>Une pyramide tronquée</h2>
+      <h2>A truncated pyramid</h2>
 
       <p>
-        Imagine l'œil de la caméra comme la pointe d'un cône. À partir de cette pointe, des rayons partent dans toutes les directions du champ de vision et s'éloignent vers l'infini. Si tu prends un instantané de ce volume, tu obtiens <strong>une pyramide</strong> dont le sommet est l'œil et qui s'ouvre en s'éloignant. Tout ce que tu pourrais théoriquement voir vit dans cette pyramide.
-      </p>
-
-      <p>
-        Mais on ne dessine jamais jusqu'à l'infini. D'abord par économie : un GPU ne peut pas évaluer une infinité de sommets, il faut une borne. Ensuite par précision : la profondeur que le rendu enregistre, pixel par pixel, est codée sur un nombre fini de bits, et plus on lui demande de couvrir une plage large, moins il discrimine finement entre deux profondeurs voisines. Enfin par bon sens : un cube à vingt kilomètres du joueur n'a rien à faire dans le calcul de la frame courante.
+        Picture the camera's eye as the tip of a cone. From that tip, rays shoot out in every direction across the field of view and head off toward infinity. Take a snapshot of this volume and you get <strong>a pyramid</strong> whose apex is the eye and which widens as it goes. Everything you could theoretically see lives inside this pyramid.
       </p>
 
       <p>
-        On coupe donc la pyramide avec deux plans parallèles à l'écran. Le premier est très proche de l'œil — on l'appelle le <strong>plan near</strong>. Le second est plus éloigné — le <strong>plan far</strong>. Tout ce qui est devant le near ou derrière le far est jeté, ignoré, n'existe pas pour le rendu. Ce qui reste entre les deux est une pyramide privée de sa pointe : une <strong>pyramide tronquée</strong>. En latin de cuisine, un morceau d'objet coupé est un <em>frustum</em> — c'est le mot retenu par toute l'industrie de l'infographie.
+        But we never draw all the way to infinity. First for cost: a GPU cannot evaluate infinitely many vertices, so there has to be a cutoff. Then for precision: the depth the renderer records pixel by pixel is encoded on a finite number of bits, and the wider the range it has to cover, the less finely it can distinguish two nearby depths. Finally, common sense: a cube twenty kilometers from the player has no business showing up in the current frame's computation.
+      </p>
+
+      <p>
+        So we slice the pyramid with two planes parallel to the screen. The first sits very close to the eye — we call it the <strong>near plane</strong>. The second is farther away — the <strong>far plane</strong>. Anything in front of near or behind far is discarded, ignored, nonexistent as far as the renderer is concerned. What remains between the two is a pyramid with its tip lopped off: a <strong>truncated pyramid</strong>. In kitchen-Latin, a chunk cut out of an object is a <em>frustum</em> — that's the word the entire graphics industry has settled on.
       </p>
 
       <div class="sketch">
@@ -193,7 +160,7 @@
 
           <!-- eye -->
           <circle cx="40" cy="180" r="7" fill="#1e5a7a"/>
-          <text x="22" y="170" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" text-anchor="end">œil</text>
+          <text x="22" y="170" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" text-anchor="end">eye</text>
 
           <!-- near distance marker -->
           <line x1="40" y1="247" x2="150" y2="247" stroke="#3a3a3a" stroke-width="0.7"/>
@@ -205,55 +172,55 @@
           <line x1="40" y1="308" x2="40" y2="318" stroke="#3a3a3a" stroke-width="1"/>
           <line x1="540" y1="308" x2="540" y2="318" stroke="#3a3a3a" stroke-width="1"/>
         </svg>
-        <p class="diagram-caption">Vue de côté du frustum (plan XZ). La pyramide s'ouvre depuis l'œil avec un angle <span style="font-style:italic">fov</span>. Les plans <span style="font-style:italic">near</span> et <span style="font-style:italic">far</span> la coupent et définissent la zone bleutée : c'est tout ce que la caméra va effectivement voir.</p>
+        <p class="diagram-caption">Side view of the frustum (XZ plane). The pyramid opens from the eye with an angle <span style="font-style:italic">fov</span>. The <span style="font-style:italic">near</span> and <span style="font-style:italic">far</span> planes slice it and define the blue-tinted region: that's everything the camera will actually see.</p>
       </div>
 
-      <h2>Quatre paramètres, pas un de plus</h2>
+      <h2>Four parameters, not one more</h2>
 
       <p>
-        Le frustum se décrit entièrement avec quatre nombres. Ce sont exactement les quatre arguments de la fonction <code>projection</code> qu'on va écrire en Rust dans deux étapes. Aucun n'est superflu, aucun ne manque. Prends le temps de les regarder un par un.
+        The frustum is fully described by four numbers. These are exactly the four arguments of the <code>projection</code> function we'll write in Rust two steps from now. None are extra, none are missing. Take a moment to look at each one in turn.
       </p>
 
       <p>
-        <strong><code>fov</code></strong> — l'angle d'ouverture vertical, en radians. En Rust et dans la plupart des conventions géométriques, <code>fov</code> désigne l'angle <em>total</em> de la pyramide, du bord supérieur au bord inférieur ; ce n'est pas la demi-ouverture. Plus <code>fov</code> est grand, plus le champ de vision est large, plus on voit "sur les côtés". Un humain a, en gros, un fov vertical confortable autour de 60° à 70° (un peu plus de un radian) ; les jeux à la première personne tournent souvent autour de 90° pour un effet immersif. À 90° ($\pi/2$), la perspective devient déjà un peu agressive : les objets au bord de l'écran semblent étirés. À 120° et plus, on a un effet "fish-eye". À la moitié de la valeur, on parle de <em>demi-angle</em>, et c'est cette demi-valeur, $\text{fov}/2$, qui interviendra dans toutes les formules via la tangente.
+        <strong><code>fov</code></strong> — the vertical opening angle, in radians. In Rust and in most geometric conventions, <code>fov</code> refers to the <em>full</em> angle of the pyramid, from the top edge to the bottom edge; it is not the half-angle. The larger <code>fov</code> is, the wider the field of view, the more you see "out of the corners of your eye". A human has a comfortable vertical FOV around 60° to 70° (a touch more than one radian); first-person games often sit around 90° for an immersive feel. At 90° ($\pi/2$), the perspective already becomes a little aggressive: objects at the edge of the screen look stretched. At 120° and above, you get a "fish-eye" effect. Half of this value is called the <em>half-angle</em>, and it's that half-value, $\text{fov}/2$, that shows up in every formula via the tangent.
       </p>
 
       <p>
-        <strong><code>ratio</code></strong> — le rapport largeur sur hauteur de la fenêtre de rendu. Un écran 16/9 donne $\text{ratio} \approx 1{,}78$, un écran 4/3 donne $\text{ratio} \approx 1{,}33$, un format vertical de smartphone $\text{ratio} \approx 0{,}56$. La hauteur du frustum est dictée par <code>fov</code> ; la largeur s'en déduit par multiplication par <code>ratio</code>. C'est la raison pour laquelle, quand tu redimensionnes la fenêtre de ton jeu, l'image ne se déforme pas : le moteur recalcule <code>ratio</code> et réajuste la largeur du frustum en conséquence.
+        <strong><code>ratio</code></strong> — the width-over-height ratio of the render window. A 16/9 screen gives $\text{ratio} \approx 1.78$, a 4/3 screen gives $\text{ratio} \approx 1.33$, a portrait phone format gives $\text{ratio} \approx 0.56$. The height of the frustum is set by <code>fov</code>; the width follows by multiplying that height by <code>ratio</code>. That's why, when you resize your game's window, the image doesn't distort: the engine recomputes <code>ratio</code> and readjusts the frustum's width accordingly.
       </p>
 
       <p>
-        <strong><code>near</code></strong> — la distance entre l'œil et le plan near, dans les unités du monde. C'est obligatoirement un nombre strictement positif. Pourquoi pas zéro ? Parce que la formule de la perspective, comme on l'a vue à l'étape 2, contient $x' = x / z$ ; si $z = 0$, on divise par zéro, et tout le plan situé exactement à l'œil s'écraserait sur chaque pixel — ce qui n'a aucun sens. Le plan near est aussi la frontière qui évite que les objets "rentrent dans la caméra" et apparaissent en arrière-plan retournés. Une valeur typique est $0{,}1$. Descendre en dessous de $0{,}01$ est généralement une mauvaise idée, pour des raisons de précision qu'on va voir tout de suite.
+        <strong><code>near</code></strong> — the distance from the eye to the near plane, in world units. It must be strictly positive. Why not zero? Because the perspective formula, as we saw at step 2, contains $x' = x / z$; if $z = 0$, we'd divide by zero, and the entire plane sitting right at the eye would crush itself onto every pixel — which makes no sense. The near plane is also the boundary that prevents objects from "entering the camera" and reappearing flipped in the background. A typical value is $0.1$. Going below $0.01$ is generally a bad idea, for precision reasons we'll see in a moment.
       </p>
 
       <p>
-        <strong><code>far</code></strong> — la distance entre l'œil et le plan far. C'est la portée maximale du rendu. Au-delà, plus rien n'existe pour la pipeline. Une valeur typique est $1\,000$ ou $10\,000$. Contrairement à <code>near</code>, on peut être assez généreux avec <code>far</code> sans dégrader brutalement la qualité — à condition que <code>near</code> reste raisonnable. La règle de pouce, on va le voir, c'est que c'est le <em>rapport</em> $\text{far} / \text{near}$ qui pilote la précision, pas la valeur absolue de <code>far</code>.
+        <strong><code>far</code></strong> — the distance from the eye to the far plane. It's the maximum render range. Beyond that, nothing exists for the pipeline. A typical value is $1\,000$ or $10\,000$. Unlike <code>near</code>, you can be fairly generous with <code>far</code> without harshly degrading quality — as long as <code>near</code> stays reasonable. The rule of thumb, as we'll see, is that it's the <em>ratio</em> $\text{far} / \text{near}$ that drives precision, not the absolute value of <code>far</code>.
       </p>
 
-      <h2>La forme exacte du volume</h2>
+      <h2>The exact shape of the volume</h2>
 
       <p>
-        Maintenant qu'on a les quatre paramètres, on peut décrire le frustum par des inégalités. La question est : à une profondeur donnée $z$, jusqu'où peuvent aller $x$ et $y$ pour rester dans le volume ?
-      </p>
-
-      <p>
-        Par définition de la tangente dans le triangle rectangle qui relie l'œil au bord supérieur du champ de vision, la <em>demi-hauteur</em> du frustum à la profondeur $z$ vaut :
-      </p>
-
-      $$\text{demi-hauteur}(z) = z \times \tan(\text{fov}/2)$$
-
-      <p>
-        C'est l'unique endroit, dans tout cet exercice, où un angle entre en scène. Et c'est l'unique endroit où l'on utilise une fonction trigonométrique. Le sujet n'autorise que <code>tan</code> et <code>mul_add</code> ici — preuve que la projection se réduit, géométriquement, à ce seul calcul d'angle.
+        Now that we have the four parameters, we can describe the frustum with inequalities. The question is: at a given depth $z$, how far can $x$ and $y$ stretch and still remain inside the volume?
       </p>
 
       <p>
-        La largeur du frustum à la profondeur $z$ s'obtient en multipliant la demi-hauteur par <code>ratio</code> :
+        By the definition of tangent in the right triangle that connects the eye to the top edge of the field of view, the <em>half-height</em> of the frustum at depth $z$ is:
       </p>
 
-      $$\text{demi-largeur}(z) = z \times \tan(\text{fov}/2) \times \text{ratio}$$
+      $$\text{half-height}(z) = z \times \tan(\text{fov}/2)$$
 
       <p>
-        Le frustum est donc l'ensemble des points $(x, y, z)$ tels que :
+        This is the only place, in this entire exercise, where an angle enters the picture. And the only place we use a trigonometric function. The subject only allows <code>tan</code> and <code>mul_add</code> here — proof that projection reduces, geometrically, to this single angle calculation.
+      </p>
+
+      <p>
+        The width of the frustum at depth $z$ is obtained by multiplying the half-height by <code>ratio</code>:
+      </p>
+
+      $$\text{half-width}(z) = z \times \tan(\text{fov}/2) \times \text{ratio}$$
+
+      <p>
+        The frustum is therefore the set of points $(x, y, z)$ such that:
       </p>
 
       $$\begin{aligned}
@@ -263,7 +230,7 @@
       \end{aligned}$$
 
       <p>
-        Trois inégalités, six plans en tout (les deux plans near et far, plus les quatre faces inclinées de la pyramide). Toute la suite de l'exercice consiste à fabriquer une matrice qui prend ce volume biscornu et le transforme en un objet beaucoup plus aimable : un cube. Mais avant d'en arriver là, regarde encore une fois la forme générale dans l'espace.
+        Three inequalities, six planes total (the near and far planes, plus the four slanted faces of the pyramid). The rest of the exercise consists in building a matrix that takes this awkward volume and turns it into something much friendlier: a cube. But before we get there, take one more look at the overall shape in space.
       </p>
 
       <div class="sketch">
@@ -288,71 +255,71 @@
 
           <!-- eye -->
           <circle cx="80" cy="180" r="6" fill="#1e5a7a"/>
-          <text x="63" y="172" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" text-anchor="end">œil</text>
+          <text x="63" y="172" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" text-anchor="end">eye</text>
 
           <!-- labels -->
-          <text x="200" y="130" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f" font-style="italic">plan near</text>
-          <text x="540" y="80" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" font-style="italic">plan far</text>
+          <text x="200" y="130" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f" font-style="italic">near plane</text>
+          <text x="540" y="80" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" font-style="italic">far plane</text>
 
           <!-- fov hint -->
           <text x="120" y="200" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#6b6b6b" font-style="italic">fov</text>
 
           <!-- ratio hint -->
           <line x1="200" y1="296" x2="530" y2="275" stroke="#6b6b6b" stroke-width="0.7"/>
-          <text x="365" y="312" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#6b6b6b" font-style="italic" text-anchor="middle">largeur = hauteur × ratio</text>
+          <text x="365" y="312" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#6b6b6b" font-style="italic" text-anchor="middle">width = height × ratio</text>
         </svg>
-        <p class="diagram-caption">Vue oblique du frustum : une pyramide à quatre faces dont la pointe est l'œil, tronquée par un petit rectangle near tout près et un grand rectangle far au fond. Les quatre arêtes (les "côtés") relient les coins correspondants.</p>
+        <p class="diagram-caption">Oblique view of the frustum: a four-faced pyramid with its apex at the eye, truncated by a small near rectangle up close and a large far rectangle at the back. The four edges (the "sides") connect the matching corners.</p>
       </div>
 
       <p class="pull-quote">
-        <strong>Le frustum n'est pas seulement la zone visible : c'est le contrat passé entre le rendu et le monde. Tout ce qui n'y est pas n'existe pas pour le shader.</strong>
+        <strong>The frustum isn't just the visible region: it's the contract between the renderer and the world. Anything outside it doesn't exist as far as the shader is concerned.</strong>
       </p>
 
-      <h2>Le compromis caché : near, far et la précision</h2>
+      <h2>The hidden trade-off: near, far, and precision</h2>
 
       <p>
-        On a dit que <code>near</code> doit être strictement positif, et que descendre en dessous de $0{,}01$ est une mauvaise idée. Voici pourquoi — et l'occasion d'observer une chose remarquable au passage : la difficulté de précision qui produit les bugs visuels les plus célèbres du rendu 3D est en réalité la <em>contrepartie directe</em> de l'astuce qui rend la projection possible. C'est la même opération qui résout un problème et qui en crée un autre.
+        We said that <code>near</code> must be strictly positive, and that dipping below $0.01$ is a bad idea. Here's why — and the chance to notice something striking along the way: the precision problem behind the most famous visual bugs in 3D rendering is actually the <em>direct flip-side</em> of the trick that makes projection possible. It's the same operation that solves one problem and creates another.
       </p>
 
-      <h3>Le mécanisme : pourquoi la profondeur stockée n'est pas linéaire en $z$</h3>
+      <h3>The mechanism: why stored depth is not linear in $z$</h3>
 
       <p>
-        Souviens-toi de la structure du pipeline qu'on a établie au chapitre 04. Toute projection se décompose en deux étapes successives :
+        Recall the pipeline structure we established in chapter 04. Every projection breaks down into two successive steps:
       </p>
 
       $$\begin{aligned}
-      &1.\ \text{multiplication matricielle (linéaire)} \quad M \cdot v \to v' \\
-      &2.\ \text{division par } w'\ \text{(non linéaire)} \quad v' / w' \to \text{résultat final}
+      &1.\ \text{matrix multiplication (linear)} \quad M \cdot v \to v' \\
+      &2.\ \text{division by } w'\ \text{(non-linear)} \quad v' / w' \to \text{final result}
       \end{aligned}$$
 
       <p>
-        Et la matrice de projection met $(0, 0, 1, 0)$ en dernière ligne pour que $w' = z$. Donc après l'étape 2, chaque composante du vecteur de sortie est divisée par $z$ — y compris la composante de profondeur, $z'$.
+        And the projection matrix puts $(0, 0, 1, 0)$ on its last row so that $w' = z$. So after step 2, every component of the output vector gets divided by $z$ — including the depth component, $z'$.
       </p>
 
       <p>
-        Or $z'$ sort de la matrice sous forme d'une combinaison linéaire des entrées (c'est tout ce qu'une matrice sait faire) :
+        Now $z'$ comes out of the matrix as a linear combination of the inputs (that's all a matrix knows how to do):
       </p>
 
       $$z' = A \cdot z + B$$
 
       <p>
-        avec $A$ et $B$ deux constantes qu'on calculera à l'étape 07 à partir de <code>near</code> et <code>far</code>. Puis on divise par $w' = z$ :
+        where $A$ and $B$ are two constants we'll compute at step 07 from <code>near</code> and <code>far</code>. Then we divide by $w' = z$:
       </p>
 
-      $$\text{profondeur stockée} = z' / w' = (A \cdot z + B) / z = A + B/z$$
+      $$\text{stored depth} = z' / w' = (A \cdot z + B) / z = A + B/z$$
 
       <p>
-        Et c'est ici que la non-linéarité arrive. La profondeur effectivement stockée dans le depth buffer <strong>n'est pas $z$</strong> — c'est $A + B/z$, une fonction en $1/z$. Une hyperbole, pas une droite.
+        And here's where non-linearity arrives. The depth actually stored in the depth buffer <strong>is not $z$</strong> — it's $A + B/z$, a function of $1/z$. A hyperbola, not a straight line.
       </p>
 
       <p class="pull-quote">
-        <strong>Le z-fighting et la division par $w$ sont les deux faces d'une même médaille. Le mécanisme qui rend la perspective possible est exactement celui qui distribue la précision de profondeur de manière inégale.</strong>
+        <strong>Z-fighting and the division by $w$ are two sides of the same coin. The mechanism that makes perspective possible is the very same one that distributes depth precision unevenly.</strong>
       </p>
 
-      <h3>À quoi ressemble cette fonction</h3>
+      <h3>What this function looks like</h3>
 
       <p>
-        La courbe $A + B/z$ est très pentue près de $z = \text{near}$, et très aplatie près de $z = \text{far}$ :
+        The curve $A + B/z$ is very steep near $z = \text{near}$, and very flat near $z = \text{far}$:
       </p>
 
       <svg class="diagram" viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -361,7 +328,7 @@
         <line x1="90" y1="290" x2="600" y2="290" stroke="#3a3a3a" stroke-width="1.2"/>
         <polygon points="600,290 590,285 590,295" fill="#3a3a3a"/>
         <text x="608" y="295" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#3a3a3a">z</text>
-        <text x="90" y="38" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#3a3a3a" text-anchor="middle">profondeur stockee</text>
+        <text x="90" y="38" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#3a3a3a" text-anchor="middle">stored depth</text>
         <text x="83" y="294" font-family="Iowan Old Style, Georgia, serif" font-size="11" fill="#6b6b6b" text-anchor="end">0</text>
         <text x="83" y="74" font-family="Iowan Old Style, Georgia, serif" font-size="11" fill="#6b6b6b" text-anchor="end">1</text>
         <line x1="87" y1="70" x2="93" y2="70" stroke="#3a3a3a" stroke-width="1"/>
@@ -371,55 +338,55 @@
         <path d="M 90,290 C 105,90 200,72 580,70" fill="none" stroke="#1e5a7a" stroke-width="2.2"/>
         <line x1="130" y1="290" x2="130" y2="155" stroke="#b8431f" stroke-width="1" stroke-dasharray="3,2"/>
         <line x1="90" y1="155" x2="130" y2="155" stroke="#b8431f" stroke-width="1" stroke-dasharray="3,2"/>
-        <text x="155" y="225" font-family="Inter, sans-serif" font-size="11" font-style="italic" fill="#b8431f">pres de near :</text>
-        <text x="155" y="240" font-family="Inter, sans-serif" font-size="11" font-style="italic" fill="#b8431f">petit Δz → grand Δ profondeur</text>
+        <text x="155" y="225" font-family="Inter, sans-serif" font-size="11" font-style="italic" fill="#b8431f">near the near plane:</text>
+        <text x="155" y="240" font-family="Inter, sans-serif" font-size="11" font-style="italic" fill="#b8431f">small Δz → large Δ depth</text>
         <line x1="380" y1="290" x2="380" y2="73" stroke="#1e5a7a" stroke-width="1" stroke-dasharray="3,2"/>
         <line x1="90" y1="73" x2="380" y2="73" stroke="#1e5a7a" stroke-width="1" stroke-dasharray="3,2"/>
-        <text x="405" y="120" font-family="Inter, sans-serif" font-size="11" font-style="italic" fill="#1e5a7a">pres de far :</text>
-        <text x="405" y="135" font-family="Inter, sans-serif" font-size="11" font-style="italic" fill="#1e5a7a">grand Δz → petit Δ profondeur</text>
+        <text x="405" y="120" font-family="Inter, sans-serif" font-size="11" font-style="italic" fill="#1e5a7a">near the far plane:</text>
+        <text x="405" y="135" font-family="Inter, sans-serif" font-size="11" font-style="italic" fill="#1e5a7a">large Δz → small Δ depth</text>
       </svg>
-      <p class="diagram-caption">La profondeur stockée, en fonction de la profondeur réelle <span style="font-style:italic">z</span>. La courbe monte très vite près du plan <span style="font-style:italic">near</span> (un petit écart en <span style="font-style:italic">z</span> donne un grand écart en profondeur stockée), puis s'aplatit près du plan <span style="font-style:italic">far</span>.</p>
+      <p class="diagram-caption">Stored depth as a function of actual depth <span style="font-style:italic">z</span>. The curve rises sharply near the <span style="font-style:italic">near</span> plane (a small change in <span style="font-style:italic">z</span> produces a large change in stored depth), then flattens out near the <span style="font-style:italic">far</span> plane.</p>
 
       <p>
-        Concrètement, sur un depth buffer de 24 bits (donc $2^{24} \approx 16$ millions de valeurs distinctes, réparties uniformément entre $0$ et $1$), la distribution est brutale :
+        Concretely, on a 24-bit depth buffer (so $2^{24} \approx 16$ million distinct values, spread uniformly between $0$ and $1$), the distribution is brutal:
       </p>
 
       <ul>
-        <li>La <strong>moitié</strong> des 16 millions de valeurs couvre la portion $z \in [\text{near}, 2 \cdot \text{near}]$ — c'est-à-dire, si $\text{near} = 0{,}1$, <em>les dix premiers centimètres</em> devant la caméra.</li>
-        <li>L'<strong>autre moitié</strong> couvre toute la portion $z \in [2 \cdot \text{near}, \text{far}]$ — c'est-à-dire le reste de la scène jusqu'à 1000 mètres.</li>
+        <li><strong>Half</strong> of those 16 million values covers the slice $z \in [\text{near}, 2 \cdot \text{near}]$ — that is, if $\text{near} = 0.1$, <em>the first ten centimeters</em> in front of the camera.</li>
+        <li>The <strong>other half</strong> covers the entire slice $z \in [2 \cdot \text{near}, \text{far}]$ — that is, the rest of the scene out to 1000 meters.</li>
       </ul>
 
       <p>
-        La moitié de la précision du buffer est gaspillée sur les dix premiers centimètres devant la caméra. C'est la signature du $1/z$.
+        Half of the buffer's precision is wasted on the first ten centimeters in front of the camera. That's the signature of $1/z$.
       </p>
 
-      <h3>Le symptôme : le z-fighting</h3>
+      <h3>The symptom: z-fighting</h3>
 
       <p>
-        Que se passe-t-il quand deux surfaces sont presque à la même profondeur, et loin de la caméra ? Disons un poster collé sur un mur, vu de 50 mètres :
+        What happens when two surfaces sit at nearly the same depth, far from the camera? Say a poster stuck on a wall, seen from 50 meters away:
       </p>
 
       <ul>
-        <li>Le poster est à $z = 50{,}000$.</li>
-        <li>Le mur est à $z = 50{,}005$ (5 mm plus loin — l'épaisseur du papier).</li>
+        <li>The poster is at $z = 50.000$.</li>
+        <li>The wall is at $z = 50.005$ (5 mm farther — the thickness of the paper).</li>
       </ul>
 
       <p>
-        Quand on calcule $A + B/z$ pour ces deux valeurs, on obtient deux nombres extrêmement proches. Le buffer 24 bits, qui n'a presque plus de précision à cette profondeur, <strong>les arrondit à la même valeur</strong>.
+        When we compute $A + B/z$ for these two values, we get two extremely close numbers. The 24-bit buffer, which has almost no precision left at that depth, <strong>rounds them to the same value</strong>.
       </p>
 
       <p>
-        À chaque frame, l'algorithme de profondeur compare les deux valeurs, voit qu'elles sont égales, et tranche « au hasard » — parfois c'est le poster qui passe devant, parfois c'est le mur. Résultat : un papillotement frénétique, des bandes de pixels qui alternent entre les deux surfaces. C'est le <strong>z-fighting</strong>, un grand classique du débogage 3D. Tu l'as probablement déjà vu dans de vieux jeux ou dans des scènes mal réglées, sans nécessairement le nommer.
+        On every frame, the depth algorithm compares the two values, sees them as equal, and arbitrates "at random" — sometimes the poster wins, sometimes the wall does. The result: a frantic shimmer, bands of pixels alternating between the two surfaces. This is <strong>z-fighting</strong>, a classic of 3D debugging. You've probably seen it in old games or in poorly-tuned scenes, even if you didn't have a name for it.
       </p>
 
-      <h3><code>near</code> est le levier principal</h3>
+      <h3><code>near</code> is the main lever</h3>
 
       <p>
-        Voici le point critique : la fonction $1/z$ est <em>bien plus sensible</em> à <code>near</code> qu'à <code>far</code>, parce que $1/x$ change très vite près de zéro et très peu vers l'infini. Diviser <code>near</code> par 10 ne te coûte pas seulement 10 fois plus de précision sur la zone proche — ça te coûte presque 10 fois plus de précision <em>sur toute la profondeur de la scène</em>.
+        Here's the crucial point: the function $1/z$ is <em>far more sensitive</em> to <code>near</code> than to <code>far</code>, because $1/x$ changes very fast near zero and very little out toward infinity. Dividing <code>near</code> by 10 doesn't just cost you 10× more precision in the close-up region — it costs you nearly 10× more precision <em>across the entire depth of the scene</em>.
       </p>
 
       <p>
-        En pratique, c'est le rapport $\text{far} / \text{near}$ qui pilote la précision. Quelques chiffres pour le sentir :
+        In practice, it's the ratio $\text{far} / \text{near}$ that drives precision. A few numbers to give you the feel:
       </p>
 
       <table style="margin: 1.2rem auto; border-collapse: collapse; font-family: 'Iowan Old Style', Georgia, serif; font-size: 0.95rem;">
@@ -428,84 +395,84 @@
             <th style="padding: 0.5rem 1.1rem; text-align: right;"><code>near</code></th>
             <th style="padding: 0.5rem 1.1rem; text-align: right;"><code>far</code></th>
             <th style="padding: 0.5rem 1.1rem; text-align: right;"><code>far / near</code></th>
-            <th style="padding: 0.5rem 1.1rem; text-align: left;">précision</th>
+            <th style="padding: 0.5rem 1.1rem; text-align: left;">precision</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="padding: 0.4rem 1.1rem; text-align: right;">0,1</td>
+            <td style="padding: 0.4rem 1.1rem; text-align: right;">0.1</td>
             <td style="padding: 0.4rem 1.1rem; text-align: right;">100</td>
-            <td style="padding: 0.4rem 1.1rem; text-align: right;">1 000</td>
-            <td style="padding: 0.4rem 1.1rem; color: #1e5a7a;">bonne</td>
+            <td style="padding: 0.4rem 1.1rem; text-align: right;">1,000</td>
+            <td style="padding: 0.4rem 1.1rem; color: #1e5a7a;">good</td>
           </tr>
           <tr>
-            <td style="padding: 0.4rem 1.1rem; text-align: right;">0,1</td>
-            <td style="padding: 0.4rem 1.1rem; text-align: right;">1 000</td>
-            <td style="padding: 0.4rem 1.1rem; text-align: right;">10 000</td>
-            <td style="padding: 0.4rem 1.1rem;">gérable</td>
+            <td style="padding: 0.4rem 1.1rem; text-align: right;">0.1</td>
+            <td style="padding: 0.4rem 1.1rem; text-align: right;">1,000</td>
+            <td style="padding: 0.4rem 1.1rem; text-align: right;">10,000</td>
+            <td style="padding: 0.4rem 1.1rem;">workable</td>
           </tr>
           <tr>
-            <td style="padding: 0.4rem 1.1rem; text-align: right;">0,01</td>
+            <td style="padding: 0.4rem 1.1rem; text-align: right;">0.01</td>
             <td style="padding: 0.4rem 1.1rem; text-align: right;">100</td>
-            <td style="padding: 0.4rem 1.1rem; text-align: right;">10 000</td>
-            <td style="padding: 0.4rem 1.1rem; color: #b8431f;">catastrophe</td>
+            <td style="padding: 0.4rem 1.1rem; text-align: right;">10,000</td>
+            <td style="padding: 0.4rem 1.1rem; color: #b8431f;">catastrophic</td>
           </tr>
           <tr>
-            <td style="padding: 0.4rem 1.1rem; text-align: right;">0,001</td>
+            <td style="padding: 0.4rem 1.1rem; text-align: right;">0.001</td>
             <td style="padding: 0.4rem 1.1rem; text-align: right;">100</td>
-            <td style="padding: 0.4rem 1.1rem; text-align: right;">100 000</td>
-            <td style="padding: 0.4rem 1.1rem; color: #b8431f;">désastre absolu</td>
+            <td style="padding: 0.4rem 1.1rem; text-align: right;">100,000</td>
+            <td style="padding: 0.4rem 1.1rem; color: #b8431f;">total disaster</td>
           </tr>
         </tbody>
       </table>
 
       <p>
-        Le motif est clair : diviser <code>near</code> par 10 multiplie le ratio par 10, ce qui dégrade la précision bien plus que de multiplier <code>far</code> par 10 (puisque $1/\text{far}$ est déjà minuscule).
+        The pattern is clear: dividing <code>near</code> by 10 multiplies the ratio by 10, which degrades precision far more than multiplying <code>far</code> by 10 ever does (since $1/\text{far}$ is already tiny).
       </p>
 
       <p class="pull-quote">
-        <strong>Garde <code>near</code> aussi grand que tu peux te le permettre. $0{,}1$ est un excellent défaut. Ne descends en dessous que si tu as une raison précise — et à tes risques et périls.</strong>
+        <strong>Keep <code>near</code> as large as you can afford. $0.1$ is an excellent default. Don't go below it unless you have a specific reason — and at your own risk.</strong>
       </p>
 
       <p>
-        Un cas concret : si tu fais un jeu en vue subjective où le personnage tient une arme très près de la caméra, tu pourrais être tenté de mettre $\text{near} = 0{,}01$ pour ne pas couper l'arme. Mauvaise idée — tu vas avoir du z-fighting partout dans le décor. La bonne solution est plutôt de rendre l'arme dans un <em>pass séparé</em> avec son propre frustum, ou de redimensionner l'arme en conséquence.
+        A concrete case: if you're making a first-person game where the character holds a weapon very close to the camera, you might be tempted to set $\text{near} = 0.01$ so the weapon doesn't get clipped. Bad idea — you'll get z-fighting all over your scenery. The right solution is to render the weapon in a <em>separate pass</em> with its own frustum, or to rescale the weapon to fit.
       </p>
 
       <p>
-        Quant à <code>far</code>, tant que <code>near</code> reste raisonnable, tu peux le pousser sans drame jusqu'à plusieurs milliers. C'est l'asymétrie fondamentale qui découle de la distribution en $1/z$.
+        As for <code>far</code>, as long as <code>near</code> stays reasonable, you can push it up to several thousand without drama. That's the fundamental asymmetry that falls out of the $1/z$ distribution.
       </p>
 
       <aside class="tangent">
-        <span class="tangent-label">tangente</span>
+        <span class="tangent-label">tangent</span>
         <p>
-          Le z-fighting ne disparaît jamais vraiment ; les moteurs modernes le contournent par des astuces. <em>Reverse-Z</em> consiste à stocker la profondeur à l'envers (1 près, 0 loin) ; combiné à un depth buffer en flottant, cela inverse la répartition de la précision et la met justement là où il en faut, c'est-à-dire au loin. <em>Logarithmic depth buffer</em> applique un log pour aplatir la non-linéarité. Mais le bon vieux moyen, celui qui marche dans 95% des cas, reste : choisis tes <code>near</code> et <code>far</code> avec soin, et n'ouvre pas grand <code>near</code>/<code>far</code> "au cas où". Si tu n'as besoin de voir qu'à vingt mètres, mets $\text{far} = 50$, pas $\text{far} = 10\,000$.
+          Z-fighting never truly goes away; modern engines work around it with tricks. <em>Reverse-Z</em> stores depth backwards (1 near, 0 far); combined with a floating-point depth buffer, this flips the precision distribution and puts it exactly where you need it — out at distance. <em>Logarithmic depth buffer</em> applies a log to flatten the non-linearity. But the old reliable method, the one that works in 95% of cases, remains: pick your <code>near</code> and <code>far</code> with care, and don't widen <code>near</code>/<code>far</code> "just in case". If you only need to see twenty meters away, set $\text{far} = 50$, not $\text{far} = 10\,000$.
         </p>
       </aside>
 
       <hr class="ornament">
 
-      <h2>Ce qu'on emporte</h2>
+      <h2>Key takeaways</h2>
 
       <p>
-        On a maintenant un volume bien défini : une pyramide tronquée, paramétrée par quatre nombres, dont la géométrie se résume à deux formules contenant $\tan(\text{fov}/2)$. Tout point situé dans ce volume <em>doit</em> apparaître quelque part à l'écran ; tout point situé en dehors <em>doit</em> être coupé.
+        We now have a well-defined volume: a truncated pyramid, parameterized by four numbers, whose geometry boils down to two formulas containing $\tan(\text{fov}/2)$. Any point inside this volume <em>must</em> appear somewhere on the screen; any point outside <em>must</em> be cut away.
       </p>
 
       <p>
-        Le problème, c'est que ce volume est terriblement pénible à manipuler tel quel. Tester si un point appartient au frustum, c'est évaluer trois inégalités dont deux dépendent de $z$. Découper un triangle au bord du frustum, c'est intersecter avec quatre plans inclinés. Aucun GPU n'a envie de faire ça à chaque sommet de chaque frame.
+        The problem is that this volume is a pain to work with as-is. Testing whether a point belongs to the frustum means evaluating three inequalities, two of which depend on $z$. Clipping a triangle against the frustum boundary means intersecting with four slanted planes. No GPU wants to do that on every vertex of every frame.
       </p>
 
       <p>
-        Heureusement, la projection est faite pour ça : elle ne se contente pas d'aplatir le monde, elle transforme aussi <em>la forme du volume visible</em>. Dans la prochaine étape, on va voir vers quoi : un cube. Un cube parfaitement aligné sur les axes, de côté 2, centré sur l'origine. C'est lui qu'on appelle le <em>cube NDC</em>, et c'est sur lui que tout le rendu travaille en interne.
+        Fortunately, that's what projection is for: not only does it flatten the world, it also transforms <em>the shape of the visible volume</em>. In the next step, we'll see what it's transformed into: a cube. A cube perfectly aligned with the axes, with side 2, centered on the origin. This is what's called the <em>NDC cube</em>, and it's the shape the whole renderer works on internally.
       </p>
 
       <nav class="chapter-nav">
-        <a class="prev" href="04-coordonnees-homogenes.html">
-          <span class="nav-label">← Étape 04</span>
-          <span class="nav-title">Coordonnées homogènes</span>
+        <a class="prev" href="04-homogeneous-coordinates.html">
+          <span class="nav-label">← Step 04</span>
+          <span class="nav-title">Homogeneous coordinates</span>
         </a>
-        <a class="next" href="06-cube-ndc.html">
-          <span class="nav-label">Étape 06 →</span>
-          <span class="nav-title">Le cube NDC</span>
+        <a class="next" href="06-ndc-cube.html">
+          <span class="nav-label">Step 06 →</span>
+          <span class="nav-title">The NDC cube</span>
         </a>
       </nav>
     </main>

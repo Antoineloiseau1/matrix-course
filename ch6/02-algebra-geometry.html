@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algebra and geometry of C — Chapter 6 §2</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+
+  <style>
+    .plane {
+      display: block;
+      margin: 2rem auto;
+      max-width: 100%;
+    }
+    .plane-caption {
+      font-family: "Inter", system-ui, sans-serif;
+      font-size: 12.5px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: -1rem;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html" class="current">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 6 · §2</div>
+      <h1>Algebra and geometry of C</h1>
+      <p class="lede">
+        In the previous chapter, we postulated the existence of $i$ with the rule $i^2 = -1$, and we observed that every complex number can be written in the form $a + bi$. Here we do two things: we learn the mechanics of adding, multiplying, and dividing these objects; and we discover that each algebraic operation corresponds to a geometric gesture in the plane. It's this double view — algebra and geometry of one and the same object — that gives the complex numbers their power.
+      </p>
+
+      <p>
+        Let's start with the punchline. The big reveal of this section, the one that makes you glad someone invented the complex numbers, fits in a single sentence: <em>to multiply two complex numbers, multiply their lengths and add their angles</em>. The tedious algebraic multiplication, with its distribute-then-apply-$i^2 = -1$ routine, is, from above, the simplest possible geometric operation: rotate and rescale. We'll get there, but we need the algebraic building blocks first.
+      </p>
+
+      <h2>Addition: trivially vectorial</h2>
+
+      <p>
+        Take two complex numbers $z = a + bi$ and $w = c + di$. Their sum is obtained by adding the real parts and the imaginary parts separately:
+      </p>
+
+      $$z + w = (a + c) + (b + d)i$$
+
+      <p>
+        No surprise, no special rule: we just add the two parts. This is exactly what you've been doing with 2D vectors since chapter 1. And it's no coincidence: a complex number is <em>algebraically</em> indistinguishable from a vector in $\mathbb{R}^2$ when it comes to addition.
+      </p>
+
+      <p>
+        Geometrically, this is the <strong>parallelogram rule</strong>: draw $z$ as an arrow from the origin, attach the arrow $w$ to the tip of $z$, and you land on $z + w$. The same picture you'd draw for two vectors.
+      </p>
+
+      <h2>Multiplication: distribution with a twist</h2>
+
+      <p>
+        If addition is trivial, multiplication has a subtlety: the rule $i^2 = -1$ slips into the middle of a standard distribution. Let's compute $(a + bi)(c + di)$ the way we'd expand $(a + b)(c + d)$ in middle school:
+      </p>
+
+      $$
+      \begin{aligned}
+      (a + bi)(c + di) &= ac + adi + bci + bdi^2 \\
+                        &= ac + adi + bci - bd \quad \text{(since } i^2 = -1 \text{)} \\
+                        &= (ac - bd) + (ad + bc)i
+      \end{aligned}
+      $$
+
+      <p>
+        The final formula gives the new real part ($ac - bd$, which now folds in the contribution of the purely imaginary term) and the new imaginary part ($ad + bc$). We'll check it a thousand times, but what matters isn't the closed-form formula — it's the <em>method</em>: distribute as if working with polynomials, then substitute $-1$ for every $i^2$.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangent</span>
+        <p>
+          If the multiplication formula feels uninspiring, that's normal — viewed algebraically, it's just mechanical. Its <em>beauty</em> only shows up geometrically. We'll get there in a few paragraphs. For now, just know that this formula encodes something extraordinarily simple, which we'll eventually lay bare.
+        </p>
+      </aside>
+
+      <h2>The conjugate: a trick that becomes a concept</h2>
+
+      <p>
+        Before tackling division, we need an auxiliary object: the <strong>conjugate</strong> of a complex number. Definition:
+      </p>
+
+      <p>
+        For $z = a + bi$, the conjugate is written $\bar{z}$ (read "z bar") and equals:
+      </p>
+
+      $$\bar{z} = a - bi$$
+
+      <p>
+        We just flip the sign of the imaginary part. The complex number $z = 3 + 2i$ has conjugate $\bar{z} = 3 - 2i$. The complex number $z = -1 + 4i$ has conjugate $\bar{z} = -1 - 4i$. A pure real $z = 5$ is its own conjugate ($\bar{z} = 5$), since its imaginary part is zero.
+      </p>
+
+      <p>
+        What makes the conjugate interesting is what happens when we multiply $z$ by $\bar{z}$. Let's do it:
+      </p>
+
+      $$
+      \begin{aligned}
+      z \times \bar{z} &= (a + bi)(a - bi) \\
+                       &= a^2 - abi + abi - b^2 i^2 \\
+                       &= a^2 - b^2 \times (-1) \\
+                       &= a^2 + b^2
+      \end{aligned}
+      $$
+
+      <p class="pull-quote">
+        <strong>The product of a complex number and its conjugate is always a non-negative real number.</strong>
+        And not just any real: it's exactly the sum of the squares of the real and imaginary parts.
+      </p>
+
+      <p>
+        This property, $z \times \bar{z} = a^2 + b^2$, plays two fundamental roles. First, it lets us define the <em>modulus</em> of a complex number (coming up in two paragraphs). Second, it gives us the trick for division.
+      </p>
+
+      <h2>Division: rationalizing the denominator</h2>
+
+      <p>
+        We'd like to compute something like $(1 + 2i) / (3 + i)$ and write it in canonical form $a + bi$. The problem: the quotient has an $i$ in the denominator, which isn't the form we want. We need to get rid of it.
+      </p>
+
+      <p>
+        You've seen this trick in high school, under the name <em>rationalization</em>. To turn $1 / (\sqrt{3} + 1)$ into something without a root in the denominator, you multiply top and bottom by $\sqrt{3} - 1$. In the denominator, the identity $(a + b)(a - b) = a^2 - b^2$ kills the root. In the numerator, you just expand normally.
+      </p>
+
+      <p>
+        For complex numbers, the principle is identical: multiply top and bottom by the <strong>conjugate of the denominator</strong>. In the denominator, $(c + di)(c - di) = c^2 + d^2$, a pure real number. In the numerator, a standard complex multiplication. Result: a complex number divided by a real number, which we know how to handle (we divide each part).
+      </p>
+
+      <p>
+        A worked example: $(1 + 2i) / (3 + i)$.
+      </p>
+
+      $$
+      \begin{aligned}
+      \frac{1 + 2i}{3 + i} &= \frac{(1 + 2i)(3 - i)}{(3 + i)(3 - i)} \\[0.4em]
+                            &= \frac{3 - i + 6i - 2i^2}{3^2 + 1^2} \\[0.4em]
+                            &= \frac{(3 + 2) + (6 - 1)i}{10} \\[0.4em]
+                            &= \frac{5 + 5i}{10} \\[0.4em]
+                            &= 0.5 + 0.5i
+      \end{aligned}
+      $$
+
+      <p>
+        In general, for $z = a + bi$ and $w = c + di$ (with $w \neq 0$):
+      </p>
+
+      $$\frac{z}{w} = \frac{a + bi}{c + di} = \frac{(ac + bd) + (bc - ad)i}{c^2 + d^2}$$
+
+      <p>
+        In Rust, inside <code>impl Div for Complex</code>, this is the closed-form formula we'll apply. But as with multiplication, the mechanism — multiply by the conjugate, simplify — is more useful to remember than the formula.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>The complex plane</h2>
+
+      <p>
+        We can now switch to the geometric view. It all rests on an observation you've already made: a complex number $z = a + bi$ is <em>defined by two real numbers</em>. And in this course, you've already worked with an object defined by exactly two reals: a vector in $\mathbb{R}^2$, or a point in the plane. So we can represent each complex number as a point in a 2D plane, with the convention that:
+      </p>
+
+      <ul>
+        <li>The <strong>horizontal axis</strong> carries the real part $a$.</li>
+        <li>The <strong>vertical axis</strong> carries the imaginary part $b$.</li>
+      </ul>
+
+      <p>
+        This representation is called the <strong>complex plane</strong>, or Argand diagram, after the Swiss mathematician Jean-Robert Argand who popularized it in 1806. It changes nothing about the complex numbers themselves — it's just a drawing convention — but it makes visible things that stayed invisible in algebra.
+      </p>
+
+      <svg class="plane" viewBox="0 0 460 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Axes -->
+        <line x1="40"  y1="170" x2="430" y2="170" stroke="#1c1a15" stroke-width="1.4"/>
+        <line x1="230" y1="20"  x2="230" y2="300" stroke="#1c1a15" stroke-width="1.4"/>
+        <polygon points="430,170 420,165 420,175" fill="#1c1a15"/>
+        <polygon points="230,20 225,30 235,30" fill="#1c1a15"/>
+        <text x="425" y="190" font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#1c1a15">real (a)</text>
+        <text x="240" y="25"  font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#1c1a15">imaginary (b)</text>
+
+        <!-- Graduations -->
+        <line x1="290" y1="167" x2="290" y2="173" stroke="#1c1a15" stroke-width="1"/>
+        <text x="290" y="188" text-anchor="middle" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">1</text>
+        <line x1="170" y1="167" x2="170" y2="173" stroke="#1c1a15" stroke-width="1"/>
+        <text x="170" y="188" text-anchor="middle" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">−1</text>
+
+        <line x1="227" y1="110" x2="233" y2="110" stroke="#1c1a15" stroke-width="1"/>
+        <text x="220" y="114" text-anchor="end" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">1</text>
+        <line x1="227" y1="230" x2="233" y2="230" stroke="#1c1a15" stroke-width="1"/>
+        <text x="220" y="234" text-anchor="end" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">−1</text>
+
+        <!-- Origine -->
+        <circle cx="230" cy="170" r="2.5" fill="#1c1a15"/>
+        <text x="218" y="185" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">0</text>
+
+        <!-- Points remarquables -->
+        <circle cx="290" cy="170" r="5" fill="#b8431f"/>
+        <text x="296" y="166" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">1</text>
+
+        <circle cx="230" cy="110" r="5" fill="#b8431f"/>
+        <text x="238" y="106" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">i</text>
+
+        <circle cx="170" cy="170" r="5" fill="#b8431f"/>
+        <text x="146" y="166" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">−1</text>
+
+        <circle cx="230" cy="230" r="5" fill="#b8431f"/>
+        <text x="240" y="237" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">−i</text>
+
+        <!-- z = 2 + i.5 -->
+        <line x1="230" y1="170" x2="350" y2="120" stroke="#1e5a7a" stroke-width="1.4" stroke-dasharray="0"/>
+        <circle cx="350" cy="120" r="5" fill="#1e5a7a"/>
+        <text x="358" y="116" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a">z = 2 + 0.83i</text>
+
+        <!-- z conjugue -->
+        <line x1="230" y1="170" x2="350" y2="220" stroke="#8b8474" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <circle cx="350" cy="220" r="5" fill="#8b8474"/>
+        <text x="358" y="225" font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#8b8474">z̄ = 2 − 0.83i</text>
+      </svg>
+      <p class="plane-caption">The complex plane with a few labelled points. Note that the pure reals lie on the horizontal axis, and the pure imaginaries (multiples of $i$) lie on the vertical axis. The conjugate is the reflection across the horizontal axis.</p>
+
+      <p>
+        Key observations:
+      </p>
+
+      <ul>
+        <li>$0 = 0 + 0i$ sits at the origin of the plane.</li>
+        <li>The real numbers lie on the horizontal axis (zero imaginary part): $1$, $-1$, $\pi$, $-2.7$, all aligned on the $a$-axis.</li>
+        <li>The pure imaginaries (real multiples of $i$, like $i$, $-i$, $3i$, $-0.5i$) lie on the vertical axis.</li>
+        <li>The conjugate $\bar{z}$ is the <strong>mirror image of $z$ across the horizontal axis</strong>. Visually, it's a reflection.</li>
+      </ul>
+
+      <p>
+        Geometrically, then, the set $\mathbb{C}$ is a plane, while $\mathbb{R}$ is a line. That's why we sometimes call it the "complex plane": going to the complex numbers is adding a dimension to the real line.
+      </p>
+
+      <h2>Modulus and argument: polar coordinates</h2>
+
+      <p>
+        So far, we've located each complex number by its two Cartesian coordinates: the real part $a$ and the imaginary part $b$. But there's another — equivalent — way to locate a point in a plane: by its <em>distance from the origin</em> and the <em>angle</em> made by the line segment from the origin to the point. Those are <strong>polar coordinates</strong>.
+      </p>
+
+      <p>
+        For a complex number, these two quantities have names:
+      </p>
+
+      <ul>
+        <li>The <strong>modulus</strong> $|z|$: the distance from $z$ to the origin of the plane.</li>
+        <li>The <strong>argument</strong> $\arg(z)$: the angle between the horizontal axis (the positive reals) and the line segment from the origin to $z$, measured positive in the counterclockwise direction.</li>
+      </ul>
+
+      <svg class="plane" viewBox="0 0 460 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Axes -->
+        <line x1="40"  y1="200" x2="430" y2="200" stroke="#1c1a15" stroke-width="1.4"/>
+        <line x1="80"  y1="20"  x2="80"  y2="260" stroke="#1c1a15" stroke-width="1.4"/>
+        <polygon points="430,200 420,195 420,205" fill="#1c1a15"/>
+        <polygon points="80,20 75,30 85,30" fill="#1c1a15"/>
+
+        <!-- z = a + bi -->
+        <circle cx="300" cy="80" r="5" fill="#b8431f"/>
+        <text x="308" y="76" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#b8431f">z = a + bi</text>
+
+        <!-- Trait vers z (module) -->
+        <line x1="80" y1="200" x2="300" y2="80" stroke="#b8431f" stroke-width="1.6"/>
+        <text x="170" y="125" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#b8431f">|z|</text>
+
+        <!-- Triangle rectangle : a, b -->
+        <line x1="300" y1="200" x2="300" y2="80"  stroke="#8b8474" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <line x1="80"  y1="200" x2="300" y2="200" stroke="#8b8474" stroke-width="1.2"/>
+        <text x="190" y="218" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#1c1a15">a</text>
+        <text x="310" y="148" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#1c1a15">b</text>
+
+        <!-- Arc d'angle -->
+        <path d="M 130 200 A 50 50 0 0 0 110 165" fill="none" stroke="#1e5a7a" stroke-width="1.4"/>
+        <text x="125" y="180" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#1e5a7a">θ</text>
+
+        <!-- Origine -->
+        <circle cx="80" cy="200" r="2.5" fill="#1c1a15"/>
+        <text x="68" y="218" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">0</text>
+
+        <!-- Labels -->
+        <text x="425" y="220" font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#1c1a15">real</text>
+        <text x="60"  y="25"  font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#1c1a15">imaginary</text>
+      </svg>
+      <p class="plane-caption">Cartesian coordinates $(a, b)$ and polar coordinates $(|z|, \theta)$ of the same complex number. The right triangle immediately gives the modulus via Pythagoras.</p>
+
+      <p>
+        Applying the Pythagorean theorem to this right triangle, the modulus is:
+      </p>
+
+      $$|z| = \sqrt{a^2 + b^2}$$
+
+      <p>
+        And the argument reads off as an angle in a right triangle:
+      </p>
+
+      $$\arg(z) = \text{atan2}(b, a)$$
+
+      <p>
+        We use <code>atan2</code> rather than <code>atan(b/a)</code> because <code>atan</code> alone can't tell which quadrant $z$ is in; <code>atan2</code> can. The argument is typically expressed in radians, in the interval $(-\pi, \pi]$ by convention (counterclockwise is positive).
+      </p>
+
+      <p>
+        You'll notice that the modulus formula, $\sqrt{a^2 + b^2}$, is exactly the <strong>Euclidean norm</strong> of the 2D vector $[a, b]$ that we saw in chapter 2. That's no accident: the modulus is, word for word, the norm of the complex number viewed as a vector in $\mathbb{R}^2$.
+      </p>
+
+      <p>
+        And the property we discovered earlier, $z \times \bar{z} = a^2 + b^2$, immediately gives:
+      </p>
+
+      $$|z|^2 = z \times \bar{z}$$
+
+      <p>
+        This little equation is a gem: it ties a geometric notion (the length of a segment) to an algebraic notion (a product), via the conjugate. We'll use it directly in the Rust implementation: to compute $|z|$, we'll write <code>(re² + im²).sqrt()</code>.
+      </p>
+
+      <h2>The big reveal: multiplication = rotation + scaling</h2>
+
+      <p>
+        Here comes the sentence that justifies the existence of the complex numbers. If you remember just one thing from this whole chapter, make it this one:
+      </p>
+
+      <p class="pull-quote">
+        <strong>When you multiply two complex numbers, their moduli multiply, and their arguments add.</strong>
+      </p>
+
+      <p>
+        In formulas:
+      </p>
+
+      $$|z \times w| = |z| \times |w| \qquad \arg(z \times w) = \arg(z) + \arg(w)$$
+
+      <p>
+        You can verify this algebraically using the angle-addition formula from trigonometry, but the statement speaks for itself. Multiplying by a complex number $w$ does two things to the point $z$:
+      </p>
+
+      <ol>
+        <li>It <strong>scales</strong> it (pulls it closer to or pushes it away from the origin) by a factor of $|w|$.</li>
+        <li>It <strong>rotates</strong> it around the origin by an angle $\arg(w)$.</li>
+      </ol>
+
+      <p>
+        In one phrase: <strong>a complex multiplication is a similarity</strong> (rotation + uniform scaling) centred on the origin. That's it. The tedious formula $(ac - bd) + (ad + bc)i$ encodes exactly this simple geometric operation.
+      </p>
+
+      <h2>Multiplying by $i$: the paradigmatic case</h2>
+
+      <p>
+        The complex number $i$ has two simple properties:
+      </p>
+
+      <ul>
+        <li>Its modulus: $|i| = \sqrt{0^2 + 1^2} = 1$. No scaling.</li>
+        <li>Its argument: $\arg(i) = \pi/2$ (90°). A quarter-turn rotation.</li>
+      </ul>
+
+      <p>
+        So multiplying by $i$ rotates by a counterclockwise quarter-turn around the origin, without changing the distance. The cycle of powers of $i$ — $1, i, -1, -i, 1, \ldots$ — that we saw in the previous chapter now makes perfect sense:
+      </p>
+
+      <svg class="plane" viewBox="0 0 460 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Axes -->
+        <line x1="50"  y1="140" x2="410" y2="140" stroke="#1c1a15" stroke-width="1"/>
+        <line x1="230" y1="20"  x2="230" y2="260" stroke="#1c1a15" stroke-width="1"/>
+
+        <!-- Cercle unite -->
+        <circle cx="230" cy="140" r="78" fill="none" stroke="#ddd6c2" stroke-width="1" stroke-dasharray="3 3"/>
+
+        <!-- i^0 = 1 -->
+        <circle cx="308" cy="140" r="5" fill="#b8431f"/>
+        <text x="316" y="136" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">1 = i⁰</text>
+
+        <!-- i^1 = i -->
+        <circle cx="230" cy="62" r="5" fill="#b8431f"/>
+        <text x="240" y="56" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">i = i¹</text>
+
+        <!-- i^2 = -1 -->
+        <circle cx="152" cy="140" r="5" fill="#b8431f"/>
+        <text x="125" y="136" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f" text-anchor="end">−1 = i²</text>
+
+        <!-- i^3 = -i -->
+        <circle cx="230" cy="218" r="5" fill="#b8431f"/>
+        <text x="240" y="228" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">−i = i³</text>
+
+        <!-- Fleches de rotation -->
+        <path d="M 300 132 A 75 75 0 0 0 238 66"  fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow2)"/>
+        <path d="M 222 66  A 75 75 0 0 0 160 132" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow2)"/>
+        <path d="M 160 148 A 75 75 0 0 0 222 214" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow2)"/>
+        <path d="M 238 214 A 75 75 0 0 0 300 148" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow2)"/>
+
+        <!-- Annotations 90 deg -->
+        <text x="285" y="92" font-family="Iowan Old Style, Georgia, serif" font-size="11" font-style="italic" fill="#1e5a7a">×i</text>
+        <text x="170" y="92" font-family="Iowan Old Style, Georgia, serif" font-size="11" font-style="italic" fill="#1e5a7a">×i</text>
+        <text x="170" y="200" font-family="Iowan Old Style, Georgia, serif" font-size="11" font-style="italic" fill="#1e5a7a">×i</text>
+        <text x="285" y="200" font-family="Iowan Old Style, Georgia, serif" font-size="11" font-style="italic" fill="#1e5a7a">×i</text>
+
+        <defs>
+          <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#1e5a7a"/>
+          </marker>
+        </defs>
+      </svg>
+      <p class="plane-caption">Each multiplication by $i$ performs a counterclockwise quarter-turn. Four rotations close the cycle, which algebraically explains $i^4 = 1$.</p>
+
+      <p>
+        This equivalence — "multiplying by $i$ = a 90° rotation" — is the fundamental reason complex numbers are indispensable in 2D graphics and signal processing. Instead of hauling around a 2x2 rotation matrix, we use a single complex number of modulus 1: <strong>rotating a point becomes a multiplication</strong>, and <strong>composing two rotations becomes the product of two complex numbers</strong>. Far lighter than a matrix multiplication.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangent</span>
+        <p>
+          This equivalence leads to a beautiful formula, due to Euler: if $z$ is a complex number of modulus 1 (so it lies on the unit circle around the origin), then $z = \cos\theta + i\sin\theta$, where $\theta = \arg(z)$. We can even write it $z = e^{i\theta}$ — the celebrated Euler formula, which ties the exponential, trigonometry, and the complex numbers together in a single expression. We'll leave that for deeper reading; for the code, it's enough to know that the complex numbers of modulus 1 form a circle in the plane, and that their multiplication composes rotations.
+        </p>
+      </aside>
+
+      <h2>The isomorphism with 2x2 matrices</h2>
+
+      <p>
+        One last gem before closing the chapter. The exercise 09 brief (transpose) slipped in a cryptic remark: a complex number $z = a + bi$ is "isomorphic" to the following 2x2 matrix:
+      </p>
+
+      $$
+      M(z) = \begin{pmatrix} a & -b \\ b & a \end{pmatrix}
+      $$
+
+      <p>
+        We can see why now. This matrix is exactly the <strong>rotation-scaling matrix</strong> that implements, on $\mathbb{R}^2$, the "multiply by $z$" operation. If you apply this matrix to the vector $[x, y]$ representing a complex number $w = x + yi$, you get back the vector $[x', y']$ representing exactly the complex number $z \times w$.
+      </p>
+
+      <p>
+        Check it for $z = i$: we have $a = 0, b = 1$, so:
+      </p>
+
+      $$
+      M(i) = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}
+      $$
+
+      <p>
+        That's the matrix for a 90° counterclockwise rotation, exactly as expected. Applied to $[1, 0]$ (the vector representing $1$), it returns $[0, 1]$ — the vector representing $i$. Consistent.
+      </p>
+
+      <p>
+        In other words: the complex numbers are a compact representation of 2x2 matrices of the form <code>[[a, -b], [b, a]]</code>. Anything you can do with those matrices, you can do with complex numbers, and with lighter notation.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>What's next</h2>
+
+      <p>
+        You now have everything you need to understand what happens when we replace $\mathbb{R}$ with $\mathbb{C}$ as the scalar field of our vectors and matrices. In the next chapter, we'll revisit each operation we've coded since exercise 00 (vector sum, dot product, norm, matrix multiplication, Gauss, determinant, inverse) and ask, one by one: what stays the same, and what changes subtly, when we instantiate the generic $K$ with $\mathbb{C}$ instead of $\mathbb{R}$?
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="01-why-complex.html">
+          <span class="nav-label">← §1</span>
+          <span class="nav-title">Why complex numbers</span>
+        </a>
+        <a class="next" href="03-K-equals-C.html">
+          <span class="nav-label">§3 →</span>
+          <span class="nav-title">K = C in our structures</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

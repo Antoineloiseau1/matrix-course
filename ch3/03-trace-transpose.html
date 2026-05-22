@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Trace, transposée, matrices spéciales — Chapitre 3 §3</title>
+  <title>Trace, transpose, special matrices — Chapter 3 §3</title>
   <link rel="stylesheet" href="../styles.css" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
@@ -22,152 +22,119 @@
 <body>
   <div class="layout">
     <aside class="toc">
-      <div class="toc-title">Cours</div>
+      <div class="toc-title">Course</div>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
         <ol>
-          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
-          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
-          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
         <ol>
-          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
-          <li><a href="../ch2/02-normes.html">Normes</a></li>
-          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
-          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter" open>
-        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
         <ol>
-          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
-          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
-          <li><a href="../ch3/03-trace-transpose.html" class="current">Trace, transposée</a></li>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html" class="current">Trace, transpose</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
         <ol>
-          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
-          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
-          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
-          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
         <ol>
-          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
-          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
-          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
-          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
-          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
-          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
-          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
         <ol>
-          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
-          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
-          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
         </ol>
       </details>
 
-      <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
-        <ol>
-          <li><a href="../3b1b/index.html">Sommaire</a></li>
-          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
-          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
-          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
-          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
-          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
-          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
-          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
-          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
-          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
-          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
-          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
-          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
-          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
-          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
-          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
-          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
-        </ol>
-      </details>
-
-      <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
-        <ol>
-          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
-          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
-          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
-          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
-        </ol>
-      </details>
-
-      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
     </aside>
 
     <main>
-      <div class="chapter-meta">Chapitre 3 · §3</div>
-      <h1>Trace, transposée, matrices spéciales</h1>
+      <div class="chapter-meta">Chapter 3 · §3</div>
+      <h1>Trace, transpose, special matrices</h1>
       <p class="lede">
-        Deux opérations toutes simples (la trace et la transposée), suivies d'une petite zoologie des matrices qu'on rencontre partout. Rien de cosmique ici — mais une fois nommées, ces formes deviennent visibles dans tout ce qu'on lira plus tard, des décompositions spectrales aux pipelines de graphics 3D.
+        Two simple operations (the trace and the transpose), followed by a small zoo of matrices we meet everywhere. Nothing cosmic here — but once they're named, these shapes become visible in everything you'll read later, from spectral decompositions to 3D graphics pipelines.
       </p>
 
       <p>
-        On a appris à multiplier les matrices. Avant de passer aux questions plus exigeantes du chapitre 4 (Gauss, déterminant, inverse, rang), il vaut le coup d'agréer deux petits outils qui apparaissent partout, puis de regarder de plus près les formes particulières que peuvent prendre les matrices. Toutes ne se ressemblent pas, et certaines ont des propriétés géométriques tellement remarquables qu'elles méritent leurs noms propres.
+        We've learned to multiply matrices. Before tackling the more demanding questions of chapter 4 (Gauss, determinant, inverse, rank), it's worth picking up two small tools that show up everywhere, and then taking a closer look at the particular shapes matrices can take. They don't all look alike, and some have geometric properties so remarkable they deserve their own names.
       </p>
 
-      <h2>La trace : une seule diagonale</h2>
+      <h2>The trace: just one diagonal</h2>
 
       <p>
-        La <strong>trace</strong> d'une matrice carrée, c'est la somme des coefficients diagonaux. C'est tout.
+        The <strong>trace</strong> of a square matrix is the sum of its diagonal entries. That's it.
       </p>
 
       $$\mathrm{trace}(M) = M[0][0] + M[1][1] + \dots + M[n-1][n-1]$$
 
       <p>
-        Tu peux la calculer en une seule boucle. Pourquoi cette quantité — un scalaire extrait d'une diagonale — mériterait-elle un nom ? Parce qu'elle a deux propriétés qui la rendent profondément utile, sans qu'on s'en aperçoive à la première lecture.
+        You can compute it in a single loop. Why would this quantity — a scalar pulled off the diagonal — deserve a name? Because it has two properties that make it deeply useful, even if you don't notice them on first reading.
       </p>
 
       <p>
-        Première propriété : la trace est <strong>invariante par changement de base</strong>. Si tu changes le repère dans lequel tu exprimes la transformation (les mêmes vecteurs, juste regardés autrement), les coefficients de la matrice changent, mais leur somme diagonale, elle, reste exactement la même. C'est une de ces quantités « intrinsèques » à la transformation — elle dit quelque chose sur <em>la transformation</em>, pas sur la matrice qui la représente.
+        First property: the trace is <strong>invariant under change of basis</strong>. If you change the coordinate system you use to express the transformation (same vectors, just viewed differently), the entries of the matrix change, but the sum along the diagonal stays exactly the same. It's one of those "intrinsic" quantities tied to the transformation — it tells you something about <em>the transformation itself</em>, not about the matrix that represents it.
       </p>
 
       <p>
-        Deuxième propriété, plus profonde : la trace égale la <strong>somme des valeurs propres</strong> de la matrice. Une <em>valeur propre</em> est un facteur $\lambda$ tel qu'il existe au moins une direction $v$ (le <em>vecteur propre</em>) que la transformation se contente d'étirer : $T(v) = \lambda \cdot v$. Une matrice 2×2 générique a deux valeurs propres ; la trace t'en donne la somme gratuitement, sans avoir à les calculer une par une. En physique, c'est ce qui rend la trace omniprésente — particulièrement en mécanique quantique, où la trace d'une matrice densité donne directement une moyenne d'observable.
+        Second property, deeper: the trace equals the <strong>sum of the eigenvalues</strong> of the matrix. An <em>eigenvalue</em> is a factor $\lambda$ such that there's at least one direction $v$ (the <em>eigenvector</em>) that the transformation merely stretches: $T(v) = \lambda \cdot v$. A generic 2×2 matrix has two eigenvalues; the trace hands you their sum for free, without having to compute them one by one. In physics, that's what makes the trace ubiquitous — especially in quantum mechanics, where the trace of a density matrix gives you the average of an observable directly.
       </p>
 
       <aside class="tangent">
-        <span class="tangent-label">Petite identité utile</span>
+        <span class="tangent-label">A handy little identity</span>
         <p>
-          La trace est linéaire : $\mathrm{trace}(A + B) = \mathrm{trace}(A) + \mathrm{trace}(B)$, et $\mathrm{trace}(k \cdot A) = k \cdot \mathrm{trace}(A)$. Plus surprenant : $\mathrm{trace}(A \cdot B) = \mathrm{trace}(B \cdot A)$, même si $A \cdot B \neq B \cdot A$ en général. Les coefficients diagonaux se réorganisent pour donner la même somme. Ce petit théorème est utilisé partout en théorie des matrices.
+          The trace is linear: $\mathrm{trace}(A + B) = \mathrm{trace}(A) + \mathrm{trace}(B)$, and $\mathrm{trace}(k \cdot A) = k \cdot \mathrm{trace}(A)$. More surprising: $\mathrm{trace}(A \cdot B) = \mathrm{trace}(B \cdot A)$, even though $A \cdot B \neq B \cdot A$ in general. The diagonal entries rearrange themselves to give the same sum. This little theorem gets used everywhere in matrix theory.
         </p>
       </aside>
 
-      <h2>La transposée : réflexion par la diagonale</h2>
+      <h2>The transpose: reflection across the diagonal</h2>
 
       <p>
-        La <strong>transposée</strong> d'une matrice $M$, notée $M^T$, c'est la matrice qu'on obtient en échangeant lignes et colonnes :
+        The <strong>transpose</strong> of a matrix $M$, written $M^T$, is the matrix you get by swapping rows and columns:
       </p>
 
       $$M^T[i][j] = M[j][i]$$
 
       <p>
-        Visuellement, c'est une <em>réflexion par la diagonale principale</em>. Le coefficient en position $(1, 0)$ passe en position $(0, 1)$. La première colonne devient la première ligne. Les coefficients sur la diagonale ne bougent pas (ils sont leur propre image).
+        Visually, it's a <em>reflection across the main diagonal</em>. The entry at position $(1, 0)$ ends up at $(0, 1)$. The first column becomes the first row. Entries on the diagonal don't move (they're their own image).
       </p>
 
       $$M = \begin{pmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{pmatrix} \qquad M^T = \begin{pmatrix} 1 & 4 & 7 \\ 2 & 5 & 8 \\ 3 & 6 & 9 \end{pmatrix}$$
@@ -175,139 +142,139 @@
       <div class="sketch hero">
         <div id="transpose-canvas"></div>
         <p class="sketch-caption">
-          Survole une case : tu vois sa case-symétrique s'allumer dans l'autre matrice. La diagonale (en surbrillance) est l'axe de la réflexion — les coefficients qui y vivent ne bougent pas.
+          Hover over a cell: you'll see its mirrored cell light up in the other matrix. The diagonal (highlighted) is the axis of reflection — the entries that live there don't move.
         </p>
       </div>
 
       <p>
-        Une matrice $n \times m$ devient $m \times n$ après transposition. Si la matrice n'est pas carrée, sa transposée non plus, et elle a même une forme symétrique à la sienne (large devient haute, haute devient large).
+        An $n \times m$ matrix becomes $m \times n$ after transposition. If the matrix isn't square, neither is its transpose, and it has a shape symmetric to the original (wide becomes tall, tall becomes wide).
       </p>
 
-      <h3>La règle d'or : $(A \cdot B)^T = B^T \cdot A^T$</h3>
+      <h3>The golden rule: $(A \cdot B)^T = B^T \cdot A^T$</h3>
 
       <p>
-        Quand on transpose un produit, l'<strong>ordre des facteurs s'inverse</strong>. C'est la règle qui fait piège à quasiment tout le monde la première fois.
+        When you transpose a product, the <strong>order of factors flips</strong>. This is the rule that catches almost everyone the first time.
       </p>
 
       <p class="pull-quote">
-        <strong>$(A \cdot B)^T = B^T \cdot A^T$</strong>. Pas $A^T \cdot B^T$. L'ordre s'inverse.
+        <strong>$(A \cdot B)^T = B^T \cdot A^T$</strong>. Not $A^T \cdot B^T$. The order flips.
       </p>
 
       <p>
-        La preuve tient en trois lignes, et passe par la définition de la transposée ($X^T[i][j] = X[j][i]$) et celle de la multiplication ($(XY)[i][j] = \sum_k X[i][k] \cdot Y[k][j]$) :
+        The proof fits in three lines and uses the definition of the transpose ($X^T[i][j] = X[j][i]$) and that of multiplication ($(XY)[i][j] = \sum_k X[i][k] \cdot Y[k][j]$):
       </p>
 
       $$\begin{aligned}
-((A \cdot B)^T)[i][j] &= (A \cdot B)[j][i] && \text{(def. transposée)} \\
-&= \sum_k A[j][k] \cdot B[k][i] && \text{(def. produit)} \\
-&= \sum_k B^T[i][k] \cdot A^T[k][j] && \text{(on inverse les facteurs)} \\
-&= (B^T \cdot A^T)[i][j] && \text{(def. produit)}
+((A \cdot B)^T)[i][j] &= (A \cdot B)[j][i] && \text{(def. transpose)} \\
+&= \sum_k A[j][k] \cdot B[k][i] && \text{(def. product)} \\
+&= \sum_k B^T[i][k] \cdot A^T[k][j] && \text{(swap the factors)} \\
+&= (B^T \cdot A^T)[i][j] && \text{(def. product)}
 \end{aligned}$$
 
       <p>
-        Les indices se réorganisent et forcent la permutation $A \to A^T$, $B \to B^T$, ordre échangé. Ce n'est pas une coquetterie : la même règle apparaît pour l'inverse ($(A \cdot B)^{-1} = B^{-1} \cdot A^{-1}$ au chapitre 4) parce qu'elle correspond à une notion plus profonde — l'<em>anti-homomorphisme</em>, c'est-à-dire une opération qui retourne l'ordre des composants. Le formalisme se souvient toujours que pour annuler <em>"d'abord B, puis A"</em>, il faut faire <em>"d'abord défaire A, puis défaire B"</em>.
+        The indices rearrange themselves and force the permutation $A \to A^T$, $B \to B^T$, with order reversed. This isn't a quirk: the same rule appears for the inverse ($(A \cdot B)^{-1} = B^{-1} \cdot A^{-1}$ in chapter 4) because it reflects a deeper notion — the <em>anti-homomorphism</em>, an operation that flips the order of components. The formalism always remembers that to undo <em>"first B, then A"</em>, you have to do <em>"first undo A, then undo B"</em>.
       </p>
 
-      <h3>Pourquoi on transpose-t-on</h3>
+      <h3>Why we transpose</h3>
 
       <p>
-        La transposée n'est pas qu'une curiosité formelle. Elle apparaît naturellement quand on veut :
+        The transpose isn't just a formal curiosity. It shows up naturally whenever you want to:
       </p>
 
       <ul>
-        <li><strong>Échanger lignes et colonnes</strong>. Beaucoup d'algorithmes (multiplication matricielle, décomposition QR, moindres carrés) demandent qu'on accède à une matrice « par lignes » alors qu'elle est stockée « par colonnes ». La transposée bascule entre les deux.</li>
-        <li><strong>Exprimer un produit scalaire matriciel</strong>. Le dot product $u \cdot v$ s'écrit $u^T \cdot v$ si on traite $u$ comme un vecteur colonne et qu'on veut une multiplication matricielle propre. Cette gymnastique de notation est partout en stats et en ML.</li>
-        <li><strong>Définir les matrices symétriques et orthogonales</strong>. Comme on va le voir tout de suite.</li>
+        <li><strong>Swap rows and columns</strong>. Many algorithms (matrix multiplication, QR decomposition, least squares) need to access a matrix "by rows" when it's stored "by columns." The transpose flips between the two.</li>
+        <li><strong>Express a matrix-style dot product</strong>. The dot product $u \cdot v$ becomes $u^T \cdot v$ if you treat $u$ as a column vector and want a clean matrix multiplication. This notational gymnastic is everywhere in stats and ML.</li>
+        <li><strong>Define symmetric and orthogonal matrices</strong>. As we're about to see.</li>
       </ul>
 
       <hr class="ornament" />
 
-      <h2>Une petite zoologie</h2>
+      <h2>A small zoo</h2>
 
       <p>
-        Maintenant qu'on a la transposée, on peut nommer plusieurs familles de matrices remarquables. Aucune n'est demandée par le projet en tant que tel, mais toutes apparaissent assez vite dès qu'on touche à de l'algèbre linéaire sérieuse.
+        Now that we have the transpose, we can name several families of remarkable matrices. None are required by the project per se, but all of them come up quickly the moment you touch serious linear algebra.
       </p>
 
-      <h3>L'identité</h3>
+      <h3>The identity</h3>
 
       <p>
-        La matrice $I$ dont les coefficients diagonaux valent 1 et les autres 0. Elle envoie chaque vecteur sur lui-même — ne fait <em>rien</em>. C'est l'élément neutre de la multiplication matricielle, l'analogue de $1$ pour les nombres réels. $A \cdot I = I \cdot A = A$ pour toute matrice carrée.
+        The matrix $I$ with 1s on the diagonal and 0s everywhere else. It sends every vector to itself — does <em>nothing</em>. It's the neutral element of matrix multiplication, the analog of $1$ for real numbers. $A \cdot I = I \cdot A = A$ for any square matrix.
       </p>
 
-      <h3>Les matrices diagonales</h3>
+      <h3>Diagonal matrices</h3>
 
       <p>
-        Coefficients non nuls uniquement sur la diagonale. Chacune encode un scaling <em>indépendant</em> par axe : $\mathrm{diag}(2, 1)$ double la largeur sans toucher la hauteur. Trois propriétés les rendent magiquement simples :
+        Non-zero entries only on the diagonal. Each one encodes an <em>independent</em> scaling per axis: $\mathrm{diag}(2, 1)$ doubles the width without touching the height. Three properties make them magically simple:
       </p>
 
       <ul>
-        <li>Leurs puissances sont triviales : $D^k = \mathrm{diag}(\lambda_1^k, \lambda_2^k, \dots)$.</li>
-        <li>Leur inverse est trivial : $D^{-1} = \mathrm{diag}(1/\lambda_1, 1/\lambda_2, \dots)$ tant qu'aucun coefficient diagonal n'est nul.</li>
-        <li>Elles commutent toutes entre elles : $D_1 \cdot D_2 = D_2 \cdot D_1$.</li>
+        <li>Their powers are trivial: $D^k = \mathrm{diag}(\lambda_1^k, \lambda_2^k, \dots)$.</li>
+        <li>Their inverse is trivial: $D^{-1} = \mathrm{diag}(1/\lambda_1, 1/\lambda_2, \dots)$, as long as no diagonal entry is zero.</li>
+        <li>They all commute with each other: $D_1 \cdot D_2 = D_2 \cdot D_1$.</li>
       </ul>
 
       <p>
-        C'est tellement pratique qu'un pan entier de l'algèbre linéaire (la <strong>diagonalisation</strong>) consiste à chercher un changement de base dans lequel une matrice donnée devient diagonale.
+        It's so convenient that a whole branch of linear algebra (<strong>diagonalization</strong>) is dedicated to finding a change of basis in which a given matrix becomes diagonal.
       </p>
 
-      <h3>Les matrices symétriques</h3>
+      <h3>Symmetric matrices</h3>
 
       <p>
-        Celles qui sont leur propre transposée : $S = S^T$. Le coefficient $(i, j)$ égale le coefficient $(j, i)$. Visuellement, la matrice est <em>palindromique</em> autour de sa diagonale.
+        The ones that are their own transpose: $S = S^T$. The entry at $(i, j)$ equals the entry at $(j, i)$. Visually, the matrix is <em>palindromic</em> around its diagonal.
       </p>
 
       $$S = \begin{pmatrix} 2 & 1 & -3 \\ 1 & 5 & 0 \\ -3 & 0 & 4 \end{pmatrix}$$
 
       <p>
-        Les matrices symétriques sont importantes parce qu'elles ont des propriétés spectrales très saines : elles sont toujours diagonalisables, leurs valeurs propres sont réelles, et leurs vecteurs propres sont orthogonaux. C'est la classe par excellence pour la physique (matrices d'inertie, hamiltoniens, matrices de covariance en statistique).
+        Symmetric matrices matter because they have very clean spectral properties: they're always diagonalizable, their eigenvalues are real, and their eigenvectors are orthogonal. They're the go-to class for physics (inertia matrices, Hamiltonians, covariance matrices in statistics).
       </p>
 
-      <h3>Les matrices orthogonales</h3>
+      <h3>Orthogonal matrices</h3>
 
       <p>
-        Une matrice carrée $Q$ est <strong>orthogonale</strong> si $Q \cdot Q^T = I$. Autrement dit, $Q^{-1} = Q^T$ — l'inverse est gratuite, c'est juste la transposée.
-      </p>
-
-      <p>
-        Géométriquement, c'est l'analogue parfait d'une <em>isométrie</em> autour de l'origine : les matrices orthogonales <strong>préservent les longueurs et les angles</strong>. Elles encodent les rotations (déterminant +1) et les réflexions (déterminant -1) — pas grand chose d'autre. Une rotation de 30° et un miroir par l'axe vertical sont toutes les deux des matrices orthogonales.
+        A square matrix $Q$ is <strong>orthogonal</strong> if $Q \cdot Q^T = I$. In other words, $Q^{-1} = Q^T$ — the inverse comes for free, it's just the transpose.
       </p>
 
       <p>
-        En graphics 3D, c'est <em>la</em> famille qu'on utilise pour orienter une caméra ou un objet. En physique, c'est le groupe des rotations rigides. En numérique, l'algorithme de décomposition QR — qui factorise n'importe quelle matrice en produit d'une orthogonale et d'une triangulaire — est un des piliers de l'algèbre linéaire pratique.
+        Geometrically, this is the perfect analog of an <em>isometry</em> around the origin: orthogonal matrices <strong>preserve lengths and angles</strong>. They encode rotations (determinant +1) and reflections (determinant -1) — not much else. A 30° rotation and a mirror across the vertical axis are both orthogonal matrices.
       </p>
 
-      <h3>Les matrices scalaires</h3>
+      <p>
+        In 3D graphics, this is <em>the</em> family used to orient a camera or an object. In physics, it's the group of rigid rotations. In numerics, the QR decomposition algorithm — which factors any matrix into the product of an orthogonal and a triangular one — is one of the pillars of practical linear algebra.
+      </p>
+
+      <h3>Scalar matrices</h3>
 
       <p>
-        L'identité multipliée par un scalaire : $\lambda \cdot I$. Effet : zoom uniforme par $\lambda$ dans toutes les directions. $\lambda = 1$ ne fait rien, $\lambda = -1$ retourne tout l'espace par rapport à l'origine, $\lambda = 0$ écrase tout au centre.
+        The identity multiplied by a scalar: $\lambda \cdot I$. Effect: uniform zoom by $\lambda$ in every direction. $\lambda = 1$ does nothing, $\lambda = -1$ flips the whole space through the origin, $\lambda = 0$ collapses everything to the center.
       </p>
 
       <hr class="ornament" />
 
-      <h2>Et les translations alors ?</h2>
+      <h2>What about translations, then?</h2>
 
       <p>
-        Une dernière petite porte ouverte avant la fin du chapitre. On a établi que les translations <em>ne sont pas</em> des transformations linéaires — elles bougent l'origine. Comment se débrouillent les moteurs 3D, alors, qui passent leur temps à translater des objets ?
+        One last open door before the end of the chapter. We established that translations <em>are not</em> linear transformations — they move the origin. So how do 3D engines, which spend their lives translating objects, get away with it?
       </p>
 
       <p>
-        L'astuce s'appelle les <strong>coordonnées homogènes</strong>. On rajoute une dimension fantôme (un $1$ en quatrième position) et on utilise une matrice 4×4 où la quatrième colonne encode la translation. Le calcul reste une multiplication matricielle classique, mais on a glissé la translation à l'intérieur du formalisme linéaire. Cette astuce est exactement ce qu'on retrouvera au <a href="#">chapitre 5</a>, pour la matrice de projection 3D.
+        The trick is called <strong>homogeneous coordinates</strong>. You add a phantom dimension (a $1$ in the fourth position) and use a 4×4 matrix whose fourth column encodes the translation. The computation is still a plain matrix multiplication, but the translation has been smuggled inside the linear formalism. This is exactly the trick we'll see again in <a href="#">chapter 5</a>, for the 3D projection matrix.
       </p>
 
-      <h2>Fin du chapitre 3</h2>
+      <h2>End of chapter 3</h2>
 
       <p>
-        On a fait le tour de ce qu'une matrice <em>est</em>, comment on la <em>calcule</em>, et comment on la <em>caractérise</em>. Le chapitre 4 prend le problème par l'autre bout : on a une matrice, et on veut <em>annuler</em> son effet. Pour ça on aura besoin d'un algorithme universel — l'<strong>élimination de Gauss</strong> — qui sert non seulement à inverser une matrice, mais aussi à calculer son déterminant, son rang, et à résoudre des systèmes d'équations linéaires. Quatre exercices du projet pour un seul algorithme. C'est tout le programme du chapitre 4.
+        We've gone through what a matrix <em>is</em>, how to <em>compute</em> with it, and how to <em>characterize</em> it. Chapter 4 takes the problem from the other end: we have a matrix, and we want to <em>undo</em> its effect. For that, we'll need a universal algorithm — <strong>Gaussian elimination</strong> — which not only inverts a matrix but also computes its determinant, its rank, and solves systems of linear equations. Four project exercises for a single algorithm. That's the entire program of chapter 4.
       </p>
 
       <nav class="chapter-nav">
         <a class="prev" href="02-multiplication.html">
-          <span class="nav-label">Précédent</span>
-          <span class="nav-title">← §2 — Multiplier une matrice</span>
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">← §2 — Multiplying a matrix</span>
         </a>
         <a class="next" href="#">
-          <span class="nav-label">Suivant</span>
-          <span class="nav-title">Chapitre 4 §1 — Systèmes linéaires →</span>
+          <span class="nav-label">Next</span>
+          <span class="nav-title">Chapter 4 §1 — Linear systems →</span>
         </a>
       </nav>
     </main>

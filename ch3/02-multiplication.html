@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multiplier une matrice — Chapitre 3 §2</title>
+  <title>Multiplying a matrix — Chapter 3 §2</title>
   <link rel="stylesheet" href="../styles.css" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
@@ -22,155 +22,122 @@
 <body>
   <div class="layout">
     <aside class="toc">
-      <div class="toc-title">Cours</div>
+      <div class="toc-title">Course</div>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
         <ol>
-          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
-          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
-          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
         <ol>
-          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
-          <li><a href="../ch2/02-normes.html">Normes</a></li>
-          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
-          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter" open>
-        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
         <ol>
-          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
-          <li><a href="../ch3/02-multiplication.html" class="current">Multiplier une matrice</a></li>
-          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html" class="current">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
         <ol>
-          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
-          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
-          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
-          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
         <ol>
-          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
-          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
-          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
-          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
-          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
-          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
-          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
         <ol>
-          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
-          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
-          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
         </ol>
       </details>
 
-      <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
-        <ol>
-          <li><a href="../3b1b/index.html">Sommaire</a></li>
-          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
-          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
-          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
-          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
-          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
-          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
-          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
-          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
-          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
-          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
-          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
-          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
-          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
-          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
-          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
-          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
-        </ol>
-      </details>
-
-      <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
-        <ol>
-          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
-          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
-          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
-          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
-        </ol>
-      </details>
-
-      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
     </aside>
 
     <main>
-      <div class="chapter-meta">Chapitre 3 · §2</div>
-      <h1>Multiplier une matrice</h1>
+      <div class="chapter-meta">Chapter 3 · §2</div>
+      <h1>Multiplying a matrix</h1>
       <p class="lede">
-        Une matrice <em>est</em> une transformation, on l'a admis. Mais transformer un vecteur, concrètement, ça demande un calcul. Le voici. C'est la fameuse multiplication matrice × vecteur, et c'est la mécanique qui sous-tend à peu près tout en algèbre linéaire numérique.
+        A matrix <em>is</em> a transformation — we accepted that. But actually transforming a vector requires a computation. Here it is. It's the famous matrix-vector multiplication, and it's the mechanic that underpins just about everything in numerical linear algebra.
       </p>
 
       <p>
-        Reprenons la conclusion de la section précédente. Pour appliquer une transformation linéaire $T$ au vecteur $v = (v_1, v_2)$, on a établi la formule magique $T(v) = v_1 \cdot T(i) + v_2 \cdot T(j)$. Les images des vecteurs de base sont rangées en colonnes dans la matrice. Reste à comprendre comment l'ordinateur, lui, l'exécute. Voici la règle :
+        Let's pick up where the previous section left off. To apply a linear transformation $T$ to the vector $v = (v_1, v_2)$, we derived the magic formula $T(v) = v_1 \cdot T(i) + v_2 \cdot T(j)$. The images of the basis vectors sit in the columns of the matrix. What's left is to figure out how a computer actually executes this. Here's the rule:
       </p>
 
       $$\begin{pmatrix} a & b \\ c & d \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix} = \begin{pmatrix} a \cdot x + b \cdot y \\ c \cdot x + d \cdot y \end{pmatrix}$$
 
       <p>
-        Cette formule peut sembler arbitraire, comme si quelqu'un l'avait inventée un matin. Elle ne l'est pas. Elle a été <em>conçue exactement</em> pour faire en sorte que la règle $v_1 \cdot \text{col}_0 + v_2 \cdot \text{col}_1$ tombe juste. Le but de cette section est de te montrer pourquoi.
+        This formula can look arbitrary, as if someone made it up one morning. It isn't. It was <em>designed precisely</em> to make the rule $v_1 \cdot \text{col}_0 + v_2 \cdot \text{col}_1$ come out right. The goal of this section is to show you why.
       </p>
 
-      <h2>Deux façons équivalentes de lire le calcul</h2>
+      <h2>Two equivalent ways to read the computation</h2>
 
       <p>
-        Une multiplication matrice × vecteur peut être lue de deux manières. Les deux donnent le même résultat, mais elles racontent des histoires différentes. Garder les deux en tête est une des clés de l'algèbre linéaire.
+        A matrix-vector multiplication can be read two ways. Both give the same result, but they tell different stories. Keeping both in mind is one of the keys to linear algebra.
       </p>
 
-      <h3>Vue 1 — Par ligne (mécanique, calculatoire)</h3>
+      <h3>View 1 — Row by row (mechanical, computational)</h3>
 
       <p>
-        Chaque composante du résultat est le produit scalaire d'une ligne de la matrice avec le vecteur d'entrée. La première composante du résultat, c'est $(a, b) \cdot (x, y) = a \cdot x + b \cdot y$. La seconde, c'est $(c, d) \cdot (x, y) = c \cdot x + d \cdot y$. Si la matrice a 5 lignes, le résultat a 5 composantes — un produit scalaire par ligne.
+        Each component of the result is the dot product of a row of the matrix with the input vector. The first component of the result is $(a, b) \cdot (x, y) = a \cdot x + b \cdot y$. The second is $(c, d) \cdot (x, y) = c \cdot x + d \cdot y$. If the matrix has 5 rows, the result has 5 components — one dot product per row.
       </p>
 
       <p>
-        C'est la vue qu'on utilise pour <em>calculer</em>. C'est aussi celle qu'on apprend en premier au lycée, et c'est elle qui apparaît dans tous les manuels. Elle est mécanique, fiable, mais ne dit rien de géométrique.
+        This is the view you use to <em>compute</em>. It's also the one taught first in high school, and the one that shows up in every textbook. It's mechanical, reliable, but says nothing geometric.
       </p>
 
-      <h3>Vue 2 — Par colonne (géométrique, conceptuelle)</h3>
+      <h3>View 2 — Column by column (geometric, conceptual)</h3>
 
       <p>
-        Le même calcul, réorganisé autrement, raconte une autre histoire. Le résultat est une <strong>combinaison linéaire</strong> des colonnes de la matrice, où les coefficients sont les composantes de $v$ :
+        The same computation, rearranged differently, tells another story. The result is a <strong>linear combination</strong> of the columns of the matrix, with coefficients given by the components of $v$:
       </p>
 
       $$\begin{pmatrix} a & b \\ c & d \end{pmatrix} \cdot \begin{pmatrix} x \\ y \end{pmatrix} = x \cdot \begin{pmatrix} a \\ c \end{pmatrix} + y \cdot \begin{pmatrix} b \\ d \end{pmatrix}$$
 
       <p>
-        Lis-le lentement. Le nombre $x$ est la <em>dose</em> de la première colonne. Le nombre $y$ est la <em>dose</em> de la seconde. Le résultat est leur mélange. C'est exactement la formule de la section précédente, où les colonnes sont les $T(i)$ et $T(j)$.
+        Read it slowly. The number $x$ is the <em>dose</em> of the first column. The number $y$ is the <em>dose</em> of the second. The result is their blend. That's exactly the formula from the previous section, where the columns are $T(i)$ and $T(j)$.
       </p>
 
       <p class="pull-quote">
-        <strong>$M \cdot v$ est une combinaison linéaire des colonnes de $M$, pondérée par les composantes de $v$.</strong>
+        <strong>$M \cdot v$ is a linear combination of the columns of $M$, weighted by the components of $v$.</strong>
       </p>
 
       <p>
-        Cette vue est plus profonde. Elle te dit que le calcul <em>est</em> la transformation — chaque composante de $v$ sélectionne une dose de la direction encodée par la colonne correspondante.
+        This view runs deeper. It tells you that the computation <em>is</em> the transformation — each component of $v$ picks a dose of the direction encoded by the corresponding column.
       </p>
 
       <div class="sketch hero">
@@ -182,121 +149,121 @@
           <label>d = <span id="mulvec-d-readout">1.00</span><input id="mulvec-d-slider" type="range" min="-2" max="2" step="0.05" value="1" /></label>
         </div>
         <p class="sketch-caption">
-          Bouge <strong style="color:#4d473d">v</strong>. Les pointillés montrent la construction de <em>M·v</em> bout-à-bout : on prend <em>v.x</em> fois la première colonne, puis on ajoute <em>v.y</em> fois la seconde. Le résultat (en marron) est <em>M·v</em>.
+          Drag <strong style="color:#4d473d">v</strong>. The dotted lines show the tip-to-tail construction of <em>M·v</em>: take <em>v.x</em> times the first column, then add <em>v.y</em> times the second. The result (in brown) is <em>M·v</em>.
         </p>
       </div>
 
-      <h2>Un exemple chiffré, lentement</h2>
+      <h2>A worked example, slowly</h2>
 
       <p>
-        Prenons une matrice concrète et un vecteur concret, et faisons le calcul des deux façons pour voir l'équivalence.
+        Let's take a concrete matrix and a concrete vector, and run the computation both ways to see the equivalence.
       </p>
 
       $$M = \begin{pmatrix} 2 & 1 \\ -1 & 3 \end{pmatrix}, \qquad v = \begin{pmatrix} 4 \\ 2 \end{pmatrix}$$
 
-      <p><strong>Par ligne</strong> — chaque sortie est un produit scalaire :</p>
+      <p><strong>Row by row</strong> — each output is a dot product:</p>
 
       $$\begin{aligned}
 \text{result}[0] &= (2, 1) \cdot (4, 2) = 2 \cdot 4 + 1 \cdot 2 = 8 + 2 = 10 \\
 \text{result}[1] &= (-1, 3) \cdot (4, 2) = -1 \cdot 4 + 3 \cdot 2 = -4 + 6 = 2
 \end{aligned}$$
 
-      <p><strong>Par colonne</strong> — chaque sortie est une dose des colonnes :</p>
+      <p><strong>Column by column</strong> — each output is a dose of the columns:</p>
 
       $$\text{result} = 4 \cdot \begin{pmatrix} 2 \\ -1 \end{pmatrix} + 2 \cdot \begin{pmatrix} 1 \\ 3 \end{pmatrix} = \begin{pmatrix} 8 \\ -4 \end{pmatrix} + \begin{pmatrix} 2 \\ 6 \end{pmatrix} = \begin{pmatrix} 10 \\ 2 \end{pmatrix}$$
 
       <p>
-        Les <em>mêmes produits élémentaires</em> apparaissent dans les deux calculs (regarde $2 \cdot 4$, $1 \cdot 2$, $-1 \cdot 4$, $3 \cdot 2$ dans les deux), juste regroupés selon un axe différent : la vue par ligne les groupe par <em>composante du résultat</em>, la vue par colonne les groupe par <em>direction</em>. Le sens narratif change : la vue par ligne dit <em>"je projette v sur chaque ligne de M"</em>, la vue par colonne dit <em>"je dose chaque direction de M par une composante de v"</em>. Choisis selon ce que tu veux raconter.
+        The <em>same elementary products</em> appear in both computations (look at $2 \cdot 4$, $1 \cdot 2$, $-1 \cdot 4$, $3 \cdot 2$ in both), just grouped along a different axis: the row view groups them by <em>output component</em>, the column view groups them by <em>direction</em>. The narrative shifts: the row view says <em>"I project v onto each row of M"</em>, the column view says <em>"I dose each direction of M by a component of v"</em>. Pick whichever fits the story you want to tell.
       </p>
 
       <aside class="tangent">
-        <span class="tangent-label">Pourquoi savoir les deux</span>
+        <span class="tangent-label">Why know both</span>
         <p>
-          La vue par ligne survit telle quelle à la généralisation (3blue1brown la trouve trop mécanique pour valoir grand chose intuitivement, et il a raison). La vue par colonne, elle, éclaire absolument tout : pourquoi la matrice est stockée colonne par colonne en mémoire (column-major), pourquoi le rang est lié aux colonnes, pourquoi le système $Ax = b$ demande <em>"y a-t-il une combinaison des colonnes de A qui produit b ?"</em>. Si tu n'as pas le temps de retenir les deux, retiens celle par colonne.
+          The row view generalizes as-is (3blue1brown finds it too mechanical to be worth much intuitively, and he's right). The column view, on the other hand, illuminates everything: why matrices are stored column by column in memory (column-major), why rank is tied to columns, why the system $Ax = b$ asks <em>"is there a combination of A's columns that yields b?"</em>. If you only have time to internalize one, internalize the column view.
         </p>
       </aside>
 
-      <h2>Généralisation : la règle des dimensions</h2>
+      <h2>Generalization: the dimension rule</h2>
 
       <p>
-        Jusqu'ici on a regardé du 2×2. La formule générale n'apporte aucune surprise — la règle de dimension est la suivante :
+        So far we've been looking at 2×2. The general formula brings no surprise — here's the dimension rule:
       </p>
 
-      $$M\ (n \times m) \cdot v\ (m) = \text{résultat}\ (n)$$
+      $$M\ (n \times m) \cdot v\ (m) = \text{result}\ (n)$$
 
       <p>
-        Une matrice $n \times m$ a $n$ lignes et $m$ colonnes. Le vecteur d'entrée a $m$ composantes (autant que la matrice a de <em>colonnes</em>). Le vecteur de sortie a $n$ composantes (autant que la matrice a de <em>lignes</em>). Si on essaie de multiplier une matrice $3 \times 4$ par un vecteur de 5 composantes, ça refuse simplement de se calculer.
+        An $n \times m$ matrix has $n$ rows and $m$ columns. The input vector has $m$ components (as many as the matrix has <em>columns</em>). The output vector has $n$ components (as many as the matrix has <em>rows</em>). If you try to multiply a $3 \times 4$ matrix by a vector with 5 components, it simply refuses to compute.
       </p>
 
       <p>
-        Géométriquement, la matrice est une transformation $\mathbb{R}^m \to \mathbb{R}^n$ : elle prend un vecteur dans l'espace de dimension $m$ et en rend un dans l'espace de dimension $n$. Si $n < m$, elle <em>écrase</em> de l'information (projection, compression). Si $n > m$, elle plonge un petit espace dans un plus grand.
+        Geometrically, the matrix is a transformation $\mathbb{R}^m \to \mathbb{R}^n$: it takes a vector in an $m$-dimensional space and returns one in an $n$-dimensional space. If $n < m$, it <em>crushes</em> information (projection, compression). If $n > m$, it embeds a smaller space inside a larger one.
       </p>
 
       <hr class="ornament" />
 
-      <h2>Multiplier deux matrices : la composition</h2>
+      <h2>Multiplying two matrices: composition</h2>
 
       <p>
-        Maintenant le pas suivant. Que se passe-t-il si on applique <em>deux</em> transformations à la suite ? Disons une rotation, puis un zoom. Géométriquement, c'est évident — on rotate, puis on zoome. Algébriquement, il existe une opération qui encode cette <em>composition</em> en une seule matrice : la <strong>multiplication matrice × matrice</strong>.
+        Now the next step. What happens if we apply <em>two</em> transformations in a row? Say a rotation, then a zoom. Geometrically, it's obvious — we rotate, then we zoom. Algebraically, there's an operation that encodes this <em>composition</em> into a single matrix: <strong>matrix-matrix multiplication</strong>.
       </p>
 
       <p>
-        Si $B$ encode la rotation et $A$ encode le zoom, alors le produit $A \cdot B$ est une matrice unique qui fait <em>les deux d'un coup</em> : applique $A \cdot B$ à un vecteur, et tu obtiens exactement ce que tu obtiendrais en appliquant $B$ d'abord, puis $A$.
+        If $B$ encodes the rotation and $A$ encodes the zoom, then the product $A \cdot B$ is a single matrix that does <em>both at once</em>: apply $A \cdot B$ to a vector, and you get exactly what you'd get by applying $B$ first, then $A$.
       </p>
 
       $$(A \cdot B) \cdot v = A \cdot (B \cdot v)$$
 
       <p>
-        Cette égalité est <em>la</em> raison d'être de la multiplication matricielle. La formule pour la calculer (en termes de coefficients) est conçue pour que cette égalité soit vraie. Comme pour $M \cdot v$, la formule n'est pas arbitraire — elle est <em>la conséquence forcée</em> de vouloir que la composition de transformations corresponde au produit de matrices.
+        This equality is <em>the</em> reason matrix multiplication exists. The formula for computing it (in terms of entries) is designed to make this equality true. As with $M \cdot v$, the formula isn't arbitrary — it's <em>the forced consequence</em> of wanting composition of transformations to correspond to the product of matrices.
       </p>
 
-      <h3>L'astuce mentale : composer par colonnes</h3>
+      <h3>The mental trick: composing by columns</h3>
 
       <p>
-        Si tu te souviens du <strong>truc par colonne</strong> de tout à l'heure, la multiplication matrice × matrice devient soudain transparente. Chaque colonne de $B$ est un vecteur. Donc $A \cdot B$, c'est <em>appliquer A à chaque colonne de B</em>, et empiler les résultats côte à côte :
+        If you remember the <strong>column trick</strong> from earlier, matrix-matrix multiplication suddenly becomes transparent. Each column of $B$ is a vector. So $A \cdot B$ is just <em>applying A to each column of B</em>, and stacking the results side by side:
       </p>
 
       $$A \cdot B = \begin{pmatrix} A \cdot \text{col}_0(B) & A \cdot \text{col}_1(B) & \dots \end{pmatrix}$$
 
       <p>
-        C'est tout. La multiplication matricielle est une série de multiplications matrice × vecteur, une par colonne de $B$. Pas besoin d'apprendre une nouvelle formule par cœur — si tu sais faire $M \cdot v$, tu sais faire $A \cdot B$.
+        That's it. Matrix multiplication is a series of matrix-vector multiplications, one per column of $B$. No new formula to memorize — if you can do $M \cdot v$, you can do $A \cdot B$.
       </p>
 
-      <h2>L'ordre compte : « de droite à gauche »</h2>
+      <h2>Order matters: "right to left"</h2>
 
       <p>
-        Le piège classique, celui que tout le monde rencontre une fois et n'oublie jamais : <strong>l'ordre des facteurs n'est pas commutatif</strong>. En général, $A \cdot B \neq B \cdot A$. Et il y a une règle de lecture qu'il faut intérioriser :
+        The classic trap, the one everyone hits once and never forgets: <strong>the order of factors is not commutative</strong>. In general, $A \cdot B \neq B \cdot A$. And there's a reading rule worth internalizing:
       </p>
 
       <p class="pull-quote">
-        <strong>Dans $A \cdot B \cdot v$, on applique $B$ d'abord, puis $A$.</strong> La matrice la plus à droite — la plus proche du vecteur — agit en premier.
+        <strong>In $A \cdot B \cdot v$, we apply $B$ first, then $A$.</strong> The rightmost matrix — the one closest to the vector — acts first.
       </p>
 
       <p>
-        Logique : tu lis le calcul de l'intérieur vers l'extérieur, comme <code>f(g(x))</code> en programmation fonctionnelle — d'abord <code>g</code>, puis <code>f</code>. La matrice $B$ touche $v$ en premier, puis $A$ touche le résultat.
+        Makes sense: you read the computation from the inside out, like <code>f(g(x))</code> in functional programming — first <code>g</code>, then <code>f</code>. Matrix $B$ touches $v$ first, then $A$ touches the result.
       </p>
 
       <p>
-        Et donc, faire <em>"d'abord rotation, puis zoom"</em> ne donne pas la même matrice que <em>"d'abord zoom, puis rotation"</em>. Avec un zoom <em>uniforme</em> (le même facteur sur tous les axes), le résultat coïncide — pas par hasard mais parce qu'un zoom uniforme est $\lambda \cdot I$, et $\lambda \cdot I$ commute avec n'importe quelle matrice. Dès qu'on perd cette uniformité (cisaillement, étirement non uniforme), tout s'écroule. Visualisons :
+        So doing <em>"rotation first, then zoom"</em> doesn't give the same matrix as <em>"zoom first, then rotation"</em>. With a <em>uniform</em> zoom (same factor along every axis), the result happens to coincide — not by accident, but because a uniform zoom is $\lambda \cdot I$, and $\lambda \cdot I$ commutes with any matrix. The moment you lose that uniformity (shear, non-uniform stretch), everything breaks down. Let's visualize:
       </p>
 
       <div class="sketch">
         <div id="compose-canvas"></div>
         <div class="sketch-controls">
-          <button id="compose-rot-then-scale">rotation puis zoom</button>
-          <button id="compose-scale-then-rot">zoom puis rotation</button>
-          <button id="compose-rot-then-shear">rotation puis shear</button>
-          <button id="compose-shear-then-rot">shear puis rotation</button>
+          <button id="compose-rot-then-scale">rotation then zoom</button>
+          <button id="compose-scale-then-rot">zoom then rotation</button>
+          <button id="compose-rot-then-shear">rotation then shear</button>
+          <button id="compose-shear-then-rot">shear then rotation</button>
         </div>
         <p class="sketch-caption">
-          Trois étapes : le carré unité (gauche), après avoir appliqué <em>B</em> (milieu), après avoir appliqué <em>A</em> sur le résultat (droite). Compare « rotation puis shear » et « shear puis rotation » — même paire de matrices, ordre inverse, parallélogrammes finaux différents.
+          Three stages: the unit square (left), after applying <em>B</em> (middle), after applying <em>A</em> on the result (right). Compare "rotation then shear" against "shear then rotation" — same pair of matrices, reversed order, different final parallelograms.
         </p>
       </div>
 
-      <h2>Compatibilité des dimensions</h2>
+      <h2>Dimension compatibility</h2>
 
       <p>
-        Une dernière chose mécanique. Pour que $A \cdot B$ ait un sens, il faut que <strong>le nombre de colonnes de $A$ égale le nombre de lignes de $B$</strong> :
+        One last mechanical detail. For $A \cdot B$ to make sense, <strong>the number of columns of $A$ must equal the number of rows of $B$</strong>:
       </p>
 
       <svg class="illu" viewBox="0 0 620 260" xmlns="http://www.w3.org/2000/svg">
@@ -321,52 +288,66 @@
         <text x="450" y="200" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" font-style="italic" text-anchor="middle">p</text>
         <!-- Brace between m of A and m of B -->
         <path d="M 110 215 q 0 12 35 12 l 0 0 q 35 0 35 0 l 0 0 q 35 0 35 -12" fill="none" stroke="#b8431f" stroke-width="1.4"/>
-        <text x="195" y="245" font-family="Inter, sans-serif" font-size="12" fill="#b8431f" text-anchor="middle">doivent être égales (dimensions internes)</text>
+        <text x="195" y="245" font-family="Inter, sans-serif" font-size="12" fill="#b8431f" text-anchor="middle">must be equal (inner dimensions)</text>
         <!-- Top label: external dims -->
         <path d="M 110 30 q 0 -10 35 -10 l 100 0 q 35 0 35 -10 q 0 10 35 10 l 100 0 q 35 0 35 10" fill="none" stroke="#1e5a7a" stroke-width="1.2" transform="translate(0, 25)"/>
-        <text x="305" y="25" font-family="Inter, sans-serif" font-size="12" fill="#1e5a7a" text-anchor="middle">dimensions externes → taille du résultat</text>
+        <text x="305" y="25" font-family="Inter, sans-serif" font-size="12" fill="#1e5a7a" text-anchor="middle">outer dimensions → size of the result</text>
       </svg>
-      <p class="illu-caption">A (n × m) · B (m × p) = C (n × p). Les dimensions internes (m) doivent coïncider ; les externes (n et p) donnent la taille du résultat.</p>
+      <p class="illu-caption">A (n × m) · B (m × p) = C (n × p). The inner dimensions (m) must match; the outer ones (n and p) give the size of the result.</p>
 
       <p>
-        L'intuition est lumineuse via la composition. $B$ est une transformation $\mathbb{R}^p \to \mathbb{R}^m$. $A$ est une transformation $\mathbb{R}^m \to \mathbb{R}^n$. Pour les chaîner, l'espace d'arrivée de $B$ doit être l'espace de départ de $A$. Sinon, le vecteur sortant de $B$ n'a pas la bonne taille pour entrer dans $A$, et le calcul est mal formé.
+        The intuition shines through composition. $B$ is a transformation $\mathbb{R}^p \to \mathbb{R}^m$. $A$ is a transformation $\mathbb{R}^m \to \mathbb{R}^n$. To chain them, $B$'s output space must be $A$'s input space. Otherwise, the vector coming out of $B$ doesn't have the right size to feed into $A$, and the computation is ill-formed.
       </p>
 
       <aside class="tangent">
-        <span class="tangent-label">Confusion fréquente</span>
+        <span class="tangent-label">Common confusion</span>
         <p>
-          La phrase <em>"les deux matrices doivent avoir la même taille"</em> est <strong>fausse</strong> en général. Ce qui doit s'accorder, ce sont les <em>dimensions internes</em> ($m = m$). Les <em>dimensions externes</em> ($n$ et $p$) sont libres et donnent simplement la taille du résultat. Les matrices carrées $n \times n$ sont le cas particulier où les deux dimensions coïncident, ce qui rend la règle invisible — c'est pour ça qu'on tombe dans le panneau.
+          The phrase <em>"the two matrices must have the same size"</em> is <strong>wrong</strong> in general. What must agree are the <em>inner dimensions</em> ($m = m$). The <em>outer dimensions</em> ($n$ and $p$) are free and just set the size of the result. Square $n \times n$ matrices are the special case where both dimensions coincide, which makes the rule invisible — that's why people fall for it.
         </p>
       </aside>
 
-      <h2>Quelques propriétés à connaître</h2>
+      <h2>A few properties worth knowing</h2>
 
       <p>
-        On va vite sur celles-là, elles ne demandent pas de démonstration au niveau où on est. Retiens surtout celles qui sont contre-intuitives.
+        We'll move quickly through these — they don't need proofs at this level. Mostly remember the counter-intuitive ones.
       </p>
 
       <ul>
-        <li><strong>Non-commutativité</strong>. $A \cdot B \neq B \cdot A$ en général. Le piège classique. La composition de transformations dépend de l'ordre, et c'est très bien comme ça.</li>
-        <li><strong>Associativité</strong>. $(A \cdot B) \cdot C = A \cdot (B \cdot C)$. On peut regrouper les facteurs comme on veut, du moment qu'on garde leur ordre.</li>
-        <li><strong>Distributivité</strong>. $A \cdot (B + C) = A \cdot B + A \cdot C$. Et même chose à droite.</li>
-        <li><strong>Identité</strong>. Il existe une matrice $I$ (l'identité, qui ne fait rien) telle que $A \cdot I = I \cdot A = A$. Plus là-dessus à la section suivante.</li>
-        <li><strong>Transposée qui inverse</strong>. $(A \cdot B)^T = B^T \cdot A^T$. L'ordre s'inverse quand on transpose. Ce n'est pas une coquetterie — c'est une règle d'or qu'on démontre à la section suivante.</li>
+        <li><strong>Non-commutativity</strong>. $A \cdot B \neq B \cdot A$ in general. The classic trap. Composition of transformations depends on order, and that's a feature, not a bug.</li>
+        <li><strong>Associativity</strong>. $(A \cdot B) \cdot C = A \cdot (B \cdot C)$. You can regroup factors however you like, as long as you keep their order.</li>
+        <li><strong>Distributivity</strong>. $A \cdot (B + C) = A \cdot B + A \cdot C$. Same on the right.</li>
+        <li><strong>Identity</strong>. There's a matrix $I$ (the identity, which does nothing) such that $A \cdot I = I \cdot A = A$. More on this in the next section.</li>
+        <li><strong>Transpose reverses order</strong>. $(A \cdot B)^T = B^T \cdot A^T$. The order flips when you transpose. Not a quirk — a golden rule we'll prove in the next section.</li>
       </ul>
 
-      <h2>Vers la suite</h2>
+      <h2>What's next</h2>
 
       <p>
-        On sait maintenant déformer un vecteur avec une matrice, et composer plusieurs déformations en multipliant les matrices. La prochaine section couvre deux petites opérations connexes (trace et transposée) qui ne sont presque rien individuellement, mais qui ouvrent la porte aux <strong>matrices spéciales</strong> — celles dont la forme reflète une propriété géométrique remarquable. Après ça, le chapitre 4 nous emmènera vers la question opposée : si une transformation <em>fait</em> quelque chose, peut-on toujours la <em>défaire</em> ?
+        We now know how to deform a vector with a matrix, and how to compose several deformations by multiplying matrices. The next section covers two small related operations (trace and transpose) that are almost nothing on their own, but that open the door to <strong>special matrices</strong> — the ones whose shape reflects a remarkable geometric property. After that, chapter 4 will take us to the opposite question: if a transformation <em>does</em> something, can we always <em>undo</em> it?
       </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Further reading</span>
+        <p>
+          <strong>3blue1brown · Essence of Linear Algebra, ep. 4 — Matrix multiplication as composition.</strong>
+          The matrix product as composition of transformations — exactly the angle we took here. The animation makes the reason for non-commutativity instantly clear.
+          <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+        <p>
+          <strong>MIT 18.06 (Gilbert Strang) · Lecture 3 — Multiplication and inverse matrices.</strong>
+          Strang looks at matrix multiplication from four different angles (row by row, column by column, by dot product, by blocks). Excellent computational complement.
+          <a href="https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+      </aside>
 
       <nav class="chapter-nav">
         <a class="prev" href="01-transformation.html">
-          <span class="nav-label">Précédent</span>
-          <span class="nav-title">← §1 — Qu'est-ce qu'une transformation linéaire</span>
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">← §1 — What is a linear transformation</span>
         </a>
         <a class="next" href="03-trace-transpose.html">
-          <span class="nav-label">Suivant</span>
-          <span class="nav-title">§3 — Trace, transposée, spéciales →</span>
+          <span class="nav-label">Next</span>
+          <span class="nav-title">§3 — Trace, transpose, special →</span>
         </a>
       </nav>
     </main>

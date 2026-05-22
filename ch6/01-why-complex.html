@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why complex numbers — Chapter 6 §1</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+
+  <style>
+    .cycle-illu {
+      display: block;
+      margin: 2rem auto;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html" class="current">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 6 · §1</div>
+      <h1>Why complex numbers</h1>
+      <p class="lede">
+        For five chapters, we worked with vectors and matrices over the real numbers. That was more than enough for the 3D pipeline, for Gaussian elimination, for projection. But exercise 15 of the assignment invites us to redo all of that work with a different kind of scalar: complex numbers. Before writing a single line of Rust, we need to understand why this object exists, and why it isn't a mathematician's whim.
+      </p>
+
+      <p>
+        Let's start at a wall. Ask yourself the question, really, take a few seconds: what number $x$ satisfies $x^2 = -1$? Try a few candidates. $x = 1$ gives $1$. $x = -1$ gives $1$. $x = 2.7$ gives $7.29$. Whatever real number you pick — positive, negative, decimal, irrational — its square is always positive or zero. Never negative. This is a fundamental, almost tautological property: multiplying two numbers of the same sign yields a positive result, and a number necessarily has the same sign as itself.
+      </p>
+
+      <p>
+        So in the world of real numbers, the equation $x^2 = -1$ has no solution. Period. For centuries, that was the end of the story: the equation exists on paper, we look at it, we shrug, we move on. Except that this wall was hiding something. And when we finally dared to cross it, we discovered a whole mathematical world that today underpins electronics, signal processing, quantum mechanics, 2D graphics — even some machine-learning techniques.
+      </p>
+
+      <h2>The audacity to invent</h2>
+
+      <p>
+        In the 16th century, Italian mathematicians — Cardano, Bombelli — ran into this wall in an unexpected way. While trying to solve cubic equations (degree three), their formulas forced them to temporarily manipulate square roots of negative numbers in the middle of a calculation, even when the final result was a perfectly ordinary real number. It was as if the honest solution to a problem had to pass through a parallel universe.
+      </p>
+
+      <p>
+        Facing this puzzle, they had two options. The reasonable one: declare the calculation invalid and look for another method. The adventurous one: accept that these strange roots exist in the middle of the calculation and see whether they can be manipulated consistently. Cardano called them <em>sophisticated quantities</em>. Bombelli handled them formally, without asking what they were. And it worked: the intermediate calculations simplified, the strange roots cancelled each other out, and the real result appeared correctly at the end. The detour through this elsewhere wasn't a mistake — it was a shortcut.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangent</span>
+        <p>
+          This story echoes that of negative numbers. The Greeks didn't accept them — a number represented a length or a quantity, and a length cannot be negative. But after enough work with debts, sub-zero temperatures, and positions to the left of an origin, they eventually became accepted. The same wary reaction recurred with zero, with irrationals like $\sqrt{2}$, and later with the complex numbers. At each expansion, a century or two of discomfort, then the obvious truth: these new numbers had been indispensable all along.
+        </p>
+      </aside>
+
+      <h2>Naming the new number</h2>
+
+      <p>
+        If we accept this act of creation, we need a name. We postulate the existence of a number, called $i$ (for <em>imaginary</em>, a term Descartes saddled it with in the 17th century, somewhat dismissively), satisfying:
+      </p>
+
+      $$i^2 = -1$$
+
+      <p>
+        That's it. One rule. This $i$ isn't on the real number line — if it were, we'd have found it. It lives elsewhere, and for now we don't worry about where: it's a symbol with a property. Everything else from middle-school algebra still applies: we can multiply, add, distribute, and factor $i$ like any ordinary algebraic letter. Only the rule $i \times i = -1$ is added on top.
+      </p>
+
+      <p>
+        This rule has an immediate, almost magical consequence: the powers of $i$ form a <strong>cycle of length four</strong>.
+      </p>
+
+      $$
+      \begin{aligned}
+      i^0 &= 1 \\
+      i^1 &= i \\
+      i^2 &= -1 \\
+      i^3 &= i^2 \times i = -1 \times i = -i \\
+      i^4 &= i^2 \times i^2 = (-1) \times (-1) = 1
+      \end{aligned}
+      $$
+
+      <p>
+        Once we reach $i^4$, we're back at $1$. So $i^5 = i$, $i^6 = -1$, and so on — the cycle starts over. Four values, $\{1, i, -1, -i\}$, looping forever.
+      </p>
+
+      <svg class="cycle-illu" viewBox="0 0 460 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Axes -->
+        <line x1="60" y1="130" x2="400" y2="130" stroke="#ddd6c2" stroke-width="1"/>
+        <line x1="230" y1="30" x2="230" y2="230" stroke="#ddd6c2" stroke-width="1"/>
+
+        <!-- Cercle directeur -->
+        <circle cx="230" cy="130" r="78" fill="none" stroke="#ddd6c2" stroke-width="1" stroke-dasharray="3 3"/>
+
+        <!-- Points du cycle -->
+        <circle cx="308" cy="130" r="5" fill="#b8431f"/>
+        <text x="318" y="135" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#1c1a15">1 = i⁰ = i⁴</text>
+
+        <circle cx="230" cy="52"  r="5" fill="#b8431f"/>
+        <text x="240" y="49"  font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#1c1a15">i = i¹</text>
+
+        <circle cx="152" cy="130" r="5" fill="#b8431f"/>
+        <text x="60"  y="135" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#1c1a15">−1 = i²</text>
+
+        <circle cx="230" cy="208" r="5" fill="#b8431f"/>
+        <text x="240" y="213" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#1c1a15">−i = i³</text>
+
+        <!-- Fleches du cycle -->
+        <path d="M 300 122 A 75 75 0 0 0 238 56" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow)"/>
+        <path d="M 222 56 A 75 75 0 0 0 160 122"  fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow)"/>
+        <path d="M 160 138 A 75 75 0 0 0 222 204" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow)"/>
+        <path d="M 238 204 A 75 75 0 0 0 300 138" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow)"/>
+
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#1e5a7a"/>
+          </marker>
+        </defs>
+      </svg>
+
+      <p>
+        Keep this picture in mind. In the next chapter, we'll see that multiplying by $i$ corresponds geometrically to a <strong>90-degree rotation</strong>. Four 90-degree rotations make a full $360^\circ$ turn, which is exactly why the cycle has length four. For now it's just an algebraic curiosity, but it's the seed of all the geometry that follows.
+      </p>
+
+      <h2>Combining $i$ with real numbers</h2>
+
+      <p>
+        If $i$ behaves like a normal algebraic letter (apart from its special rule), then we can freely combine it with real numbers. Expressions like $1 + i$, $3 - 2i$, $\pi i$, $0.5 + 7i$ are all legitimate: a real number added to or subtracted from a multiple of $i$. And if we add two of them, for example:
+      </p>
+
+      $$
+      \begin{aligned}
+      (2 + 3i) + (5 - i) &= (2 + 5) + (3i - i) \\
+                          &= 7 + 2i
+      \end{aligned}
+      $$
+
+      <p>
+        we group the part without $i$ on one side and the part with $i$ on the other, and we land back on the same shape: <em>a real number, plus another real number times $i$</em>. This structure, $a + bi$, turns out to be the <strong>canonical form</strong> in which every complex number can be written — not just simple sums like the one above, but also products, quotients, powers. We'll develop that in detail in the next chapter.
+      </p>
+
+      <p class="pull-quote">
+        <strong>A complex number is just a pair of two reals.</strong>
+        The part in front of $i$, and the part without $i$. The word "imaginary" sounds mysterious, but in code it's two floats sitting side by side.
+      </p>
+
+      <h2>The set $\mathbb{C}$</h2>
+
+      <p>
+        We write $\mathbb{C}$ for the set of all numbers of the form $a + bi$, with $a$ and $b$ real. This set contains every real number as a special case: $a = a + 0i$, meaning a real $a$ is just a complex number whose $i$-part is zero. So $\mathbb{R} \subset \mathbb{C}$ — the complex numbers extend the reals, they don't replace them.
+      </p>
+
+      <p>
+        And just as $\mathbb{R}$ obeys the classical arithmetic laws (associativity, commutativity, distributivity, the existence of a multiplicative inverse except for zero), $\mathbb{C}$ obeys the same laws. We say that $\mathbb{C}$ is a <strong>field</strong>, the precise mathematical term for "a set of numbers where you can perform $+, -, \times, \div$ with the usual properties". Both $\mathbb{R}$ and $\mathbb{C}$ are fields. The integers $\mathbb{Z}$, on the other hand, are not (since $1 \div 2 = 0.5$ escapes $\mathbb{Z}$).
+      </p>
+
+      <p>
+        That word — "field" — is exactly the name of the Rust trait we set up back in exercise 00: <code>trait Field</code>. When we write <code>impl Field for Complex</code>, we are literally saying "the Complex type obeys the laws of a field". The bridge between a century-old mathematical notion and a 2024 Rust trait is right there.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangent</span>
+        <p>
+          The generalization can keep going. The <em>quaternions</em>, discovered by Hamilton in 1843, extend the complex numbers to four dimensions instead of two: they have $i$, $j$, $k$ satisfying $i^2 = j^2 = k^2 = ijk = -1$. They're used heavily in computer graphics to interpolate 3D rotations without suffering from the notorious gimbal-lock singularities. Going further still, the <em>octonions</em> reach eight dimensions, but lose both commutativity AND associativity. At each step of the generalization, we gain something and we lose something. The complex numbers, though, sit at the sweet spot: we gain the solvability of every polynomial equation (the fundamental theorem of algebra) without losing any of the nice arithmetic properties.
+        </p>
+      </aside>
+
+      <h2>Why we kept them</h2>
+
+      <p>
+        Cardano invented them to keep a calculation from getting stuck. But if they had remained just a calculational trick, we would probably have abandoned them. What kept them alive — and made them ubiquitous — is that they describe <strong>real things in the physical and digital world</strong>.
+      </p>
+
+      <ul>
+        <li>
+          <strong>Signal processing</strong>: a sinusoidal signal $A \cos(\omega t + \varphi)$ is written far more simply as the real part of a complex exponential $A e^{i(\omega t + \varphi)}$. The whole Fourier transform, which decomposes a sound or an image into elementary frequencies, lives naturally in $\mathbb{C}$.
+        </li>
+        <li>
+          <strong>Electronics</strong>: the impedance of a capacitor or an inductor is a complex quantity. Electrical engineers spend their lives in $\mathbb{C}$.
+        </li>
+        <li>
+          <strong>Quantum mechanics</strong>: the wavefunction of a particle is complex-valued, and that's not a technical artifact — the complex phase is a physical quantity, measurable through interference.
+        </li>
+        <li>
+          <strong>2D rotations</strong>: multiplying by a complex number of modulus $1$ rotates a point in the plane. A rotation becomes a multiplication. We'll come back to this in the next chapter.
+        </li>
+        <li>
+          <strong>Fractals</strong>: the Mandelbrot set, the most famous fractal object, is defined by a simple recurrence on complex numbers — $z_{n+1} = z_n^2 + c$. No $\mathbb{C}$, no fractal.
+        </li>
+      </ul>
+
+      <p>
+        None of these applications was foreseen by Cardano. But the object he invented to unblock a formula turned out to deeply encode some of the most useful structures of the real world. It's one of the most beautiful stories in this discipline: opening a door out of computational necessity, and discovering an entire continent on the other side.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>What's next</h2>
+
+      <p>
+        We now have the why. In the next chapter, we move to the <em>how</em>: how to add, subtract, multiply, and divide two complex numbers; how to represent a complex number as a point in the plane; why multiplying by $i$ is exactly a quarter-turn rotation. It's the algebra and the geometry of $\mathbb{C}$ — two faces of the same object — that will give us everything we need to write the <code>Complex</code> struct in Rust.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="../ch5/07-matrix-row-by-row.html">
+          <span class="nav-label">← Chapter 5</span>
+          <span class="nav-title">Matrix row by row</span>
+        </a>
+        <a class="next" href="02-algebra-geometry.html">
+          <span class="nav-label">§2 →</span>
+          <span class="nav-title">Algebra and geometry of C</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

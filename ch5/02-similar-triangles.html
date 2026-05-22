@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The perspective formula: similar triangles — Chapter 5 · §2</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+  <style>
+    .diagram {
+      display: block;
+      margin: 1.8rem auto;
+      max-width: 100%;
+      height: auto;
+    }
+    .diagram-caption {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: #6b6b6b;
+      text-align: center;
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html" class="current">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 5 · §2</div>
+      <h1>The perspective formula</h1>
+      <p class="lede">
+        We're going to derive the formula that performs perspective projection. It fits on one line and falls out of two similar triangles. No vector calculus, no matrices, just middle-school geometry. The setup matters more than the numbers.
+      </p>
+
+      <p>
+        To avoid juggling three coordinates at once, we start by <em>slicing through the vertical axis</em>: we look at the scene from above, ignoring $y$. Anything we learn this way will hold for $x$, and by exact symmetry will also hold for $y$. It's a classic graphics shortcut: solve in 2D, then duplicate.
+      </p>
+
+      <h2>The setup</h2>
+
+      <p>
+        We lay out four things: the camera's eye, the screen, a point in the world, and the light ray that connects them. The eye sits at the origin of the coordinate system. The screen is a flat pane of glass, perpendicular to the line of sight, placed at distance $d$ in front of the eye. The point $P$ has some position $(x, z)$ in the world: $x$ is its lateral offset from the line of sight, $z$ is its distance from the eye along the depth direction.
+      </p>
+
+      <p>
+        The ray starts at the eye, passes through the screen, and lands on $P$. The projection of $P$ onto the screen, which we'll call $x'$, is <strong>the point where the ray crosses the glass</strong>. That's it. Finding the perspective formula means finding the value of $x'$ in terms of $x$, $z$, and $d$.
+      </p>
+
+      <div class="sketch">
+        <svg class="diagram" viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- z-axis (horizontal, line of sight) -->
+          <line x1="40" y1="180" x2="595" y2="180" stroke="#9a9a9a" stroke-width="1" stroke-dasharray="4,4"/>
+          <polygon points="595,180 585,175 585,185" fill="#9a9a9a"/>
+          <text x="600" y="184" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#6b6b6b" font-style="italic" text-anchor="start">z</text>
+
+          <!-- screen plane -->
+          <line x1="220" y1="40" x2="220" y2="285" stroke="#1e5a7a" stroke-width="2.5"/>
+          <text x="220" y="305" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" text-anchor="middle">screen (glass)</text>
+
+          <!-- ray from eye to P -->
+          <line x1="40" y1="180" x2="540" y2="70" stroke="#b8431f" stroke-width="2"/>
+
+          <!-- vertical drop from P to z-axis -->
+          <line x1="540" y1="70" x2="540" y2="180" stroke="#b8431f" stroke-width="1" stroke-dasharray="3,3"/>
+
+          <!-- vertical drop from x' to z-axis -->
+          <line x1="220" y1="145.6" x2="220" y2="180" stroke="#b8431f" stroke-width="1" stroke-dasharray="3,3"/>
+
+          <!-- distance d marker (eye to screen) -->
+          <line x1="40" y1="218" x2="220" y2="218" stroke="#3a3a3a" stroke-width="0.7"/>
+          <line x1="40" y1="213" x2="40" y2="223" stroke="#3a3a3a" stroke-width="1"/>
+          <line x1="220" y1="213" x2="220" y2="223" stroke="#3a3a3a" stroke-width="1"/>
+          <text x="130" y="237" font-family="Iowan Old Style, Georgia, serif" font-size="14" text-anchor="middle" fill="#3a3a3a"><tspan font-style="italic">d</tspan></text>
+
+          <!-- distance z marker (eye to P-foot) -->
+          <line x1="40" y1="258" x2="540" y2="258" stroke="#3a3a3a" stroke-width="0.7"/>
+          <line x1="40" y1="253" x2="40" y2="263" stroke="#3a3a3a" stroke-width="1"/>
+          <line x1="540" y1="253" x2="540" y2="263" stroke="#3a3a3a" stroke-width="1"/>
+          <text x="290" y="277" font-family="Iowan Old Style, Georgia, serif" font-size="14" text-anchor="middle" fill="#3a3a3a"><tspan font-style="italic">z</tspan></text>
+
+          <!-- x label (P's lateral offset) -->
+          <text x="555" y="130" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#b8431f">x</text>
+
+          <!-- x' label (intersection's lateral offset) -->
+          <text x="232" y="162" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#b8431f">x'</text>
+
+          <!-- intersection point on screen -->
+          <circle cx="220" cy="145.6" r="4.5" fill="#b8431f"/>
+
+          <!-- point P -->
+          <circle cx="540" cy="70" r="5" fill="#b8431f"/>
+          <text x="552" y="65" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#b8431f">P</text>
+
+          <!-- eye -->
+          <circle cx="40" cy="180" r="7" fill="#1e5a7a"/>
+          <text x="20" y="170" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" text-anchor="end">eye</text>
+        </svg>
+        <p class="diagram-caption">Top-down view of the scene. The ray (in terracotta) starts at the eye and reaches <span style="font-style:italic">P</span>. It crosses the screen at position <span style="font-style:italic">x'</span>. The whole question is: how do we express <span style="font-style:italic">x'</span> in terms of <span style="font-style:italic">x</span>, <span style="font-style:italic">z</span>, and <span style="font-style:italic">d</span>?</p>
+      </div>
+
+      <h2>Two triangles, similar</h2>
+
+      <p>
+        Now spot two right triangles in this picture. A big one and a small one, sharing the same angle at the eye — therefore <strong>similar</strong>.
+      </p>
+
+      <p>
+        The <strong>big triangle</strong> has vertices: the eye, the point $P$, and the foot of $P$ on the optical axis. Its sides are $z$ (horizontal, depth) and $x$ (vertical, lateral offset).
+      </p>
+
+      <p>
+        The <strong>small triangle</strong> has vertices: the eye, the intersection point $x'$ on the screen, and the foot of that intersection on the optical axis. Its sides are $d$ (horizontal, distance to the screen) and $x'$ (vertical, position on the glass).
+      </p>
+
+      <div class="sketch">
+        <svg class="diagram" viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- big triangle filled (light) -->
+          <polygon points="40,180 540,180 540,70" fill="#1e5a7a" fill-opacity="0.08" stroke="#1e5a7a" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+          <!-- small triangle filled (darker) -->
+          <polygon points="40,180 220,180 220,145.6" fill="#b8431f" fill-opacity="0.22" stroke="#b8431f" stroke-width="1.5"/>
+
+          <!-- the ray itself (shared hypotenuse) -->
+          <line x1="40" y1="180" x2="540" y2="70" stroke="#3a3a3a" stroke-width="1.2"/>
+
+          <!-- screen line (subtle, kept for reference) -->
+          <line x1="220" y1="40" x2="220" y2="285" stroke="#1e5a7a" stroke-width="1.5" opacity="0.5"/>
+
+          <!-- z axis -->
+          <line x1="40" y1="180" x2="595" y2="180" stroke="#9a9a9a" stroke-width="0.7"/>
+
+          <!-- side labels for big triangle -->
+          <text x="290" y="200" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#1e5a7a" text-anchor="middle">z</text>
+          <text x="558" y="130" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#1e5a7a">x</text>
+
+          <!-- side labels for small triangle -->
+          <text x="130" y="200" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#b8431f" text-anchor="middle">d</text>
+          <text x="232" y="170" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#b8431f">x'</text>
+
+          <!-- common vertex highlight (eye) -->
+          <circle cx="40" cy="180" r="5" fill="#3a3a3a"/>
+          <text x="22" y="170" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#3a3a3a" text-anchor="end">eye</text>
+
+          <!-- intersection -->
+          <circle cx="220" cy="145.6" r="4" fill="#b8431f"/>
+
+          <!-- P -->
+          <circle cx="540" cy="70" r="5" fill="#1e5a7a"/>
+          <text x="552" y="65" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a">P</text>
+        </svg>
+        <p class="diagram-caption">The small triangle (terracotta) is nested inside the big one (Prussian blue). They share the vertex at the eye and the angle at that vertex. Both have a vertical side and a horizontal side. They are therefore similar.</p>
+      </div>
+
+      <p>
+        Two similar triangles impose a strict rule: <strong>the ratios between their corresponding sides are equal</strong>. This is the intercept theorem you learn in middle school. Here:
+      </p>
+
+      $$\frac{x'}{d} = \frac{x}{z}$$
+
+      <p>
+        The ratio "vertical side over horizontal side" is the same in the small and the big triangle. That's it.
+      </p>
+
+      <h2>Isolating <em>x'</em></h2>
+
+      <p>
+        Multiply both sides by $d$ and we get the formula for the projected point:
+      </p>
+
+      $$x' = \frac{x \cdot d}{z}$$
+
+      <p>
+        And since $y$ plays exactly the same role as $x$ in a side view (we could have sliced through the $x$ axis instead of $y$ and the reasoning would have been identical), we get for free:
+      </p>
+
+      $$y' = \frac{y \cdot d}{z}$$
+
+      <h2>Simplification: normalize the screen distance</h2>
+
+      <p>
+        The distance $d$ is a constant we choose. It's the camera's "zoom" setting: the larger $d$ is, the more zoomed-in the render (to reach the edge of the screen you need a larger $x'$, hence a larger $x$, hence an object farther off-axis in the world). We may as well <strong>set $d = 1$</strong> and fold the zoom into the formula later, when we deal with field of view (FOV). With this convention, the perspective formula reduces to its leanest form:
+      </p>
+
+      $$\begin{aligned} x' &= x / z \\ y' &= y / z \end{aligned}$$
+
+      <p class="pull-quote">
+        <strong>To project a point in perspective, divide its horizontal and vertical coordinates by its depth. The rest of this whole series is just machinery for sneaking that division past a matrix multiplication.</strong>
+      </p>
+
+      <h2>Quick sanity check</h2>
+
+      <p>
+        We try three cases to make sure the formula matches the intuition we built in step 1.
+      </p>
+
+      <ul>
+        <li><strong>A point near the eye</strong> ($z = 1$), with lateral position $x = 2$. We get $x' = 2/1 = 2$: the point lands well off-center on the screen. Consistent: a nearby object fills the field of view.</li>
+        <li><strong>The same point, but ten times farther away</strong> ($z = 10$, $x = 2$). We get $x' = 2/10 = 0.2$: the point is pulled close to the center. Consistent: a distant object takes up little room in the image.</li>
+        <li><strong>A point at infinity</strong> ($z \to \infty$). $x'$ tends to zero. All distant points end up piling up at the center of the image, forming what's called the <strong>vanishing point</strong> — exactly what you see when you stare down a pair of train tracks running to the horizon.</li>
+      </ul>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangent</span>
+        <p>
+          The formula $x' = x/z$ is the mathematical version of the <em>linear perspective</em> rediscovered by Filippo Brunelleschi around 1415 in Florence — not by writing equations, but by holding up a mirror and a painted panel with a hole in it in front of the cathedral's baptistery. Renaissance painters (Alberti, Piero della Francesca, then Albrecht Dürer) formalized it in practical terms: place a grid in front of the scene and trace the rays. Six centuries later, we do exactly the same thing — except the "grid" is the pixel screen and the rays are divisions by $z$ inside a fragment shader.
+        </p>
+      </aside>
+
+      <hr class="ornament">
+
+      <h2>The trap closes</h2>
+
+      <p>
+        We've got our formula. It's clean, it's simple, it contains a single division. And that's precisely where, in that innocent little fraction bar, the problem that occupies the rest of this series is going to make its home.
+      </p>
+
+      <p>
+        The entire modern 3D pipeline — the <em>reason</em> linear algebra exists in video games — rests on the fact that we can compose every transformation (moving the object, moving the camera, projecting) into a <strong>single matrix multiplication</strong>. It's that composition that makes everything efficient, and that lets the GPU crunch a million vertices in parallel without breaking a sweat.
+      </p>
+
+      <p>
+        Now, a matrix multiplication is by definition a combination of additions and multiplications by constants. No division by a variable. But our formula, $x' = x / z$, contains a division <em>by a variable</em> — $z$ changes for every point in the world. Mathematically, this operation <strong>is not linear</strong>. It has no business showing up inside a matrix multiplication.
+      </p>
+
+      <p>
+        Here lies a fundamental tension: human perspective is non-linear, but we absolutely want to encode it inside a strictly linear framework. The next step will set up this problem, and the one after that will reveal the trick — diabolically simple — that graphics people invented to get around it.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="01-the-problem.html">
+          <span class="nav-label">← Step 01</span>
+          <span class="nav-title">The problem</span>
+        </a>
+        <a class="next" href="03-non-linear.html">
+          <span class="nav-label">Step 03 →</span>
+          <span class="nav-title">Division isn't linear</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

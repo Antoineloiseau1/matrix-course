@@ -1,12 +1,12 @@
-/* Ch3 §1 — Sketches pour "Qu'est-ce qu'une transformation lineaire".
-   Deux sketches : hook + verification de la linearite.
+/* Ch3 §1 — Sketches for "What is a linear transformation".
+   Two sketches: visual hook + linearity check.
 */
 (function () {
   const M = MatrixCours;
   const C = M.colors;
 
   // ============================================================
-  // SKETCH 1 : Deformeur — hook visuel
+  // SKETCH 1: Deformer — visual hook
   // ============================================================
   let mat = { a: 1, b: 0, c: 0, d: 1 };
 
@@ -58,7 +58,7 @@
       p.background('#fcfaf4');
       M.drawGrid(p, { color: '#eee9d8', axisColor: '#b8b39c' });
 
-      // Quadrillage deforme
+      // Deformed grid
       const K = 6;
       p.push();
       p.stroke('rgba(184, 67, 31, 0.4)');
@@ -83,7 +83,7 @@
       }
       p.pop();
 
-      // Carre unite transforme
+      // Transformed unit square
       const corners = [
         { x: 0, y: 0 },
         { x: mat.a, y: mat.c },
@@ -101,11 +101,11 @@
       p.endShape(p.CLOSE);
       p.pop();
 
-      // T(i) en bleu fonce, T(j) en terracotta
+      // T(i) in dark blue, T(j) in terracotta
       M.drawArrow(p, 0, 0, mat.a, mat.c, { color: '#1e5a7a', label: 'T(i)', weight: 3 });
       M.drawArrow(p, 0, 0, mat.b, mat.d, { color: '#b8431f', label: 'T(j)', weight: 3 });
 
-      // Texte info
+      // Info text
       const det = mat.a * mat.d - mat.b * mat.c;
       p.noStroke();
       p.fill('#4d473d');
@@ -115,17 +115,17 @@
 
       let detMsg;
       let detColor;
-      if (Math.abs(det) < 0.001) { detMsg = 'singuliere (l\'image est aplatie)'; detColor = '#b07a1a'; }
-      else if (det > 0) { detMsg = 'orientation preservee'; detColor = '#1e5a7a'; }
-      else { detMsg = 'orientation inversee (miroir)'; detColor = '#b8431f'; }
+      if (Math.abs(det) < 0.001) { detMsg = 'singular (image is flattened)'; detColor = '#b07a1a'; }
+      else if (det > 0) { detMsg = 'orientation preserved'; detColor = '#1e5a7a'; }
+      else { detMsg = 'orientation flipped (mirror)'; detColor = '#b8431f'; }
       p.fill(detColor);
       p.text(`det = ${det.toFixed(2)}  —  ${detMsg}`, 12, 30);
     };
   });
 
   // ============================================================
-  // SKETCH 2 : Verification de la linearite
-  // Compare T(u+v) avec T(u)+T(v) en visuel
+  // SKETCH 2: Linearity check
+  // Visually compare T(u+v) against T(u)+T(v)
   // ============================================================
   let mode = 'lineaire'; // 'lineaire' | 'translation' | 'carre'
   const btnLin = document.getElementById('verif-mode-lineaire');
@@ -177,14 +177,14 @@
       const TsumLeft = applyT(sum);                // T(u + v)
       const TsumRight = { x: Tu.x + Tv.x, y: Tu.y + Tv.y };  // T(u) + T(v)
 
-      // T(u) et T(v) en pointille leger
+      // T(u) and T(v) in light dashed lines
       M.drawDashedArrow(p, 0, 0, Tu.x, Tu.y, { color: '#94aab3' });
       M.drawDashedArrow(p, 0, 0, Tv.x, Tv.y, { color: '#d4a999' });
 
-      // T(u) + T(v) : on construit head-to-tail
+      // T(u) + T(v): built head-to-tail
       M.drawArrow(p, 0, 0, Tu.x, Tu.y, { color: '#1e5a7a', weight: 2 });
       M.drawArrow(p, Tu.x, Tu.y, TsumRight.x, TsumRight.y, { color: '#b8431f', weight: 2 });
-      // Le point T(u) + T(v) (somme construite)
+      // The point T(u) + T(v) (constructed sum)
       const RS = M.worldToScreen(p, TsumRight.x, TsumRight.y);
       p.push();
       p.noStroke();
@@ -196,7 +196,7 @@
       p.circle(RS.x, RS.y, 14);
       p.pop();
 
-      // T(u+v) : point direct
+      // T(u+v): direct point
       const LS = M.worldToScreen(p, TsumLeft.x, TsumLeft.y);
       p.push();
       p.fill('#059669');
@@ -218,7 +218,7 @@
       p.fill('#7c3aed');
       p.text('T(u)+T(v)', RS.x + 12, RS.y + 12);
 
-      // Vecteurs originaux u, v (translation pointille pour somme)
+      // Original vectors u, v (dashed translation for the sum)
       M.drawArrow(p, 0, 0, u.x, u.y, { color: '#1f3a8a', label: 'u', weight: 2.5 });
       M.drawArrow(p, 0, 0, v.x, v.y, { color: '#b45309', label: 'v', weight: 2.5 });
 
@@ -229,9 +229,9 @@
       M.drawHandle(p, u.x, u.y, { color: '#1f3a8a', hover: overU || dragging === 'u' });
       M.drawHandle(p, v.x, v.y, { color: '#b45309', hover: overV || dragging === 'v' });
 
-      // Distance entre les deux points : verdict
+      // Distance between the two points: verdict
       const diff = Math.hypot(TsumLeft.x - TsumRight.x, TsumLeft.y - TsumRight.y);
-      const verdict = diff < 0.001 ? 'T(u+v) = T(u)+T(v) ✓  → lineaire' : `ecart = ${diff.toFixed(2)} → PAS lineaire`;
+      const verdict = diff < 0.001 ? 'T(u+v) = T(u)+T(v) ✓  → linear' : `gap = ${diff.toFixed(2)} → NOT linear`;
       const verdictColor = diff < 0.001 ? '#059669' : '#dc2626';
       p.fill(verdictColor);
       p.textStyle(p.NORMAL);

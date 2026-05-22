@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Homogeneous coordinates — Chapter 5 · §4</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+  <style>
+    .diagram {
+      display: block;
+      margin: 1.8rem auto;
+      max-width: 100%;
+      height: auto;
+    }
+    .diagram-caption {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: #6b6b6b;
+      text-align: center;
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html" class="current">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 5 · §4</div>
+      <h1>Homogeneous coordinates</h1>
+      <p class="lede">
+        In the previous step we showed that division by $z$ is not a linear operation and therefore cannot live <em>inside</em> a matrix multiplication. The trick we're about to discover doesn't get rid of that division: it relocates it. We add an extra dimension to the problem, let the matrix operate inside this bigger space, and treat the division as a post-processing step that follows the matrix. This is the sleight of hand that makes the entire 3D pipeline possible.
+      </p>
+
+      <p>
+        The concrete question, coming out of step 3, is this: <em>how do we push a division by a variable past a machine that only knows how to do linear combinations?</em> The answer is so audacious it deserves to be stated up front, even at the risk of sounding strange: we're not going to put the division inside the matrix. We're going to build a framework in which the matrix produces an <em>incomplete</em> result, and the division happens afterward, on the output, as a separate step.
+      </p>
+
+      <h2>Same ray, same pixel</h2>
+
+      <p>
+        Before diving into new material, we briefly revisit the wall we hit in the previous step — from a different angle, because the precise way perspective fails the linearity test already contains a hint of what's coming. Step 03 used the additivity axiom ($T(u + v) = T(u) + T(v)$). Here we redo the test using the other axiom, homogeneity, which says: $T(k \cdot v) = k \cdot T(v)$.
+      </p>
+
+      <p>
+        Take a concrete point. Let $P = (4, 6, 2)$, meaning $x = 4$, $y = 6$, $z = 2$. Pick the scalar $k = 2$. The perspective transformation $T$ sends a 3D point to the screen via $T(x, y, z) = (x / z, y / z)$. We compute both sides of the equation the axiom demands:
+      </p>
+
+      $$\begin{aligned}
+      \text{right side} : k \cdot T(P) &= 2 \cdot T(4, 6, 2) \\
+                                     &= 2 \cdot (4/2, 6/2) \\
+                                     &= 2 \cdot (2, 3) \\
+                                     &= (4, 6) \\[0.6em]
+      \text{left side} : T(k \cdot P) &= T(2{\cdot}4, 2{\cdot}6, 2{\cdot}2) \\
+                                      &= T(8, 12, 4) \\
+                                      &= (8/4, 12/4) \\
+                                      &= (2, 3)
+      \end{aligned}$$
+
+      <p>
+        The two sides differ — confirmation: $T$ is not linear. But take a closer look at the left side: $T(8, 12, 4) = (2, 3) = T(4, 6, 2)$. Multiplying the input point by $2$ changed <em>absolutely nothing</em> about the result. Instead of doubling the output as linearity would have demanded, the scale <strong>evaporated</strong>. $T$ doesn't fail any old way; it fails in a very particular way — it <em>collapses</em> every scalar multiple of a vector onto the same result.
+      </p>
+
+      <h3>The geometric interpretation</h3>
+
+      <p>
+        This "failure" has a clear physical meaning. The two points $(4, 6, 2)$ and $(8, 12, 4)$ are proportional (one is exactly twice the other, coordinate by coordinate), which means they live on the <strong>same line through the origin</strong>. One is twice as far away as the other, in the same direction.
+      </p>
+
+      <svg class="diagram" viewBox="0 0 620 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <line x1="60" y1="180" x2="560" y2="60" stroke="#1e5a7a" stroke-width="1.5"/>
+        <line x1="200" y1="55" x2="200" y2="210" stroke="#3a3a3a" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="200" y="45" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#3a3a3a" text-anchor="middle">screen</text>
+        <circle cx="60" cy="180" r="7" fill="#3a3a3a"/>
+        <text x="60" y="205" font-family="Inter, sans-serif" font-size="11" fill="#3a3a3a" text-anchor="middle">camera</text>
+        <text x="60" y="221" font-family="Iowan Old Style, Georgia, serif" font-size="10" fill="#6b6b6b" font-style="italic" text-anchor="middle">origin</text>
+        <circle cx="200" cy="146" r="5.5" fill="#b8431f"/>
+        <text x="215" y="143" font-family="Iowan Old Style, Georgia, serif" font-size="11" font-style="italic" fill="#b8431f">pixel (2, 3)</text>
+        <circle cx="320" cy="118" r="4" fill="#3a3a3a"/>
+        <text x="328" y="114" font-family="Iowan Old Style, Georgia, serif" font-size="11" font-style="italic" fill="#3a3a3a">(4, 6, 2)</text>
+        <circle cx="490" cy="77" r="4" fill="#3a3a3a"/>
+        <text x="498" y="73" font-family="Iowan Old Style, Georgia, serif" font-size="11" font-style="italic" fill="#3a3a3a">(8, 12, 4)</text>
+      </svg>
+      <p class="diagram-caption">The camera's eye is at the origin. The two points lie along the same line of sight; they reach the eye at the same angle and therefore land on the same pixel of the screen.</p>
+
+      <p>
+        If the origin represents the camera's eye, this line is exactly a <em>line of sight</em> — the path of the light entering the eye from that point. All points lined up along the same ray reach the eye at the same angle and therefore land on the same pixel of the screen. Perspective doesn't care about the distance <em>along</em> the ray, only about the ray's direction. That's why an object aligned with another disappears behind it: they occupy the same pixel.
+      </p>
+
+      <p>
+        And that's <em>exactly</em> what our algebraic calculation just said. The equation $T(k \cdot v) = T(v)$ is the symbolic version of the geometric sentence: "scaling a point by a scalar slides it along its line of sight without changing the pixel where it lands." The non-linearity of $T$ and the "scale evaporates" property are two sides of the same coin.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Several different 3D points, one projected pixel. What looks like a bug today will become, in the right formalism, the system's normal mode of operation.</strong>
+      </p>
+
+      <p>
+        Keep this observation in mind throughout the chapter. The word <em>homogeneous</em>, which we'll meet shortly, is named after this exact property: several distinct vectors representing the same point. The "multiple notations, one geometric reality" structure we just crossed in the form "several 3D vectors, one pixel" will return at the end of the chapter in the form "several 4D vectors, one 3D point." Same idea, one level up.
+      </p>
+
+      <h2>Adding a fictitious dimension</h2>
+
+      <p>
+        The first move is purely syntactic. Start with a 3D point $(x, y, z)$ and tack on a fourth coordinate, which we'll call $w$ and set to $1$. Our point becomes:
+      </p>
+
+      $$(x, y, z) \quad\to\quad (x, y, z, 1)$$
+
+      <p>
+        We've just invented a fourth axis that doesn't exist in the world. It's a <em>phantom coordinate</em>, whose only function is to serve as an algebraic lever. It has no direct geometric interpretation in the 3D scene; it's there to enable operations that would otherwise be impossible.
+      </p>
+
+      <p>
+        This new vector has four components. To act on it with a matrix, we now need a $4 \times 4$ matrix. That's the official dimension of the projection matrix in graphics, and it's <em>solely</em> because of this fourth axis.
+      </p>
+
+      <h2>What the matrix produces, what the division produces</h2>
+
+      <p>
+        So we apply some arbitrary 4×4 matrix $M$ to our vector $(x, y, z, 1)$. The result is a new four-component vector:
+      </p>
+
+      $$M \cdot (x, y, z, 1) = (x', y', z', w')$$
+
+      <h3>The product M · (x, y, z, 1) row by row</h3>
+
+      <p>
+        To see where each of the four output components comes from, we need to unroll the product. We write the sixteen entries of $M$ generically:
+      </p>
+
+      $$M = \begin{pmatrix} a & b & c & d \\ e & f & g & h \\ i & j & k & l \\ m & n & o & p \end{pmatrix}$$
+
+      <p>
+        The rule for the matrix-vector product is the same as in 3D, just with one more row: each output component is the <strong>dot product</strong> of a row of $M$ with the input vector. Four rows, four dot products, four components:
+      </p>
+
+      $$\begin{aligned}
+      x' &= a \cdot x + b \cdot y + c \cdot z + d \cdot 1 \\
+      y' &= e \cdot x + f \cdot y + g \cdot z + h \cdot 1 \\
+      z' &= i \cdot x + j \cdot y + k \cdot z + l \cdot 1 \\
+      w' &= m \cdot x + n \cdot y + o \cdot z + p \cdot 1
+      \end{aligned}$$
+
+      <p>
+        Three things worth noting here. First, <strong>every output component is a linear combination</strong> of the input components, with constant coefficients: no division, no squares, no exotic functions. That's the linearity guarantee we promised to preserve in the previous step. Second, $w'$ isn't a special case: it's computed exactly like the other three, by reading the fourth row of $M$. And above all, <strong>we get to choose the coefficients $m, n, o, p$</strong> when we build $M$ — so we choose what $w'$ will be in terms of the input components.
+      </p>
+
+      <h3>What the last row controls</h3>
+
+      <p>
+        Let's see concretely, with two example choices for the last row's coefficients, what $w'$ becomes:
+      </p>
+
+      <p>
+        <strong>Case 1:</strong> last row $(m, n, o, p) = (0, 0, 0, 1)$. Substitute into the formula for $w'$:
+      </p>
+
+      $$\begin{aligned} w' &= 0 \cdot x + 0 \cdot y + 0 \cdot z + 1 \cdot 1 \\ &= 0 + 0 + 0 + 1 \\ &= 1 \end{aligned}$$
+
+      <p>
+        Whatever $x, y, z$ are, we get $w' = 1$. This is the default last row, the one you use to <em>avoid triggering</em> a perspective divide (since dividing by 1 does nothing). It's what translation, rotation, and scaling matrices use — every affine matrix.
+      </p>
+
+      <p>
+        <strong>Case 2:</strong> last row $(m, n, o, p) = (0, 0, 1, 0)$. Substitute the same way:
+      </p>
+
+      $$\begin{aligned} w' &= 0 \cdot x + 0 \cdot y + 1 \cdot z + 0 \cdot 1 \\ &= 0 + 0 + z + 0 \\ &= z \end{aligned}$$
+
+      <p>
+        The matrix went and grabbed the value $z$ out of the input vector and dropped it into the $w'$ component. This row, and this is the whole point of the trick, is what turns the matrix into a perspective device: it <em>stashes</em> the point's depth into the $w$ component so we can use it right after.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Why the matrix is still linear</span>
+        <p>
+          We just saw that $w' = z$ in case 2. A matrix that produces $w' = z$ on output isn't doing anything illegal: it's exactly the same kind of operation as producing $x' = x$ or $x' = 2 \cdot z$, just a linear combination with different coefficients. The matrix's <em>linearity</em> is never threatened by the content of the output, only by the <em>structure</em> of the operation (linear combination of inputs with fixed weights). The division that follows isn't performed by the matrix; so the matrix stays linear, period.
+        </p>
+      </aside>
+
+      <h3>The perspective divide, component by component</h3>
+
+      <p>
+        After the matrix, we run one extra operation called the <strong>perspective divide</strong>: we divide all four output components by $w'$.
+      </p>
+
+      $$(x', y', z', w') \;\to\; (x'/w',\ y'/w',\ z'/w',\ w'/w') = (x'/w',\ y'/w',\ z'/w',\ 1)$$
+
+      <p>
+        We divide <em>all four</em> components by $w'$ (including $w'$ itself, which becomes 1 and is useless from that point on — its job is done). Going back to case 2 where $w' = z$, the division becomes:
+      </p>
+
+      $$(x', y', z', z) \;\to\; (x'/z,\ y'/z,\ z'/z,\ 1)$$
+
+      <p>
+        The components $x'$ and $y'$, which had just come out of the matrix, have now been divided by $z$. That's <em>exactly</em> the formula $x' = x/z$, $y' = y/z$ derived from similar triangles in step 2. Perspective is in the bag, and not a single row of the matrix ever performed a division.
+      </p>
+
+      <p>
+        This division isn't a matrix multiplication. It's an extra, separate operation that we apply <em>after</em> the matrix has done its work. That's the heart of the trick: the matrix stays linear and well-behaved, and the non-linearity we needed to inject has been pushed off to a later stage.
+      </p>
+
+      <h2>The thing that makes this useful</h2>
+
+      <p>
+        Now, the real stroke of genius. What if we picked $M$ so that $w'$ equals $z$? Then dividing by $w'$ would be exactly the division by $z$ that perspective demands.
+      </p>
+
+      <p>
+        We arrange that by planting $(0, 0, 1, 0)$ in the <strong>last row</strong> of $M$. The row-times-column product immediately gives $w' = 0 \cdot x + 0 \cdot y + 1 \cdot z + 0 \cdot 1 = z$. The matrix has pulled the input point's $z$ value into the $w$ slot of the output. After the division, we get $x'/z$, $y'/z$, $z'/z$ — exactly what the formula from step 2 was asking for.
+      </p>
+
+      <svg class="diagram" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Stage 1 : 3D point -->
+        <rect x="10" y="60" width="100" height="50" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="1.5" rx="3"/>
+        <text x="60" y="80" font-family="Iowan Old Style, Georgia, serif" font-size="12" text-anchor="middle" fill="#3a3a3a">3D point</text>
+        <text x="60" y="98" font-family="Iowan Old Style, Georgia, serif" font-size="13" text-anchor="middle" font-style="italic" fill="#3a3a3a">(x, y, z)</text>
+
+        <!-- Arrow 1 -->
+        <line x1="115" y1="85" x2="145" y2="85" stroke="#3a3a3a" stroke-width="1.2"/>
+        <polygon points="145,85 138,81 138,89" fill="#3a3a3a"/>
+        <text x="130" y="75" font-family="Inter, sans-serif" font-size="9" fill="#6b6b6b" text-anchor="middle">+w=1</text>
+
+        <!-- Stage 2 : 4D point -->
+        <rect x="150" y="60" width="110" height="50" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="1.5" rx="3"/>
+        <text x="205" y="80" font-family="Iowan Old Style, Georgia, serif" font-size="12" text-anchor="middle" fill="#3a3a3a">4D point</text>
+        <text x="205" y="98" font-family="Iowan Old Style, Georgia, serif" font-size="13" text-anchor="middle" font-style="italic" fill="#3a3a3a">(x, y, z, 1)</text>
+
+        <!-- Arrow 2 -->
+        <line x1="265" y1="85" x2="295" y2="85" stroke="#1e5a7a" stroke-width="1.5"/>
+        <polygon points="295,85 288,81 288,89" fill="#1e5a7a"/>
+
+        <!-- Stage 3 : matrix (the linear part, prussian) -->
+        <rect x="300" y="55" width="110" height="60" fill="#1e5a7a" fill-opacity="0.12" stroke="#1e5a7a" stroke-width="2" rx="3"/>
+        <text x="355" y="78" font-family="Iowan Old Style, Georgia, serif" font-size="12" text-anchor="middle" fill="#1e5a7a">matrix M</text>
+        <text x="355" y="93" font-family="Inter, sans-serif" font-size="10" text-anchor="middle" fill="#1e5a7a">(linear)</text>
+        <text x="355" y="107" font-family="Inter, sans-serif" font-size="10" text-anchor="middle" fill="#1e5a7a">4×4</text>
+
+        <!-- Arrow 3 -->
+        <line x1="415" y1="85" x2="445" y2="85" stroke="#1e5a7a" stroke-width="1.5"/>
+        <polygon points="445,85 438,81 438,89" fill="#1e5a7a"/>
+
+        <!-- Stage 4 : (x',y',z',w') -->
+        <rect x="450" y="60" width="115" height="50" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="1.5" rx="3"/>
+        <text x="507" y="80" font-family="Iowan Old Style, Georgia, serif" font-size="11" text-anchor="middle" fill="#3a3a3a">4D output</text>
+        <text x="507" y="98" font-family="Iowan Old Style, Georgia, serif" font-size="12" text-anchor="middle" font-style="italic" fill="#3a3a3a">(x', y', z', w')</text>
+
+        <!-- Arrow 4 (terracotta, the non-linear step) -->
+        <line x1="570" y1="85" x2="600" y2="85" stroke="#b8431f" stroke-width="2"/>
+        <polygon points="600,85 593,80 593,90" fill="#b8431f"/>
+        <text x="585" y="75" font-family="Inter, sans-serif" font-size="9" fill="#b8431f" text-anchor="middle">÷ w'</text>
+
+        <!-- Stage 5 : divided -->
+        <rect x="605" y="55" width="110" height="60" fill="#b8431f" fill-opacity="0.12" stroke="#b8431f" stroke-width="2" rx="3"/>
+        <text x="660" y="78" font-family="Iowan Old Style, Georgia, serif" font-size="11" text-anchor="middle" fill="#b8431f">divide</text>
+        <text x="660" y="91" font-family="Inter, sans-serif" font-size="10" text-anchor="middle" fill="#b8431f">(non-linear)</text>
+        <text x="660" y="105" font-family="Iowan Old Style, Georgia, serif" font-size="11" text-anchor="middle" font-style="italic" fill="#b8431f">→ NDC</text>
+
+        <!-- Bracket labeling stages -->
+        <line x1="150" y1="135" x2="565" y2="135" stroke="#1e5a7a" stroke-width="0.7"/>
+        <line x1="150" y1="135" x2="150" y2="140" stroke="#1e5a7a" stroke-width="0.7"/>
+        <line x1="565" y1="135" x2="565" y2="140" stroke="#1e5a7a" stroke-width="0.7"/>
+        <text x="357" y="152" font-family="Inter, sans-serif" font-size="10" fill="#1e5a7a" text-anchor="middle">the linear part (composed into one matrix)</text>
+
+        <line x1="605" y1="135" x2="715" y2="135" stroke="#b8431f" stroke-width="0.7"/>
+        <line x1="605" y1="135" x2="605" y2="140" stroke="#b8431f" stroke-width="0.7"/>
+        <line x1="715" y1="135" x2="715" y2="140" stroke="#b8431f" stroke-width="0.7"/>
+        <text x="660" y="152" font-family="Inter, sans-serif" font-size="10" fill="#b8431f" text-anchor="middle">the post-processing</text>
+      </svg>
+      <p class="diagram-caption">The pipeline: we lift up to 4D, let the matrix do all its linear work, then the division by <span style="font-style:italic">w'</span> happens downstream. Only the blue part runs through the matrix multiplication; the terracotta part is a separate, later stage.</p>
+
+      <h2>A minimal example that works</h2>
+
+      <p>
+        To make the trick perfectly concrete, we take the simplest matrix that pulls it off. It's the 4×4 identity, except we replace its last row with $(0, 0, 1, 0)$:
+      </p>
+
+      $$M = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 1 & 0 \end{pmatrix}$$
+
+      <p>
+        We apply it to the 4D point $(x, y, z, 1)$. Row by row:
+      </p>
+
+      $$\begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 1 & 0 \end{pmatrix} \cdot \begin{pmatrix} x \\ y \\ z \\ 1 \end{pmatrix} = \begin{pmatrix} x \\ y \\ z \\ z \end{pmatrix}$$
+
+      <p>
+        The result is $(x, y, z, z)$. The fourth component equals $z$ — exactly as planned, since the last row of $M$ was built to pull $z$ from the input. Now we run the perspective divide: we divide all four components by $w' = z$.
+      </p>
+
+      $$(x, y, z, z) \;\to\; (x/z,\ y/z,\ 1,\ 1)$$
+
+      <p>
+        The first two components are $x/z$ and $y/z$ — the perspective formula from step 2. The depth division has been performed, and yet the only operation the vector went through, before the final divide, was a perfectly linear matrix multiplication. The matrix didn't divide anything; it just copied $z$ into the fourth slot so we could use it afterward.
+      </p>
+
+      <p>
+        The third component, $z/z = 1$, doesn't look useful as-is — it has lost all depth information. That's expected: this toy matrix only does projection. The <em>real</em> projection matrix will have a more elaborate third row that remaps $z$ onto a usable depth range (typically between $0$ and $1$), so the GPU can still compare depths and know what's in front of what. But that's a topic for a few steps from now. Here, we've just shown that the trick <em>works</em>.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Division by z isn't eliminated. It's just moved — out of the matrix, into a step that follows it. The GPU divides after.</strong>
+      </p>
+
+      <h2>Why the word "homogeneous"?</h2>
+
+      <p>
+        The name comes from projective geometry. Notice the following: take two different 4D vectors, say $(x, y, z, 1)$ and $(2x, 2y, 2z, 2)$, and run each one through the perspective divide. You get the same result. In the first case we divide by 1 and get $(x, y, z)$. In the second we divide by 2 and get $(x, y, z)$. Identical.
+      </p>
+
+      <p>
+        More generally: $(x, y, z, w)$ and $(\alpha x, \alpha y, \alpha z, \alpha w)$ for any $\alpha \ne 0$ represent the <em>same</em> 3D point after division. They are called <strong>homogeneous representatives</strong> of the same point. A single 3D point therefore admits infinitely many possible 4D encodings, and the perspective divide brings them all to the same place.
+      </p>
+
+      <p>
+        The terminology — "homogeneous" — comes from the idea that you can multiply all coordinates by the same constant without changing the point. It's the key property of homogeneous polynomials in algebra: $x^2+y^2$ and $(2x)^2+(2y)^2 = 4(x^2+y^2)$ are not the same polynomial, but the equation $x^2+y^2 = 0$ and the equation $4(x^2+y^2) = 0$ define the same set. Same idea here: same equivalence class, multiple ways to write it.
+      </p>
+
+      <h2>Unexpected bonus: translations become linear</h2>
+
+      <p>
+        By climbing up to 4D to solve the division problem, we accidentally solve <em>another</em> problem that had been haunting graphics-flavored linear algebra: translations.
+      </p>
+
+      <p>
+        In pure 3D, a translation isn't a linear transformation. The reason is simple: a linear transformation has to send the origin to the origin (multiplying the zero vector by any matrix gives the zero vector). But a translation moves the origin. So it can't be written as a matrix multiplication $M \cdot v$ in 3D. Until now we had to write $v' = M \cdot v + t$, with a separate vector addition. That's workable, but it makes composing transformations painful: you can't pre-multiply everything into one big matrix.
+      </p>
+
+      <p>
+        In 4D with $w = 1$, watch what happens:
+      </p>
+
+      $$\begin{pmatrix} 1 & 0 & 0 & t_x \\ 0 & 1 & 0 & t_y \\ 0 & 0 & 1 & t_z \\ 0 & 0 & 0 & 1 \end{pmatrix} \cdot \begin{pmatrix} x \\ y \\ z \\ 1 \end{pmatrix} = \begin{pmatrix} x + t_x \\ y + t_y \\ z + t_z \\ 1 \end{pmatrix}$$
+
+      <p>
+        A perfectly straightforward 4×4 matrix, with the translations $t_x, t_y, t_z$ tucked into the fourth column, gives <em>exactly</em> a translation. It has become a matrix multiplication. The last row is $(0, 0, 0, 1)$, which keeps $w' = 1$ and therefore doesn't trigger a perspective divide; the matrix is purely affine.
+      </p>
+
+      <p>
+        The big strategic payoff now comes into view: <strong>every common geometric transformation</strong> — translation, rotation, scaling, and even perspective projection — can be written as a 4×4 matrix. So we can compose them into a single 4×4 matrix via matrix multiplication. The GPU receives one matrix per vertex, performs <em>one</em> multiplication, and we're done. That's the fundamental reason the modern 3D pipeline runs in 4D rather than 3D.
+      </p>
+
+      <h2>Notation: points and directions</h2>
+
+      <p>
+        A convention has emerged for using this structure: <em>points</em> have $w = 1$, <em>directions</em> (or free vectors) have $w = 0$. The intuitive explanation is simple: a point has a position that translation moves around; a direction (velocity vector, surface normal, gaze axis) describes a displacement, which can be carried anywhere without changing.
+      </p>
+
+      <p>
+        But this "convention" is actually much more than an aesthetic choice. It's a <strong>type</strong> in the computer-science sense, encoded directly into the algebra, and preserved automatically by every operation (matrix or vector). The section that follows unpacks what's really hiding behind that simple $1$ or $0$ in the fourth slot.
+      </p>
+
+      <h3>The mechanism: $w$ is the constant-term switch</h3>
+
+      <p>
+        Go back to the generic formula for an output component we unrolled earlier:
+      </p>
+
+      $$x' = a \cdot x + b \cdot y + c \cdot z + d \cdot 1$$
+
+      <p>
+        The $\cdot 1$ at the end isn't decorative. It's exactly the moment when the matrix's fourth coefficient $d$ becomes a constant additive term. And that $1$ is nothing other than the input vector's $w$ component. If $w$ is $0$, the term becomes $d \cdot 0 = 0$ and vanishes. <strong>$w$ is the on/off switch for every constant term in the matrix.</strong>
+      </p>
+
+      <p>
+        And what are the constant terms of a transformation matrix in the 3D pipeline? The <em>translations</em>. A rotation, a scaling, a shear: all pure linear combinations of the input coordinates ($x' = a \cdot x + b \cdot y + c \cdot z$, no constant). Only translations introduce a constant term. So $w$ is, more precisely: the on/off switch for translations.
+      </p>
+
+      <h3>Demonstration on the translation matrix</h3>
+
+      <p>
+        We take the translation matrix introduced earlier in the chapter and apply it this time to <em>both</em> kinds of vectors, side by side. The matrix:
+      </p>
+
+      $$T = \begin{pmatrix} 1 & 0 & 0 & t_x \\ 0 & 1 & 0 & t_y \\ 0 & 0 & 1 & t_z \\ 0 & 0 & 0 & 1 \end{pmatrix}$$
+
+      <p>
+        Applied to a point $(x, y, z, 1)$, the first output component is $1 \cdot x + 0 \cdot y + 0 \cdot z + t_x \cdot 1 = x + t_x$; the next two similarly give $y + t_y$ and $z + t_z$; and $w' = 0 \cdot x + 0 \cdot y + 0 \cdot z + 1 \cdot 1 = 1$. The translation takes effect:
+      </p>
+
+      $$T \cdot (x, y, z, 1) = (x + t_x,\ y + t_y,\ z + t_z,\ 1) \quad \text{← moved}$$
+
+      <p>
+        Now apply it to a direction $(v_x, v_y, v_z, 0)$: the first component becomes $1 \cdot v_x + 0 \cdot v_y + 0 \cdot v_z + t_x \cdot 0 = v_x + 0 = v_x$. The $t_x$ is still sitting in the matrix, but it's multiplied by the input vector's fourth component, which is $0$ — it vanishes before it even shows up in the sum. Same for the other components. The translation has no effect at all:
+      </p>
+
+      $$T \cdot (v_x, v_y, v_z, 0) = (v_x,\ v_y,\ v_z,\ 0) \quad \text{← unchanged}$$
+
+      <p>
+        Same matrix, same operation, two completely different behaviors — based on a single digit, the $w$ we stuck on the end of the vector. The matrix doesn't know whether you handed it a point or a direction; it always runs the same operation. It's <em>you</em>, by choosing $w$, who turns the translation part on or off.
+      </p>
+
+      <h3>The physical intuition: three examples</h3>
+
+      <p>
+        Why does the physics line up so neatly with this algebraic machinery? Three concrete examples, to make the distinction tangible.
+      </p>
+
+      <p>
+        <strong>Velocity vector.</strong> A car drives due north at 50 km/h; its velocity vector is $(0, 0, 50)$. If we teleport it from Paris to Marseille, does the vector change? No — it's still driving due north at 50 km/h. Velocity describes <em>motion</em>, not <em>location</em>. Direction, $w = 0$.
+      </p>
+
+      <p>
+        <strong>Surface normal.</strong> The horizontal floor of a room has a normal pointing up, $(0, 1, 0)$. We slide the floor 10 m to the right; does the normal change? No — it still points up. The normal describes the <em>local orientation</em> of a surface, not its position. Direction, $w = 0$.
+      </p>
+
+      <p>
+        <strong>Object position.</strong> A desk sits at position $(3, 0, 2)$ in the room. We push it 1 m to the right; its position becomes $(4, 0, 2)$. Position is intrinsically tied to location, and translation modifies it. Point, $w = 1$.
+      </p>
+
+      <p>
+        The $w = 1$ / $w = 0$ convention is calibrated so that things that <em>should</em> be translated by a matrix are, and things that shouldn't, aren't. The algebra lines up with the physics.
+      </p>
+
+      <h3>The algebra encodes the type, without even a matrix</h3>
+
+      <p>
+        The real gem is one level up. The <code>point</code> vs <code>direction</code> distinction is preserved even <strong>without any matrix at all</strong> — just by adding and subtracting 4D vectors. Elementary arithmetic respects the type, automatically.
+      </p>
+
+      <p>
+        <strong>Difference of two points</strong>:
+      </p>
+
+      $$\begin{aligned} A &= (3, 0, 0, 1) \\ B &= (5, 0, 0, 1) \\ B - A &= (2, 0, 0, 0) \quad \text{← w = 0} \end{aligned}$$
+
+      <p>
+        The difference of two points automatically gives a direction ($w = 0$). And that's exactly what physics asks for: $B - A$ is the "displacement from A to B", an arrow, a free vector. <strong>Point − point = direction</strong>, without us having to program it.
+      </p>
+
+      <p>
+        <strong>Point plus direction</strong>:
+      </p>
+
+      $$\begin{aligned} A &= (3, 0, 0, 1) \\ d &= (1, 0, 0, 0) \\ A + d &= (4, 0, 0, 1) \quad \text{← w = 1} \end{aligned}$$
+
+      <p>
+        A point translated by a displacement gives a new point. The $w = 1$ is preserved. <strong>Point + direction = point.</strong>
+      </p>
+
+      <p>
+        <strong>Direction plus direction</strong>:
+      </p>
+
+      $$d_1 + d_2 = (1, 0, 0, 0) + (0, 1, 0, 0) = (1, 1, 0, 0) \quad \text{← w = 0}$$
+
+      <p>
+        Composing two displacements gives a displacement. <strong>Direction + direction = direction.</strong>
+      </p>
+
+      <p>
+        $w$ therefore behaves like a <strong>type tag</strong> that arithmetic preserves without being asked. The sum of two directions stays a direction; a translated point stays a point; the difference of two points becomes a direction. The algebra sorts it all out by itself. <strong>This isn't a convention anymore: it's a type system run by the numbers.</strong>
+      </p>
+
+      <h3>What if we add two points?</h3>
+
+      <p>
+        Naturally, we wonder: what happens when we add <em>two points</em>? Let's run the math:
+      </p>
+
+      $$A + B = (3, 0, 0, 1) + (5, 0, 0, 1) = (8, 0, 0, 2) \quad \text{← w = 2}$$
+
+      <p>
+        The result has $w = 2$ — neither $1$ (point) nor $0$ (direction). A third option that our binary typology didn't anticipate. The algebra is telling us something, and there are two complementary readings of this $2$ — both true at the same time.
+      </p>
+
+      <p>
+        <strong>Reading 1: the algebra is protesting.</strong> Adding two points has no intrinsic geometric meaning. "What is the point obtained by adding Paris and Marseille?" is a malformed question: a point's coordinates depend on the chosen reference frame, and the value of the sum changes if you move the origin. A point is <em>not</em> a vector — you can't sum points naively. The $w = 2$ is a warning sign: the algebra is flagging that we did something ill-defined.
+      </p>
+
+      <p>
+        <strong>Reading 2: bring it back to canonical form by dividing by $w$.</strong> What if we divided the whole vector by its $w$ component, to bring it back to the canonical form $w = 1$?
+      </p>
+
+      $$(8, 0, 0, 2) / 2 = (4, 0, 0, 1)$$
+
+      <p>
+        This point $(4, 0, 0, 1)$ is the <strong>midpoint</strong> of segment $[A, B]$. It pops out by itself, without us having asked. In other words: $A + B$ in raw form isn't a point, but $(A + B) / 2$ is — and it's exactly the midpoint, what intuition demands. The algebra was handing us, in a non-canonical form, a combination that <em>becomes</em> interpretable as soon as we divide by $w$.
+      </p>
+
+      <p>
+        This is how <strong>affine combinations</strong> appear. An expression $\alpha \cdot A + \beta \cdot B$ with $\alpha + \beta = 1$ defines a point on the line through $A$ and $B$; with $\alpha = \beta = 1/2$ we land on the midpoint, other ratios give other points along the line. The sum of the coefficients becomes the $w$ component of the result; dividing by $w$ brings it back to canonical form.
+      </p>
+
+      <h3>The bridge to the perspective divide</h3>
+
+      <p>
+        And here's where everything closes up. The <strong>perspective divide</strong> we established earlier in this chapter — dividing the projection matrix's output vector by its $w'$ component — is <em>exactly the same operation</em> we just used to find the midpoint of $A + B$. Two seemingly unrelated contexts — affine combinations of points on one hand, perspective projection on the other — are really two instances of a single gesture: <strong>bring a homogeneous vector back to canonical form $w = 1$</strong>.
+      </p>
+
+      <p>
+        So $w$ isn't a binary "point or direction" flag. It's a <strong>weight</strong>, which can take any real value:
+      </p>
+
+      <ul>
+        <li>$w = 1$: canonical form of a point.</li>
+        <li>$w = 0$: limit form of a direction (a "point at infinity," in projective jargon).</li>
+        <li>$w = \alpha$ (any other value): intermediate form, which becomes an ordinary point after dividing by $\alpha$.</li>
+      </ul>
+
+      <p>
+        And this is exactly the property we crossed at the very beginning of the chapter, in "Same ray, same pixel": several proportional 3D vectors represent the same pixel after projection. That property, promoted to an organizing principle in 4D, is what we call <strong>homogeneity</strong> of coordinates. A single 3D point admits infinitely many 4D writings, all proportional, all equivalent after dividing by $w$.
+      </p>
+
+      <p class="pull-quote">
+        <strong>"Divide by $w$" is the universal operation that interprets a homogeneous vector geometrically. Perspective projection, segment midpoint, any affine combination — it's the same gesture everywhere.</strong>
+      </p>
+
+      <p>
+        So the $w$ we stuck on the end of the 3D vector at the very start of the chapter is much more than a calculation trick. It's the keystone of an entire geometric edifice — that of homogeneous coordinates, born in the 19th century for projective geometry, repurposed in the 20th century for the 3D pipeline, and which has been running every graphics card on the planet ever since.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangent</span>
+        <p>
+          Homogeneous coordinates didn't come out of an '80s graphics programmer's hat. They were invented in the 19th century by August Möbius (yes, the strip guy) in 1827, in his treatise <em>Der barycentrische Calcul</em>, then deepened by Julius Plücker in the 1830s. The goal at the time had nothing to do with a screen: it was to make projective geometry <em>computable</em>. The perspective of the Renaissance painters — Brunelleschi, Alberti, Piero della Francesca — had been working for four centuries by eye, without formulas, by placing vanishing points and dragging rulers around. Möbius took the step the painters never had: he invented an algebra in which a point at infinity is as easy to manipulate as a finite point. A century and a half later, when Ivan Sutherland and Ed Catmull needed a function that shrinks with depth and fits inside a GPU, they found the tool waiting on the shelf. Möbius's projective geometry was repurposed, almost without modification, for the real-time 3D rendering pipeline — a spectacular case of pure mathematics, once thought abstract, finding its industrial use decades later.
+        </p>
+      </aside>
+
+      <hr class="ornament">
+
+      <h2>Recap and what's next</h2>
+
+      <p>
+        By adding a fourth fictitious axis, we got two things for the price of one. First: the depth division that perspective demands has become executable. The matrix places $z$ into the fourth component, and the GPU divides <em>after</em> the matrix multiplication, as a later stage. Second: translations, which weren't linear in 3D, have become linear in 4D; everything — rotation, scaling, translation, projection — fits inside a single 4×4 matrix.
+      </p>
+
+      <p>
+        What's left now is to build the <em>real</em> 3D projection matrix, not the toy matrix from this example. For that we first need to pin down what we're trying to project: which volume of the world is visible to the camera, and what are its lateral and depth bounds. This volume has a name, a shape, and adjustable settings. It's called the <strong>frustum</strong>, and it's the subject of the next step.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="03-non-linear.html">
+          <span class="nav-label">← Step 03</span>
+          <span class="nav-title">Division isn't linear</span>
+        </a>
+        <a class="next" href="05-frustum.html">
+          <span class="nav-label">Step 05 →</span>
+          <span class="nav-title">The frustum</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

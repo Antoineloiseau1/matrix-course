@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Qu'est-ce qu'une transformation linéaire — Chapitre 3 §1</title>
+  <title>What is a linear transformation — Chapter 3 §1</title>
   <link rel="stylesheet" href="../styles.css" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
@@ -22,113 +22,80 @@
 <body>
   <div class="layout">
     <aside class="toc">
-      <div class="toc-title">Cours</div>
+      <div class="toc-title">Course</div>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
         <ol>
-          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
-          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
-          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
         <ol>
-          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
-          <li><a href="../ch2/02-normes.html">Normes</a></li>
-          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
-          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter" open>
-        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
         <ol>
-          <li><a href="../ch3/01-transformation.html" class="current">Transformation linéaire</a></li>
-          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
-          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+          <li><a href="../ch3/01-transformation.html" class="current">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
         <ol>
-          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
-          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
-          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
-          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
         <ol>
-          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
-          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
-          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
-          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
-          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
-          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
-          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
         <ol>
-          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
-          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
-          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
         </ol>
       </details>
 
-      <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
-        <ol>
-          <li><a href="../3b1b/index.html">Sommaire</a></li>
-          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
-          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
-          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
-          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
-          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
-          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
-          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
-          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
-          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
-          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
-          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
-          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
-          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
-          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
-          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
-          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
-        </ol>
-      </details>
-
-      <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
-        <ol>
-          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
-          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
-          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
-          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
-        </ol>
-      </details>
-
-      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
     </aside>
 
     <main>
-      <div class="chapter-meta">Chapitre 3 · §1</div>
-      <h1>Qu'est-ce qu'une transformation linéaire</h1>
+      <div class="chapter-meta">Chapter 3 · §1</div>
+      <h1>What is a linear transformation</h1>
       <p class="lede">
-        Au cœur de l'algèbre linéaire, il y a une idée tellement simple qu'elle fait souvent rater son importance : une matrice n'est pas un tableau de nombres, c'est <em>une façon de déformer l'espace</em>. Cette section est le pivot du cours. Tout ce qui vient après en découle.
+        At the heart of linear algebra sits an idea so simple it often slips past unnoticed: a matrix isn't a grid of numbers, it's <em>a way of deforming space</em>. This section is the pivot of the whole course. Everything that follows flows from it.
       </p>
 
       <p>
-        Avant de définir quoi que ce soit, jouons. Voici un carré unité, son quadrillage de référence, et quatre boutons qui glissent les coefficients d'une matrice 2×2. Bouge-les. Regarde ce qui se passe. Essaye les presets.
+        Before we define anything, let's play. Here's a unit square, a reference grid, and four sliders that move the entries of a 2×2 matrix. Drag them around. Watch what happens. Try the presets.
       </p>
 
       <div class="sketch hero">
@@ -140,55 +107,55 @@
           <label>d = <span id="deformer-d-readout">1.00</span><input id="deformer-d-slider" type="range" min="-2" max="2" step="0.05" value="1" /></label>
         </div>
         <div class="preset-row">
-          <button id="deformer-preset-identite">identité</button>
+          <button id="deformer-preset-identite">identity</button>
           <button id="deformer-preset-rotation">rotation 90°</button>
           <button id="deformer-preset-scaling">zoom ×1.5</button>
-          <button id="deformer-preset-shear">cisaillement</button>
-          <button id="deformer-preset-reflex">réflexion</button>
-          <button id="deformer-preset-aplatir">aplatir</button>
+          <button id="deformer-preset-shear">shear</button>
+          <button id="deformer-preset-reflex">reflection</button>
+          <button id="deformer-preset-aplatir">flatten</button>
         </div>
         <p class="sketch-caption">
-          La matrice <code>[[a, b], [c, d]]</code> est une <em>recette</em> pour déformer le plan. Le quadrillage rouge est l'image du quadrillage gris. <strong style="color:#1e5a7a">T(i)</strong> et <strong style="color:#b8431f">T(j)</strong> sont les deux colonnes de la matrice — ce sont les <em>nouveaux emplacements</em> des vecteurs de base.
+          The matrix <code>[[a, b], [c, d]]</code> is a <em>recipe</em> for deforming the plane. The red grid is the image of the gray grid. <strong style="color:#1e5a7a">T(i)</strong> and <strong style="color:#b8431f">T(j)</strong> are the two columns of the matrix — they are the <em>new locations</em> of the basis vectors.
         </p>
       </div>
 
       <p>
-        Tu viens d'utiliser une dizaine de matrices différentes en quelques secondes. Aucune n'a déplacé l'origine. Aucune n'a courbé une droite. Aucune n'a rendu le quadrillage irrégulier. Pourtant, le carré s'est étiré, retourné, aplati, tordu. Cette famille très particulière de déformations s'appelle les <strong>transformations linéaires</strong>, et toute l'algèbre linéaire est l'art de raisonner sur elles. Mais qu'est-ce qui les rend si spéciales ?
+        You just used a dozen different matrices in a few seconds. None of them moved the origin. None of them bent a straight line. None of them made the grid irregular. And yet the square stretched, flipped, flattened, twisted. This very particular family of deformations is called <strong>linear transformations</strong>, and all of linear algebra is the art of reasoning about them. So what makes them so special?
       </p>
 
-      <h2>Une transformation, c'est juste une fonction</h2>
+      <h2>A transformation is just a function</h2>
 
       <p>
-        Première chose, sans mystère : une <em>transformation</em>, c'est une fonction qui prend un vecteur et rend un autre vecteur. Pas de magie, pas d'abstraction profonde — c'est aussi banal que la fonction « ajoute 3 » sur les nombres, sauf qu'on travaille sur des flèches au lieu de scalaires.
+        First thing, no mystery: a <em>transformation</em> is a function that takes a vector and returns another vector. No magic, no deep abstraction — it's as ordinary as the "add 3" function on numbers, except we're working with arrows instead of scalars.
       </p>
 
       $$T : v \longrightarrow T(v)$$
 
       <p>
-        L'image mentale qui débloque tout, c'est de penser que la transformation agit <strong>sur l'espace entier</strong>, pas seulement sur un vecteur à la fois. Imagine que chaque point du plan est un vecteur depuis l'origine. La transformation, c'est la règle qui dit où chaque point va se retrouver après déformation. Tout le plan change d'un seul coup. C'est exactement ce que tu viens de voir : un slider bouge, et tous les points du quadrillage glissent ensemble vers leur nouvelle position.
+        The mental picture that unlocks everything is to think of the transformation as acting <strong>on the entire space</strong>, not just on one vector at a time. Imagine every point in the plane as a vector from the origin. The transformation is the rule that says where each point lands after the deformation. The whole plane shifts at once. That's exactly what you just saw: a slider moves, and every point of the grid slides together to its new spot.
       </p>
 
-      <h2>Quatre candidates, une seule réellement « linéaire »</h2>
+      <h2>Four candidates, only one truly "linear"</h2>
 
       <p>
-        Considère ces quatre transformations. Trois ont l'air aussi simples que la quatrième, mais une seule mérite l'étiquette de <em>linéaire</em>.
+        Consider these four transformations. Three look just as simple as the fourth, but only one deserves the label <em>linear</em>.
       </p>
 
       $$\begin{aligned}
-T_1(v) &= 3 \cdot v & &\text{zoom uniforme ×3 depuis l'origine} \\
-T_2(v) &= v + (1, 0) & &\text{translation d'une case à droite} \\
-T_3(v) &= (v_1^2, v_2^2) & &\text{carré chaque composante} \\
-T_4(v) &= \text{matrice rotation 90°} & &\text{pivote autour de l'origine}
+T_1(v) &= 3 \cdot v & &\text{uniform ×3 zoom from the origin} \\
+T_2(v) &= v + (1, 0) & &\text{shift one cell to the right} \\
+T_3(v) &= (v_1^2, v_2^2) & &\text{square each component} \\
+T_4(v) &= \text{90° rotation matrix} & &\text{pivot around the origin}
 \end{aligned}$$
 
       <p>
-        Toutes les quatre sont des fonctions vecteur → vecteur, parfaitement bien définies. Mais la propriété de linéarité, qu'on va voir dans une seconde, en disqualifie trois sur quatre. Garde cet exemple en tête : on va y revenir.
+        All four are perfectly well-defined vector-to-vector functions. But the linearity property, which we're about to see, disqualifies three of them. Keep this example in mind — we'll come back to it.
       </p>
 
-      <h2>La définition formelle</h2>
+      <h2>The formal definition</h2>
 
       <p>
-        Une transformation $T$ est <strong>linéaire</strong> si elle satisfait <em>les deux</em> conditions suivantes :
+        A transformation $T$ is <strong>linear</strong> if it satisfies <em>both</em> of the following conditions:
       </p>
 
       $$\begin{aligned}
@@ -197,152 +164,152 @@ T_4(v) &= \text{matrice rotation 90°} & &\text{pivote autour de l'origine}
 \end{aligned}$$
 
       <p>
-        En français, ça dit : « peu importe que tu combines d'abord et que tu transformes ensuite, ou que tu transformes d'abord et que tu combines ensuite — le résultat est le même ». L'opération de combinaison (additionner deux vecteurs, multiplier par un scalaire) et l'opération de transformation <em>commutent</em>.
+        In plain English: "it doesn't matter whether you combine first and then transform, or transform first and then combine — the result is the same." The combining operation (adding two vectors, multiplying by a scalar) and the transforming operation <em>commute</em>.
       </p>
 
       <aside class="tangent">
-        <span class="tangent-label">Pourquoi cette définition exactement</span>
+        <span class="tangent-label">Why exactly this definition</span>
         <p>
-          Ces deux règles ne sont pas tombées du ciel. Elles disent : « ma transformation respecte la structure de combinaison linéaire ». Or, comme on l'a vu au chapitre 1, la combinaison linéaire est <em>la</em> structure de l'algèbre des vecteurs. Une fonction qui préserve cette structure est exactement ce qu'on attend d'un objet « gentil » dans ce monde-là. C'est l'analogue de demander à une fonction sur les nombres réels de préserver les sommes et les produits — un cadre algébrique clé.
+          These two rules didn't fall from the sky. They say: "my transformation respects the structure of linear combination." And as we saw in chapter 1, linear combination is <em>the</em> structure of vector algebra. A function that preserves this structure is exactly what we expect from a "well-behaved" object in this world. It's the analog of asking a function on real numbers to preserve sums and products — a key algebraic framework.
         </p>
       </aside>
 
-      <h2>On teste les quatre candidates</h2>
+      <h2>Testing the four candidates</h2>
 
       <p>
-        Reprends les quatre transformations du dessus. Vérifions, une par une, si elles passent le test.
+        Back to the four transformations above. Let's check, one by one, whether they pass the test.
       </p>
 
       <p>
-        <strong>$T_1(v) = 3 \cdot v$</strong> — Pour l'addition : $T(u+v) = 3(u+v) = 3u + 3v = T(u) + T(v)$. Coche. Pour le scaling : $T(k \cdot u) = 3(k \cdot u) = k(3u) = k \cdot T(u)$. Coche aussi. <em>Linéaire.</em>
+        <strong>$T_1(v) = 3 \cdot v$</strong> — Addition: $T(u+v) = 3(u+v) = 3u + 3v = T(u) + T(v)$. Check. Scaling: $T(k \cdot u) = 3(k \cdot u) = k(3u) = k \cdot T(u)$. Check too. <em>Linear.</em>
       </p>
 
       <p>
-        <strong>$T_2(v) = v + (1, 0)$</strong> — Test scaling, avec $k = 2$ et $u = (1, 1)$ : on attend $T(2u) = 2 \cdot T(u)$. À gauche : $T(2u) = T(2, 2) = (3, 2)$. À droite : $2 \cdot T(u) = 2 \cdot (2, 1) = (4, 2)$. Pas pareil. <em>Pas linéaire.</em>
+        <strong>$T_2(v) = v + (1, 0)$</strong> — Scaling test, with $k = 2$ and $u = (1, 1)$: we expect $T(2u) = 2 \cdot T(u)$. Left side: $T(2u) = T(2, 2) = (3, 2)$. Right side: $2 \cdot T(u) = 2 \cdot (2, 1) = (4, 2)$. Not equal. <em>Not linear.</em>
       </p>
 
       <p>
-        <strong>$T_3(v) = (v_1^2, v_2^2)$</strong> — Même test : $T(2u) = T(2, 2) = (4, 4)$, mais $2 \cdot T(u) = 2 \cdot (1, 1) = (2, 2)$. Le carré détruit la proportionnalité. <em>Pas linéaire.</em>
+        <strong>$T_3(v) = (v_1^2, v_2^2)$</strong> — Same test: $T(2u) = T(2, 2) = (4, 4)$, but $2 \cdot T(u) = 2 \cdot (1, 1) = (2, 2)$. Squaring destroys proportionality. <em>Not linear.</em>
       </p>
 
       <p>
-        <strong>$T_4$</strong> (la rotation) — On vérifiera plus loin que <em>toute</em> rotation est linéaire, parce qu'elle préserve les longueurs, les angles, et fixe l'origine.
+        <strong>$T_4$</strong> (the rotation) — We'll verify later that <em>every</em> rotation is linear, because it preserves lengths, angles, and fixes the origin.
       </p>
 
       <p>
-        Bilan : zoom et rotation passent. Translation et carré échouent. La translation échoue pour une raison qui méritera un encart entier.
+        Summary: zoom and rotation pass. Translation and squaring fail. The translation fails for a reason worth a whole sidebar.
       </p>
 
-      <h2>Petite conséquence cachée : l'origine ne bouge pas</h2>
+      <h2>A hidden consequence: the origin doesn't move</h2>
 
       <p>
-        Applique la règle de scaling avec $k = 0$. Ça donne :
+        Apply the scaling rule with $k = 0$. You get:
       </p>
 
       $$T(0 \cdot u) = 0 \cdot T(u), \qquad T(0) = 0$$
 
       <p>
-        Le vecteur nul $(0, 0)$ — c'est-à-dire le point à l'origine, le centre du repère — s'envoie <em>toujours</em> sur lui-même. Aucune transformation linéaire ne peut déplacer l'origine. C'est une conséquence si forte qu'elle suffit à disqualifier d'avance toute transformation qui aurait l'audace de bouger le centre du plan.
+        The zero vector $(0, 0)$ — the point at the origin, the center of the coordinate system — <em>always</em> maps to itself. No linear transformation can move the origin. This consequence is so strong that it alone is enough to rule out any transformation bold enough to nudge the center of the plane.
       </p>
 
-      <h2>Pourquoi la translation n'est pas linéaire</h2>
+      <h2>Why translation isn't linear</h2>
 
       <p>
-        Cette exclusion est tellement contre-intuitive qu'elle mérite une vraie explication. Pourtant la translation <em>semble</em> simple, douce, naturelle. Elle ne déforme rien, n'étire rien, ne tord rien. Elle fait juste glisser. Comment peut-elle ne pas être linéaire ?
+        This exclusion is so counter-intuitive it deserves a proper explanation. Translation <em>looks</em> simple, smooth, natural. It doesn't deform anything, doesn't stretch anything, doesn't twist anything. It just slides. How can it not be linear?
       </p>
 
       <p>
-        La réponse est exactement la « petite conséquence » du paragraphe précédent. Une translation par $(1, 0)$ envoie l'origine sur $(1, 0)$. Or une transformation linéaire est <em>obligée</em> de fixer l'origine. La translation échoue à cette contrainte. Elle n'est pas mauvaise — elle est juste d'une autre nature. En graphique 3D, on s'arrangera (chapitre 5) pour la simuler en passant en dimension supérieure, mais dans le sens strict de l'algèbre linéaire, une translation est <em>affine</em>, pas linéaire.
+        The answer is exactly the "hidden consequence" from the previous paragraph. A translation by $(1, 0)$ sends the origin to $(1, 0)$. But a linear transformation is <em>required</em> to fix the origin. Translation fails this constraint. It's not a bad transformation — it's just a different kind. In 3D graphics, we'll arrange (chapter 5) to simulate it by stepping up a dimension, but in the strict sense of linear algebra, a translation is <em>affine</em>, not linear.
       </p>
 
-      <h2>L'image mentale : le quadrillage reste un quadrillage</h2>
+      <h2>The mental image: the grid stays a grid</h2>
 
       <p>
-        La définition algébrique est précise, mais l'<em>intuition géométrique</em> est plus parlante. Une transformation est linéaire si et seulement si elle satisfait ces quatre propriétés visuelles :
+        The algebraic definition is precise, but the <em>geometric intuition</em> speaks louder. A transformation is linear if and only if it satisfies these four visual properties:
       </p>
 
       <ol>
-        <li>L'origine reste fixe.</li>
-        <li>Les lignes droites restent des lignes droites — aucune courbure.</li>
-        <li>Les lignes parallèles restent parallèles.</li>
-        <li>L'espacement reste uniforme — les graduations restent régulières.</li>
+        <li>The origin stays put.</li>
+        <li>Straight lines stay straight — no curvature.</li>
+        <li>Parallel lines stay parallel.</li>
+        <li>Spacing stays uniform — the tick marks stay evenly spaced.</li>
       </ol>
 
       <p>
-        Les trois dernières ensemble disent une seule chose : <strong>le quadrillage reste un quadrillage</strong>. Peut-être tourné, peut-être étiré, peut-être cisaillé, mais toujours régulier. Aucune déformation locale, aucun effet « fish-eye », aucune compression non uniforme.
+        The last three together say one thing: <strong>the grid stays a grid</strong>. Maybe rotated, maybe stretched, maybe sheared, but still regular. No local distortion, no fish-eye effect, no non-uniform compression.
       </p>
 
       <p class="pull-quote">
-        <strong>Une transformation linéaire transforme un quadrillage en un autre quadrillage.</strong> Tout ce qui en sort fait quelque chose d'autre.
+        <strong>A linear transformation turns one grid into another grid.</strong> Anything else does something else.
       </p>
 
-      <h2>Test interactif : compare T(u+v) avec T(u)+T(v)</h2>
+      <h2>Interactive test: compare T(u+v) with T(u)+T(v)</h2>
 
       <p>
-        On peut visualiser la règle d'addition directement. Choisis un type de transformation, place deux vecteurs $u$ et $v$, et regarde si les deux points coïncident. S'ils sont confondus, la transformation respecte l'addition. S'ils s'écartent, elle échoue.
+        We can visualize the addition rule directly. Pick a type of transformation, place two vectors $u$ and $v$, and see whether the two points coincide. If they overlap, the transformation respects addition. If they drift apart, it fails.
       </p>
 
       <div class="sketch">
         <div id="verif-canvas"></div>
         <div class="sketch-controls">
-          <button id="verif-mode-lineaire">transformation linéaire</button>
+          <button id="verif-mode-lineaire">linear transformation</button>
           <button id="verif-mode-translation">translation</button>
-          <button id="verif-mode-carre">carré par composante</button>
+          <button id="verif-mode-carre">componentwise squaring</button>
         </div>
         <p class="sketch-caption">
-          Le point <strong style="color:#059669">vert</strong> est <em>T(u+v)</em>. Le point <strong style="color:#7c3aed">violet</strong> est <em>T(u) + T(v)</em> construit bout-à-bout. Pour la transformation linéaire, ils sont confondus. Pour la translation et le carré, ils s'écartent.
+          The <strong style="color:#059669">green</strong> point is <em>T(u+v)</em>. The <strong style="color:#7c3aed">purple</strong> point is <em>T(u) + T(v)</em>, built tip-to-tail. For the linear transformation, they overlap. For the translation and the squaring, they drift apart.
         </p>
       </div>
 
-      <h2>La grande révélation : T est déterminée par T(i) et T(j)</h2>
+      <h2>The big reveal: T is determined by T(i) and T(j)</h2>
 
       <p>
-        On a maintenant tout ce qu'il faut pour découvrir le résultat qui rend l'algèbre linéaire utile. Soit $T$ une transformation linéaire en 2D, et $v = (v_1, v_2)$ un vecteur quelconque.
+        We now have everything we need to uncover the result that makes linear algebra useful. Let $T$ be a linear transformation in 2D, and $v = (v_1, v_2)$ any vector.
       </p>
 
       <p>
-        Tout vecteur du plan se décompose comme combinaison linéaire des deux vecteurs de base $i = (1, 0)$ et $j = (0, 1)$ :
+        Every vector in the plane decomposes as a linear combination of the two basis vectors $i = (1, 0)$ and $j = (0, 1)$:
       </p>
 
       $$v = v_1 \cdot i + v_2 \cdot j$$
 
-      <p>Maintenant applique T. Utilise d'abord la règle d'addition, puis la règle de scaling :</p>
+      <p>Now apply T. Use the addition rule first, then the scaling rule:</p>
 
       $$\begin{aligned}
 T(v) &= T(v_1 \cdot i + v_2 \cdot j) \\
-     &= T(v_1 \cdot i) + T(v_2 \cdot j) \quad \text{(règle d'addition)} \\
-     &= v_1 \cdot T(i) + v_2 \cdot T(j) \quad \text{(règle de scaling)}
+     &= T(v_1 \cdot i) + T(v_2 \cdot j) \quad \text{(addition rule)} \\
+     &= v_1 \cdot T(i) + v_2 \cdot T(j) \quad \text{(scaling rule)}
 \end{aligned}$$
 
       <p class="pull-quote">
         <strong>$T(v) = v_1 \cdot T(i) + v_2 \cdot T(j)$</strong>.<br>
-        Pour décrire <em>complètement</em> une transformation linéaire en 2D, deux vecteurs suffisent.
+        To <em>fully</em> describe a linear transformation in 2D, two vectors are enough.
       </p>
 
       <p>
-        Réalise ce que ça veut dire. Le plan a une infinité de points. Une transformation, c'est une règle qui envoie chacun d'eux ailleurs. Et pourtant, dès qu'on sait où vont les deux humbles vecteurs $i$ et $j$, on connaît l'image de <em>tous</em> les autres — par simple combinaison linéaire. La transformation est encodée en deux vecteurs.
+        Let that sink in. The plane has infinitely many points. A transformation is a rule that sends each of them somewhere else. And yet, the moment we know where the two humble vectors $i$ and $j$ land, we know the image of <em>every</em> other vector — by a simple linear combination. The transformation is encoded in two vectors.
       </p>
 
       <p>
-        Tu vois venir la suite : si on range les deux vecteurs côte à côte, on obtient un tableau à deux colonnes — une matrice. La matrice <em>est</em> la transformation. Ses colonnes sont les nouveaux emplacements de $i$ et $j$.
+        You can see what comes next: if we line up the two vectors side by side, we get a two-column table — a matrix. The matrix <em>is</em> the transformation. Its columns are the new locations of $i$ and $j$.
       </p>
 
-      <h2>Un exemple chiffré : la rotation à 90°</h2>
+      <h2>A worked example: 90° rotation</h2>
 
       <p>
-        Mettons ça en pratique avec la rotation de 90° dans le sens trigonométrique. Où vont $i$ et $j$ après rotation ?
+        Let's put this into practice with a 90° counter-clockwise rotation. Where do $i$ and $j$ go?
       </p>
 
       <ul>
-        <li>$i = (1, 0)$ pointe à droite. Après rotation, il pointe en haut : $T(i) = (0, 1)$.</li>
-        <li>$j = (0, 1)$ pointe en haut. Après rotation, il pointe à gauche : $T(j) = (-1, 0)$.</li>
+        <li>$i = (1, 0)$ points right. After rotation, it points up: $T(i) = (0, 1)$.</li>
+        <li>$j = (0, 1)$ points up. After rotation, it points left: $T(j) = (-1, 0)$.</li>
       </ul>
 
-      <p>Range les en colonnes. C'est la matrice de la rotation :</p>
+      <p>Line them up as columns. That's the rotation matrix:</p>
 
       $$R = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}$$
 
-      <p>Et pour calculer l'image d'un vecteur quelconque, par exemple $v = (3, 2)$ :</p>
+      <p>And to compute the image of any vector — say $v = (3, 2)$:</p>
 
       $$\begin{aligned}
 T(v) &= 3 \cdot (0, 1) + 2 \cdot (-1, 0) \\
@@ -351,74 +318,83 @@ T(v) &= 3 \cdot (0, 1) + 2 \cdot (-1, 0) \\
 \end{aligned}$$
 
       <p>
-        Vérifie : le point $(3, 2)$ est dans le quadrant nord-est, et après rotation à 90° anti-horaire, il doit se retrouver dans le quadrant nord-ouest. Le résultat $(-2, 3)$ est exactement là. La règle marche. Plus important : <em>la matrice contient toute l'information nécessaire pour reproduire cette rotation sur n'importe quel vecteur</em>.
+        Sanity check: the point $(3, 2)$ is in the northeast quadrant, and after a 90° counter-clockwise rotation it should land in the northwest quadrant. The result $(-2, 3)$ is exactly there. The rule works. More importantly: <em>the matrix contains all the information needed to reproduce this rotation on any vector</em>.
       </p>
 
       <hr class="ornament" />
 
-      <h2>Galerie de matrices, à relire plus tard</h2>
+      <h2>Gallery of matrices, to revisit later</h2>
 
       <p>
-        Quelques transformations classiques et leur matrice. Chacune se lit pareil : la première colonne est $T(i)$, la seconde est $T(j)$. Reviens-y à chaque fois qu'une matrice te semble obscure.
+        A few classic transformations and their matrices. Each reads the same way: the first column is $T(i)$, the second is $T(j)$. Come back here whenever a matrix feels opaque.
       </p>
 
       <div class="gallery">
         <div class="gallery-card">
-          <div class="label">Identité</div>
+          <div class="label">Identity</div>
           <div class="matrix">| 1  0 |
 | 0  1 |</div>
-          <div style="color: var(--muted); font-size: 11px;">ne touche à rien</div>
+          <div style="color: var(--muted); font-size: 11px;">leaves everything alone</div>
         </div>
         <div class="gallery-card">
           <div class="label">Rotation 90°</div>
           <div class="matrix">| 0 −1 |
 | 1  0 |</div>
-          <div style="color: var(--muted); font-size: 11px;">pivote en anti-horaire</div>
+          <div style="color: var(--muted); font-size: 11px;">spins counter-clockwise</div>
         </div>
         <div class="gallery-card">
-          <div class="label">Zoom uniforme</div>
+          <div class="label">Uniform zoom</div>
           <div class="matrix">| 3  0 |
 | 0  3 |</div>
-          <div style="color: var(--muted); font-size: 11px;">multiplie toutes les longueurs</div>
+          <div style="color: var(--muted); font-size: 11px;">scales every length</div>
         </div>
         <div class="gallery-card">
-          <div class="label">Étirement x</div>
+          <div class="label">x-stretch</div>
           <div class="matrix">| 2  0 |
 | 0  1 |</div>
-          <div style="color: var(--muted); font-size: 11px;">double la largeur</div>
+          <div style="color: var(--muted); font-size: 11px;">doubles the width</div>
         </div>
         <div class="gallery-card">
-          <div class="label">Cisaillement</div>
+          <div class="label">Shear</div>
           <div class="matrix">| 1  1 |
 | 0  1 |</div>
-          <div style="color: var(--muted); font-size: 11px;">penche horizontalement</div>
+          <div style="color: var(--muted); font-size: 11px;">tilts horizontally</div>
         </div>
         <div class="gallery-card">
-          <div class="label">Réflexion x</div>
+          <div class="label">x-reflection</div>
           <div class="matrix">| 1  0 |
 | 0 −1 |</div>
-          <div style="color: var(--muted); font-size: 11px;">miroir par l'axe x</div>
+          <div style="color: var(--muted); font-size: 11px;">mirrors across the x-axis</div>
         </div>
       </div>
 
       <p>
-        Quand tu rencontreras une matrice qui te semble inintelligible, fais le geste mental inverse : lis ses deux colonnes comme deux vecteurs, et demande-toi où elle envoie $i$ et $j$. La transformation devient visible.
+        Whenever you meet a matrix that looks impenetrable, do the reverse mental move: read its two columns as two vectors, and ask where it sends $i$ and $j$. The transformation snaps into view.
       </p>
 
-      <h2>Vers la suite</h2>
+      <h2>What's next</h2>
 
       <p>
-        On sait maintenant ce que <em>fait</em> une matrice : elle déforme l'espace en suivant une règle linéaire, parfaitement décrite par les images des vecteurs de base. Mais on a glissé sur une étape importante : <em>comment, concrètement, on calcule l'image d'un vecteur</em> ? On a fait la combinaison linéaire des colonnes à la main. La prochaine section transforme ce geste manuel en une opération calculable : la <strong>multiplication matrice × vecteur</strong>. Et tant qu'on y est, on verra ce qui se passe quand on compose deux transformations — c'est la multiplication matrice × matrice.
+        We now know what a matrix <em>does</em>: it deforms space following a linear rule, perfectly described by the images of the basis vectors. But we glossed over an important step: <em>how, concretely, do we compute the image of a vector</em>? We did the linear combination of the columns by hand. The next section turns this manual gesture into a computable operation: <strong>matrix-vector multiplication</strong>. While we're at it, we'll see what happens when we compose two transformations — that's matrix-matrix multiplication.
       </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Further reading</span>
+        <p>
+          <strong>3blue1brown · Essence of Linear Algebra, ep. 3 — Linear transformations and matrices.</strong>
+          The series' founding episode: a matrix isn't a table of numbers, it's the recording of a transformation. A must-watch right after this section.
+          <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+      </aside>
 
       <nav class="chapter-nav">
         <a class="prev" href="#">
-          <span class="nav-label">Précédent</span>
-          <span class="nav-title">← Chapitre 2 §4 — Produit vectoriel</span>
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">← Chapter 2 §4 — Cross product</span>
         </a>
         <a class="next" href="#">
-          <span class="nav-label">Suivant</span>
-          <span class="nav-title">§2 — Multiplier une matrice →</span>
+          <span class="nav-label">Next</span>
+          <span class="nav-title">§2 — Multiplying a matrix →</span>
         </a>
       </nav>
     </main>

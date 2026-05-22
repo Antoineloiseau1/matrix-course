@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>K = C in our structures — Chapter 6 §3</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html" class="current">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 6 · §3</div>
+      <h1>K = C in our structures</h1>
+      <p class="lede">
+        Since exercise 00, we've been careful to keep a generic parameter $K$ in every signature of <code>Vector&lt;K&gt;</code> and <code>Matrix&lt;K&gt;</code>. The assignment promised that the bonus from exercise 15 — redoing every exercise with $K = \mathbb{C}$ — "shouldn't require much fixing" if we did our work properly. This chapter cashes in on that promise by walking through, one by one, every operation we coded, to identify what stays the same and what changes subtly when $K$ becomes $\mathbb{C}$.
+      </p>
+
+      <p>
+        The most surprising observation is that we won't change <strong>a single line</strong> of <code>vector.rs</code> or <code>matrix.rs</code>. Just writing a new <code>Complex</code> type that implements the <code>Field</code> trait is enough to make <code>Vector&lt;Complex&gt;</code> and <code>Matrix&lt;Complex&gt;</code> compile and work. That's the power of Rust's generics combined with the abstraction discipline we kept up relentlessly throughout the module.
+      </p>
+
+      <h2>The mechanism: what really changes</h2>
+
+      <p>
+        When we instantiate <code>Vector&lt;Complex&gt;</code>, several things happen in cascade. The struct, which was
+      </p>
+
+      <pre><code>pub struct Vector&lt;K&gt; { data: Vec&lt;K&gt; }</code></pre>
+
+      <p>
+        becomes, after monomorphization, the equivalent of
+      </p>
+
+      <pre><code>pub struct VectorComplex { data: Vec&lt;Complex&gt; }</code></pre>
+
+      <p>
+        that is, an array of <code>Complex</code> instead of an array of <code>f32</code>. Every method — <code>add</code>, <code>dot</code>, <code>norm</code>, etc. — that used to call operations on <code>K</code> now calls those operations' implementations for <code>Complex</code>: <code>Add</code> for <code>Complex</code> instead of <code>Add</code> for <code>f32</code>, <code>mul_add</code> for <code>Complex</code> instead of the one for <code>f32</code>, and so on.
+      </p>
+
+      <p>
+        The <code>K: Field</code> bound we placed on every method of <code>Vector</code> and <code>Matrix</code> plays two roles:
+      </p>
+
+      <ol>
+        <li>At compile time, it <strong>guarantees</strong> that every algebraic operation used inside the method bodies is defined for the concrete type we chose. If <code>Complex</code> didn't implement <code>Add</code>, compilation would fail with a readable error message.</li>
+        <li>At run time, it <strong>resolves</strong> each operation call to the concrete type's specific implementation — at no extra cost (Rust generics are monomorphized, unlike Java generics).</li>
+      </ol>
+
+      <p>
+        Let's go through every operation in the module to see, concretely, what the substitution $K = \mathbb{C}$ produces.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>What stays the same</h2>
+
+      <h3>Addition, subtraction, scaling (ex00)</h3>
+
+      <p>
+        <code>Vector::add</code>, <code>Vector::sub</code>, <code>Vector::scl</code>, and their matrix counterparts, iterate component by component. For two complex numbers $z = a + bi$ and $w = c + di$, we have $z + w = (a+c) + (b+d)i$ — that's vector addition in the complex plane, exactly what we saw in §2. The code is identical:
+      </p>
+
+      <pre><code>for k in 0..self.size() { self.data[k] += rhs.data[k]; }</code></pre>
+
+      <p>
+        For scaling by a complex number $\lambda$, each component is multiplied by $\lambda$; and we saw that multiplying by $\lambda$ corresponds geometrically to a rotation-and-scaling around the origin. Multiplying a complex vector by $i$, for instance, rotates each component by a counterclockwise quarter-turn. That's what the demo output shows: <code>[1, i] × i = [i, -1]</code>.
+      </p>
+
+      <h3>Linear combination (ex01)</h3>
+
+      <p>
+        <code>linear_combination(vectors, coefs)</code> is nothing more than a sequence of scalings and additions accumulated via <code>fma</code> (<em>fused multiply-add</em>). Every ingredient is available for $\mathbb{C}$, so the operation works out of the box. What's new is that the coefficients can now be complex: we can form <code>i * e_1 + (2 + 3i) * e_2</code> and obtain a coherent complex vector.
+      </p>
+
+      <h3>Cross product (ex06)</h3>
+
+      <p>
+        The cross product, defined in three dimensions, works unchanged on complex coordinates. Its formula, which combines multiplications and subtractions of coordinates, remains valid. Geometrically it's less intuitive (we leave the comfortable terrain of "two real vectors in $\mathbb{R}^3$"), but algebraically there's no obstacle.
+      </p>
+
+      <h3>Matrix multiplication (ex07)</h3>
+
+      <p>
+        <code>Matrix::mul_vec</code> and <code>Matrix::mul_mat</code> are accumulations of dot products. Each coefficient of the result is a sum of products of coefficients. Since $\mathbb{C}$ supports both operations, it all goes through. The demo output confirms it: multiplying the complex matrix $[[1+i, 2], [i, 1-i]]$ by the vector $[1, i]$ produces a perfectly coherent complex vector.
+      </p>
+
+      <h3>Trace, transpose (ex08, ex09)</h3>
+
+      <p>
+        The <strong>trace</strong> sums the diagonal coefficients. If the matrix is complex, the trace is complex. No surprises.
+      </p>
+
+      <p>
+        The <strong>transpose</strong>, however, deserves a moment of attention. The exercise 09 brief mentioned, in section XIII.1, the existence of the <em>conjugate transpose</em> (also called the Hermitian transpose), which combines transposition with component-wise conjugation. Our implementation, <code>Matrix::transpose</code>, only performs the <em>geometric</em> transposition: it swaps rows and columns, but does not conjugate the coefficients. That's the simple choice, which is rigorously correct as an algebraic operation over any field, and it's what the assignment asks for. We leave the conjugate transpose as an optional extension (see §4 for the details).
+      </p>
+
+      <h3>Gauss, row-echelon (ex10)</h3>
+
+      <p>
+        The Gaussian elimination algorithm is purely algebraic: it combines pivot divisions, subtractions of row multiples, and permutations. None of these operations requires the coefficients to be real. <code>Matrix::row_echelon</code> on a complex matrix produces a complex RREF, exactly the same way it does on a real one. The demo verified it: the RREF of $[[1, 2+i], [3, 4+2i]]$ is the $2 \times 2$ identity matrix, because the two rows were linearly independent as vectors in $\mathbb{C}^2$.
+      </p>
+
+      <h3>Inverse, rank (ex12, ex13)</h3>
+
+      <p>
+        Built on Gauss-Jordan, the inverse and rank automatically inherit compatibility with $\mathbb{C}$. The demo inverted the complex matrix $[[1, i], [0, 1]]$ and got $[[1, -i], [0, 1]]$, which you can check by hand: $[[1, i], [0, 1]] \times [[1, -i], [0, 1]] = [[1, -i + i], [0, 1]] = [[1, 0], [0, 1]]$. Correct.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>What changes subtly</h2>
+
+      <h3>Determinant (ex11)</h3>
+
+      <p>
+        The determinant of a complex matrix is itself a <em>complex number</em>. Geometrically, in the real case, the determinant encodes the <em>signed area</em> (or volume) the transformation produces from a unit cube. In the complex case, this simple geometric interpretation goes away: you'd have to think in terms of volumes in $\mathbb{R}^{2n}$ (each complex coefficient has 2 real components), which is much more subtle. For our implementation, nothing needs to change: the recursive formula (cofactor expansion) or the product-of-pivots approach works in any field. The result is just a complex number instead of a real one.
+      </p>
+
+      <p>
+        Our demo computed $\det([[1, 2], [i, 1]]) = 1 - 2i$: that's $1 \times 1 - 2 \times i = 1 - 2i$, matching the formula.
+      </p>
+
+      <h3>Dot product (ex03)</h3>
+
+      <p>
+        Here's the most interesting subtlety. Our dot product is defined bilinearly:
+      </p>
+
+      $$u \cdot v = \sum_{k} u_k \times v_k$$
+
+      <p>
+        On reals, $u \cdot u = \sum u_k^2$ is always <em>non-negative</em>, which is exactly the "squared length" of the vector $u$. On complex numbers, however, $u \cdot u$ can be <em>complex</em> and non-positive. For example, with $u = [i, 1]$, we get $u \cdot u = i^2 + 1^2 = -1 + 1 = 0$, even though the vector $[i, 1]$ is obviously not the zero vector.
+      </p>
+
+      <p>
+        This pathology is well known. The standard mathematical fix is the <strong>Hermitian inner product</strong>:
+      </p>
+
+      $$\langle u, v \rangle = \sum_{k} \overline{u_k} \times v_k$$
+
+      <p>
+        Conjugating the first factor guarantees that $\langle u, u \rangle = \sum |u_k|^2$ is always a non-negative real, and so really does encode a "squared length". The assignment (section VII.1) mentions the Hermitian inner product as an interesting object, but doesn't require it in the implementation. Our <code>dot</code> therefore stays bilinear, in line with the assignment.
+      </p>
+
+      <p class="pull-quote">
+        <strong>The bilinear complex dot product is mathematically "ill-posed"</strong> in the sense that it doesn't give a true distance. The assignment accepts that; mathematical rigour would call for the Hermitian inner product. It's documented as an aside, not implemented.
+      </p>
+
+      <h3>Norm (ex04)</h3>
+
+      <p>
+        Here's where the <code>Field</code> trait's design shines. Our Euclidean norm is defined by:
+      </p>
+
+      $$\|u\|_2 = \sqrt{\sum_{k} |u_k|^2}$$
+
+      <p>
+        The 1-norm and infinity norm have analogous definitions based on $|u_k|$. The key point is that all these formulas use <em>the magnitude</em> $|u_k|$, not $u_k$ directly. And $|u_k|$ is a non-negative real number regardless of what $u_k$ is: for a real, it's the absolute value; for a complex number, it's the modulus $\sqrt{a^2 + b^2}$.
+      </p>
+
+      <p>
+        That non-negative real number is exactly what the <code>abs(self) -&gt; f32</code> method of the <code>Field</code> trait returns. The signature, decided back in exercise 00, anticipated this moment: <code>abs</code> doesn't return <code>Self</code> but <code>f32</code>, because the magnitude of an object is always a real number whatever the object is. As a result: <code>Vector&lt;Complex&gt;::norm</code> compiles unchanged and returns an <code>f32</code>, as the assignment requires ("Norms always return real numbers, even for complex-valued vectors").
+      </p>
+
+      <p>
+        The demo verified it: the norm of the vector $[3+4i, 0]$ is $\sqrt{|3+4i|^2 + 0} = \sqrt{25} = 5$. A real number.
+      </p>
+
+      <h3>Angle_cos (ex05) and lerp (ex02)</h3>
+
+      <p>
+        Two operations stay on the sidelines:
+      </p>
+
+      <ul>
+        <li><strong><code>angle_cos</code></strong> computes $u \cdot v / (\|u\| \|v\|)$ and returns an <code>f32</code>. On real vectors, that's the cosine of the angle. On complex vectors, it's <em>the real part of the complex dot product</em> divided by the product of the moduli, which doesn't have the same geometric interpretation. The method compiles (thanks to <code>to_f32</code>, which extracts $\Re(z)$) but the result is only partially meaningful. Marginal use case.</li>
+        <li><strong><code>lerp</code></strong> explicitly requires a <code>Mul&lt;f32, Output = V&gt;</code> bound, that is, the ability to scale the type by a real number. For <code>Vector&lt;Complex&gt;</code>, the generic <code>Mul&lt;K&gt;</code> implementation yields <code>Mul&lt;Complex&gt;</code>, not <code>Mul&lt;f32&gt;</code>. So lerp doesn't apply directly to a complex vector; you'd have to either change the bound or implement <code>Mul&lt;f32&gt; for Complex</code>. Marginal, we leave it.</li>
+      </ul>
+
+      <h3>3D projection (ex14)</h3>
+
+      <p>
+        The projection function is intrinsically <code>f32</code>-only, by its geometric nature: a 3D projection matrix is a transformation between real spaces. It sits outside the ex15 bonus and isn't meant to be instantiated with complex numbers.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>The Field trait, in retrospect</h2>
+
+      <p>
+        To wrap up, let's take stock of the <code>Field</code> trait and its role as the interface between abstract algebra and our Rust code. Here's the full definition:
+      </p>
+
+      <pre><code>pub trait Field:
+    Add&lt;Output = Self&gt; + AddAssign +
+    Sub&lt;Output = Self&gt; + SubAssign +
+    Mul&lt;Output = Self&gt; + MulAssign +
+    Div&lt;Output = Self&gt; + DivAssign +
+    Neg&lt;Output = Self&gt; + Copy + PartialEq
+{
+    fn zero() -&gt; Self;
+    fn one()  -&gt; Self;
+    fn mul_add(self, a: Self, b: Self) -&gt; Self { self * a + b }
+    fn abs(self) -&gt; f32;
+    fn to_f32(self) -&gt; f32;
+}</code></pre>
+
+      <p>
+        Every line tells a story. The bounds (Add, Sub, etc.) capture the algebraic axioms of a field: you can add, multiply, and divide, and these operations return objects of the same type. <code>Copy</code> requires the value to be cheaply duplicable — natural for "lightweight scalars" like <code>f32</code> or our <code>Complex</code>. <code>PartialEq</code> lets us test whether a value is zero (useful in Gauss to detect columns without a pivot).
+      </p>
+
+      <p>
+        There are four methods to provide. <code>zero()</code> and <code>one()</code> are the additive and multiplicative identities, indispensable for initializing matrices. <code>mul_add</code> is the <em>fused multiply-add</em> operation whose importance for numerical precision the assignment underscores. <code>abs</code> and <code>to_f32</code> are the two "to the reals" methods that anticipate ex15 precisely: <code>abs</code> gives the magnitude (always real), <code>to_f32</code> gives a projection to the reals (for the ratios inside <code>angle_cos</code>).
+      </p>
+
+      <p>
+        This interface was <em>designed</em>, from the start, to make the move to $\mathbb{C}$ trivial. And it kept its promise: we added a single <code>src/complex.rs</code> file, about 130 lines including all the operators, the <code>Display</code> trait, and the <code>impl Field</code>. That's the entire technical effort. No changes anywhere else.
+      </p>
+
+      <h2>What's next</h2>
+
+      <p>
+        The final chapter tours, in practice, what we wrote in Rust: the <code>Complex</code> struct, the operator implementations, the <code>Field</code> trait, and the classic gotchas (field visibility, semicolons inside <code>fmt</code>). It closes with an expanded aside on the Hermitian inner product and the conjugate transpose, for anyone who wants to push further.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Further reading</span>
+        <p>
+          <strong>3blue1brown · Essence of Linear Algebra, ep. 16 — Abstract vector spaces.</strong>
+          The series' closing episode abstracts everything that came before: a vector is <em>anything</em> that you can add and scale. Moving from K = ℝ to K = ℂ is the first concrete illustration of this generalization.
+          <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+      </aside>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="02-algebra-geometry.html">
+          <span class="nav-label">← §2</span>
+          <span class="nav-title">Algebra and geometry</span>
+        </a>
+        <a class="next" href="../index.html">
+          <span class="nav-label">End of the course</span>
+          <span class="nav-title">Back to home</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

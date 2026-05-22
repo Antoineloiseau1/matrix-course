@@ -1,11 +1,11 @@
-/* Helpers partages pour les sketches p5.js du cours Matrix.
-   Plan mathematique : origine au centre, Y vers le haut, unite = SCALE pixels.
+/* Shared helpers for the p5.js sketches in the Matrix course.
+   Math plane: origin at the center, Y pointing up, one unit = SCALE pixels.
 */
 
 const MatrixCours = (() => {
   const SCALE = 32;
 
-  // Plan math (origine centre, Y haut) -> ecran p5 (origine top-left, Y bas)
+  // Math plane (origin at center, Y up) -> p5 screen (origin top-left, Y down)
   function worldToScreen(p, x, y) {
     return { x: p.width / 2 + x * SCALE, y: p.height / 2 - y * SCALE };
   }

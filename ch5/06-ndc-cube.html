@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The NDC cube — Chapter 5 · §6</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+  <style>
+    .diagram {
+      display: block;
+      margin: 1.8rem auto;
+      max-width: 100%;
+      height: auto;
+    }
+    .diagram-caption {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: #6b6b6b;
+      text-align: center;
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+    }
+    .contract-list {
+      font-family: 'Iowan Old Style', Georgia, serif;
+      list-style: none;
+      padding-left: 0;
+      margin: 1.2rem 0;
+    }
+    .contract-list li {
+      padding: 0.35rem 0;
+      border-bottom: 1px dotted #d8d2c2;
+    }
+    .contract-list li:last-child { border-bottom: none; }
+    .contract-list code { color: #b8431f; }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html" class="current">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 5 · §6</div>
+      <h1>The NDC cube</h1>
+      <p class="lede">
+        In the previous step, we drew the source: the frustum, that pyramid slice that bounds everything the camera sees. What's left is figuring out <em>where</em> this slice lands once it's been projected. This step answers the question: the projection matrix sends the frustum into a standardized cube — the NDC cube. That's the target. And it's what dictates every coefficient of the matrix we'll build in the next step.
+      </p>
+
+      <p>
+        The frustum is the source. The NDC cube is the destination. A function only really exists once you've defined both of its ends, and so far we only had half the picture. This page fills in the other half.
+      </p>
+
+      <h2>Why an intermediate space?</h2>
+
+      <p>
+        Before defining what NDC actually is, you have to understand <em>why</em> it exists. The 3D pipeline has two well-defined endpoints: on one side, the 3D world where vertices live; on the other, the physical screen made of pixels. You could naively imagine that the projection matrix sends vertices directly to their final pixel coordinates. Why bother with an intermediate step at all?
+      </p>
+
+      <h3>Two scenarios that break without NDC</h3>
+
+      <p>
+        Imagine you tried to have a matrix that outputs pixel coordinates directly — a matrix that would know the exact screen dimensions.
+      </p>
+
+      <p>
+        <strong>Scenario A.</strong> One player has a $1920 \times 1080$ screen. Another has a $3840 \times 2160$ (4K) screen. Both screens are 16:9 — so the <code>ratio</code> is <em>the same</em>. But the pixel dimensions differ. A "direct-to-pixels" matrix would differ between the two players, even though the perspective they see is <em>exactly the same</em>.
+      </p>
+
+      <p>
+        <strong>Scenario B.</strong> One player, one $1920 \times 1080$ screen. But they resize their window from $1920 \times 1080$ to $1280 \times 720$. The <code>ratio</code> stays at 16:9 in both cases — but the pixels change. Once again, a "direct-to-pixels" matrix would need recomputing, even though the scene geometry hasn't moved an inch.
+      </p>
+
+      <p>
+        In both cases, the matrix would be <em>more unstable than it should be</em>: it would react to changes that aren't geometric. That's messy.
+      </p>
+
+      <h3>The solution: decouple geometry from display</h3>
+
+      <p>
+        We split the work into two independent operations:
+      </p>
+
+      <ol>
+        <li>
+          <strong>The projection matrix</strong> encodes only the <em>shape of the frustum</em> (<code>fov</code>, <code>ratio</code>, <code>near</code>, <code>far</code>). It knows nothing about actual pixels. It produces coordinates inside a standardized cube (the NDC), identical for every screen.
+        </li>
+        <li>
+          <strong>The viewport transformation</strong> then converts those NDC coordinates into real pixels by multiplying by the actual screen dimensions. It's a trivial operation — a scaling plus an offset, applied after the matrix.
+        </li>
+      </ol>
+
+      <svg class="diagram" viewBox="0 0 540 470" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- monde 3D -->
+        <rect x="190" y="20" width="160" height="50" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="1.5" rx="3"/>
+        <text x="270" y="42" font-family="Iowan Old Style, Georgia, serif" font-size="14" text-anchor="middle" fill="#3a3a3a">3D world</text>
+        <text x="270" y="60" font-family="Inter, sans-serif" font-size="11" text-anchor="middle" fill="#6b6b6b">(x, y, z) in meters</text>
+        <!-- arrow 1 -->
+        <line x1="270" y1="75" x2="270" y2="110" stroke="#3a3a3a" stroke-width="1.5"/>
+        <polygon points="270,110 266,102 274,102" fill="#3a3a3a"/>
+        <!-- matrice de projection -->
+        <rect x="190" y="115" width="160" height="60" fill="#1e5a7a" fill-opacity="0.12" stroke="#1e5a7a" stroke-width="2" rx="3"/>
+        <text x="270" y="138" font-family="Iowan Old Style, Georgia, serif" font-size="14" text-anchor="middle" fill="#1e5a7a">projection matrix</text>
+        <text x="270" y="158" font-family="Inter, sans-serif" font-size="10" text-anchor="middle" fill="#1e5a7a" font-style="italic">+ perspective divide</text>
+        <!-- input arrow from left to matrix -->
+        <line x1="20" y1="145" x2="185" y2="145" stroke="#1e5a7a" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <polygon points="185,145 177,141 177,149" fill="#1e5a7a"/>
+        <text x="100" y="135" font-family="Inter, sans-serif" font-size="11" fill="#1e5a7a" text-anchor="middle">fov, ratio, near, far</text>
+        <text x="100" y="159" font-family="Inter, sans-serif" font-size="10" fill="#1e5a7a" text-anchor="middle" font-style="italic">(frustum shape)</text>
+        <!-- arrow 2 -->
+        <line x1="270" y1="180" x2="270" y2="215" stroke="#3a3a3a" stroke-width="1.5"/>
+        <polygon points="270,215 266,207 274,207" fill="#3a3a3a"/>
+        <!-- espace NDC -->
+        <rect x="190" y="220" width="160" height="55" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="2" rx="3"/>
+        <text x="270" y="244" font-family="Iowan Old Style, Georgia, serif" font-size="14" text-anchor="middle" fill="#3a3a3a">NDC space</text>
+        <text x="270" y="263" font-family="Inter, sans-serif" font-size="11" text-anchor="middle" fill="#6b6b6b">cube [-1,1]² × [0,1]</text>
+        <!-- arrow 3 -->
+        <line x1="270" y1="280" x2="270" y2="315" stroke="#3a3a3a" stroke-width="1.5"/>
+        <polygon points="270,315 266,307 274,307" fill="#3a3a3a"/>
+        <!-- viewport -->
+        <rect x="190" y="320" width="160" height="60" fill="#b8431f" fill-opacity="0.12" stroke="#b8431f" stroke-width="2" rx="3"/>
+        <text x="270" y="344" font-family="Iowan Old Style, Georgia, serif" font-size="14" text-anchor="middle" fill="#b8431f">viewport transform</text>
+        <text x="270" y="363" font-family="Inter, sans-serif" font-size="10" text-anchor="middle" fill="#b8431f" font-style="italic">(simple: × width, × height)</text>
+        <!-- input arrow from right to viewport -->
+        <line x1="520" y1="350" x2="355" y2="350" stroke="#b8431f" stroke-width="1.2" stroke-dasharray="3,2"/>
+        <polygon points="355,350 363,346 363,354" fill="#b8431f"/>
+        <text x="438" y="340" font-family="Inter, sans-serif" font-size="11" fill="#b8431f" text-anchor="middle">width, height</text>
+        <text x="438" y="364" font-family="Inter, sans-serif" font-size="10" fill="#b8431f" text-anchor="middle" font-style="italic">(screen size)</text>
+        <!-- arrow 4 -->
+        <line x1="270" y1="385" x2="270" y2="420" stroke="#3a3a3a" stroke-width="1.5"/>
+        <polygon points="270,420 266,412 274,412" fill="#3a3a3a"/>
+        <!-- pixels -->
+        <rect x="190" y="425" width="160" height="35" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="1.5" rx="3"/>
+        <text x="270" y="447" font-family="Iowan Old Style, Georgia, serif" font-size="14" text-anchor="middle" fill="#3a3a3a">pixels on screen</text>
+      </svg>
+      <p class="diagram-caption">The pipeline has two independent stages. The matrix (blue) is fed only by the frustum's shape. The viewport (terracotta) is fed only by the screen dimensions. NDC is the intermediate space that separates them — and decouples them.</p>
+
+      <p>
+        NDC is the space that bridges the two. It's designed to depend on <em>nothing</em> but the scene's geometry. Whatever the screen, the matrix's output is exactly the same. Only the next step (the viewport) varies with resolution.
+      </p>
+
+      <h3>What becomes immune to what</h3>
+
+      <p>
+        Let's lay out, in a table, each stage's responsibilities:
+      </p>
+
+      <table style="margin: 1.2rem auto; border-collapse: collapse; font-family: 'Iowan Old Style', Georgia, serif; font-size: 0.95rem;">
+        <thead>
+          <tr style="border-bottom: 1.5px solid #3a3a3a;">
+            <th style="padding: 0.5rem 1.1rem; text-align: left;">What changes</th>
+            <th style="padding: 0.5rem 1.1rem; text-align: left;">Effect on the matrix</th>
+            <th style="padding: 0.5rem 1.1rem; text-align: left;">Effect on the viewport</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 0.4rem 1.1rem;">Resolution (pixels)</td>
+            <td style="padding: 0.4rem 1.1rem; color: #1e5a7a;">none</td>
+            <td style="padding: 0.4rem 1.1rem; color: #b8431f;">recompute</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.4rem 1.1rem;"><code>ratio</code> (window aspect)</td>
+            <td style="padding: 0.4rem 1.1rem; color: #b8431f;">recompute</td>
+            <td style="padding: 0.4rem 1.1rem; color: #b8431f;">recompute</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.4rem 1.1rem;"><code>fov</code> (opening angle)</td>
+            <td style="padding: 0.4rem 1.1rem; color: #b8431f;">recompute</td>
+            <td style="padding: 0.4rem 1.1rem; color: #1e5a7a;">none</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.4rem 1.1rem;"><code>near</code> / <code>far</code></td>
+            <td style="padding: 0.4rem 1.1rem; color: #b8431f;">recompute</td>
+            <td style="padding: 0.4rem 1.1rem; color: #1e5a7a;">none</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        The matrix is <em>immune</em> to pure resolution changes. Only the viewport cares about those. Conversely, the viewport is immune to changes in <code>fov</code> or <code>near</code> / <code>far</code> — those parameters drive the frustum's shape and stay in the matrix. Each does its own job, no mixing.
+      </p>
+
+      <p class="pull-quote">
+        <strong>NDC isn't just a coordinate format: it's a separation of concerns. The matrix handles perspective; the viewport handles the screen.</strong>
+      </p>
+
+      <h3>An analogy: normal form</h3>
+
+      <p>
+        To place NDC on the conceptual map, the most accurate analogy is the mathematical idea of a <strong>normal form</strong>. You have a whole zoo of initially chaotic objects (arbitrary matrices, systems of equations, arbitrary frustums); you transform all of them into a single canonical form (Jordan form, reduced row-echelon form, or here: the NDC cube); and you reason about the normal form because it's simple.
+      </p>
+
+      $$\begin{aligned}
+      \text{frustum 1} &\longrightarrow \\
+      \text{frustum 2} &\longrightarrow \\
+      \text{frustum 3} &\longrightarrow\ \text{projection matrix}\ \longrightarrow\ \text{NDC cube} \\
+      \vdots\hphantom{xxx} \\
+      \text{frustum n} &\longrightarrow
+      \end{aligned}$$
+
+      <p>
+        It's the same mathematical reflex as the reduced row-echelon form we'll meet at ex10: <strong>standardize different representations into a universal form</strong>. Once you have the normal form, everything becomes simple — it's what dictates the rules from there on.
+      </p>
+
+      <h2>NDC: a clunky name for a perfectly simple cube</h2>
+
+      <p>
+        Three letters: <strong>NDC</strong>, for <em>Normalized Device Coordinates</em>. The "device" in question is the GPU, and "normalized" means that every scene in the world, whatever its actual size, will be brought down to one single scale before the rasterizer picks it up. That single scale is a cube. A small, fixed cube, that never moves from one game to another or from one frame to the next.
+      </p>
+
+      <p>
+        This cube has a very precise definition, dictated here by the subject (not by OpenGL — more on that below). Three axes, three intervals:
+      </p>
+
+      <ul>
+        <li><strong>X ∈ [-1, 1]</strong>: -1 is the left edge of the screen, +1 the right edge.</li>
+        <li><strong>Y ∈ [-1, 1]</strong>: -1 is the bottom edge, +1 the top edge. (Some APIs flip the Y axis at the very last moment; we keep the standard math convention.)</li>
+        <li><strong>Z ∈ [0, 1]</strong>: 0 is the near plane (closest to the camera), 1 is the far plane (farthest).</li>
+      </ul>
+
+      <p>
+        Any projected point whose three coordinates land inside these three intervals will be displayed. Any point with at least one coordinate outside its interval is <strong>clipped</strong> — literally, the GPU throws it away. The NDC cube isn't just a scaling convention, it's also the <em>visibility region</em> after projection. What's outside, we don't see.
+      </p>
+
+      <h2>The frustum on one side, the cube on the other</h2>
+
+      <p>
+        We have two geometric solids. On one side, the frustum, lopsided, with a wide far base and a narrow near base. On the other, the cube, perfectly regular. The projection matrix has a single job: squash and straighten the former so that it fits exactly into the latter.
+      </p>
+
+      <div class="sketch">
+        <svg class="diagram" viewBox="0 0 620 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- frustum (left) -->
+          <g>
+            <!-- back face (far, big) -->
+            <polygon points="100,40 230,40 250,200 80,200" fill="#1e5a7a" fill-opacity="0.08" stroke="#1e5a7a" stroke-width="1.5"/>
+            <!-- front face (near, small) -->
+            <polygon points="140,90 200,90 210,160 130,160" fill="#1e5a7a" fill-opacity="0.18" stroke="#1e5a7a" stroke-width="1.5"/>
+            <!-- connecting edges -->
+            <line x1="100" y1="40" x2="140" y2="90" stroke="#1e5a7a" stroke-width="1.2"/>
+            <line x1="230" y1="40" x2="200" y2="90" stroke="#1e5a7a" stroke-width="1.2"/>
+            <line x1="250" y1="200" x2="210" y2="160" stroke="#1e5a7a" stroke-width="1.2"/>
+            <line x1="80" y1="200" x2="130" y2="160" stroke="#1e5a7a" stroke-width="1.2"/>
+            <text x="165" y="230" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" text-anchor="middle">frustum (source)</text>
+            <text x="170" y="80" font-family="Inter, sans-serif" font-size="10" fill="#6b6b6b" text-anchor="middle">near</text>
+            <text x="165" y="32" font-family="Inter, sans-serif" font-size="10" fill="#6b6b6b" text-anchor="middle">far</text>
+          </g>
+
+          <!-- arrow -->
+          <g>
+            <line x1="295" y1="125" x2="395" y2="125" stroke="#b8431f" stroke-width="2.5"/>
+            <polygon points="395,125 383,118 383,132" fill="#b8431f"/>
+            <text x="345" y="115" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f" text-anchor="middle" font-style="italic">projection</text>
+            <text x="345" y="148" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f" text-anchor="middle" font-style="italic">matrix</text>
+          </g>
+
+          <!-- cube (right) -->
+          <g>
+            <!-- back face -->
+            <polygon points="430,55 560,55 560,185 430,185" fill="#b8431f" fill-opacity="0.08" stroke="#b8431f" stroke-width="1.5"/>
+            <!-- front face -->
+            <polygon points="460,85 590,85 590,215 460,215" fill="#b8431f" fill-opacity="0.18" stroke="#b8431f" stroke-width="1.5"/>
+            <!-- connecting edges -->
+            <line x1="430" y1="55" x2="460" y2="85" stroke="#b8431f" stroke-width="1.2"/>
+            <line x1="560" y1="55" x2="590" y2="85" stroke="#b8431f" stroke-width="1.2"/>
+            <line x1="560" y1="185" x2="590" y2="215" stroke="#b8431f" stroke-width="1.2"/>
+            <line x1="430" y1="185" x2="460" y2="215" stroke="#b8431f" stroke-width="1.2"/>
+            <text x="525" y="245" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#b8431f" text-anchor="middle">NDC cube (target)</text>
+
+            <!-- corner labels -->
+            <text x="445" y="95" font-family="Inter, sans-serif" font-size="9" fill="#6b6b6b">(-1,1,0)</text>
+            <text x="572" y="222" font-family="Inter, sans-serif" font-size="9" fill="#6b6b6b">(1,-1,1)</text>
+          </g>
+        </svg>
+        <p class="diagram-caption">On the left: the frustum, a pyramid slice with slanted faces. On the right: the NDC cube, regular, with orthogonal faces. The projection matrix is the arrow in the middle. Its entire job is to ensure that <em>each face</em> of the frustum lands exactly on the matching face of the cube.</p>
+      </div>
+
+      <h2>Why these specific intervals?</h2>
+
+      <p>
+        The choice of [-1, 1] for X and Y isn't arbitrary, but it isn't magical either. It's just <em>convenient</em>. Symmetric around zero, which fits the intuition that the center of the screen is the origin. And after projection, the rasterizer needs to turn these NDC coordinates into actual pixels — a matter of multiplying by half the screen width, plus an offset. That's what's called the <em>viewport transformation</em>, and it's an elementary linear operation. We could have picked [0, 1] for X and Y as well, and everything would have worked; but [-1, 1] was the historical standard and it has stuck.
+      </p>
+
+      <p>
+        The choice of Z ∈ [0, 1] is more loaded. This interval isn't decorative: it corresponds directly to how the GPU stores depth. On modern machines, the <strong>depth buffer</strong> (the memory that holds, for each pixel, the depth of the closest fragment drawn so far) encodes values on 24 or 32 bits, mapped linearly between 0 and 1. Z = 0 means "at the near plane, right in front of the camera". Z = 1 means "at the far plane, at the end of the frustum". The whole z-buffer chain assumes these values live in [0, 1]. If you feed it -0.3 or 1.7, the visibility decision becomes inconsistent.
+      </p>
+
+      <p>
+        This Z ∈ [0, 1] convention is the one used by <strong>Vulkan</strong> and <strong>DirectX</strong>, two of the three major modern graphics APIs. The exercise's subject aligns with them. Everything works smoothly as long as you stick to this logic.
+      </p>
+
+      <h2>The OpenGL trap</h2>
+
+      <p>
+        Except there's a third convention, and it's everywhere on the internet. <strong>Classic OpenGL</strong> — the graphics API that dominated from 1992 through the 2010s, and which is still taught all over the place — uses Z ∈ [-1, 1] instead of Z ∈ [0, 1]. That is, for OpenGL, the near plane corresponds to -1 (not 0), and the far plane to +1.
+      </p>
+
+      <p class="pull-quote">
+        <strong>The projection matrix has a job that's easy to state: take a pyramid slice and wedge it into a unit cube. All of its sophistication lies in how it does it.</strong>
+      </p>
+
+      <p>
+        The catch is that for each convention there's a 4×4 matrix that solves the problem — and these matrices differ by exactly <em>two coefficients</em>, the ones in the Z row. Precisely the two that control depth mapping. If you Google "perspective projection matrix", 90% of the hits are the OpenGL version: that's the historical baseline. If you copy-paste that matrix as-is for the subject, you get a matrix that will pass the at-a-glance visual test — objects will be in the right place laterally, they'll have the right size relative to their depth — but it will be <em>wrong</em> in Z.
+      </p>
+
+      <p>
+        The trap is sneaky because the damage is subtle. Depth sorting can start flickering on objects at the edges of the frustum. The far plane can clip things it shouldn't (or let through things it should clip). The z-buffer precision collapses in places. The rendering looks almost right, and then some weird detail shows up. The rule is clear: <strong>when adapting a formula found online for this project, the first thing to check is the Z row of the matrix</strong>. If it uses (far+near) and (2·far·near), it's OpenGL. For our exercise, we need a different form.
+      </p>
+
+      <h2>The projection matrix contract</h2>
+
+      <p>
+        We can now spell out exactly what we expect from the matrix we're about to build. It's a contract, line by line: each face of the frustum must correspond to a face of the cube. If the matrix respects these six lines, it's correct; otherwise, it isn't.
+      </p>
+
+      <ul class="contract-list">
+        <li>Left edge of the frustum, $x = -z \cdot \tan(\text{fov}/2) \cdot \text{ratio}$ → $x_{ndc} = -1$</li>
+        <li>Right edge of the frustum, $x = +z \cdot \tan(\text{fov}/2) \cdot \text{ratio}$ → $x_{ndc} = +1$</li>
+        <li>Top edge of the frustum, $y = +z \cdot \tan(\text{fov}/2)$ → $y_{ndc} = +1$</li>
+        <li>Bottom edge of the frustum, $y = -z \cdot \tan(\text{fov}/2)$ → $y_{ndc} = -1$</li>
+        <li>Near plane, $z = \text{near}$ → $z_{ndc} = 0$</li>
+        <li>Far plane, $z = \text{far}$ → $z_{ndc} = 1$</li>
+      </ul>
+
+      <p>
+        Six conditions, and the 4×4 matrix has many more coefficients than that — but we'll see that most of them are zero. The structure of the problem forces nearly the entire matrix. The six conditions above actually determine only four quantities: the coefficient on x, the coefficient on y, and the two coefficients of the Z row that pin near to 0 and far to 1.
+      </p>
+
+      <h2>After the cube: the viewport</h2>
+
+      <p>
+        When a point comes out of the projection matrix with its NDC coordinates, its mathematical work is almost done. The rasterizer takes $x_{ndc}$, multiplies it by half the screen width, adds half the width, and gets a pixel coordinate; same for $y_{ndc}$ with the height. $z_{ndc}$ goes into the depth buffer to serve as referee when several fragments fight over the same pixel: the one with the smaller z wins (it's the closest). That's all. Projection stops at the cube; the rest is unit conversion.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangent</span>
+        <p>
+          A little mathematical detail that often goes overlooked: even with the Z ∈ [0, 1] convention, depth mapping is <strong>not linear</strong>. The Z row of the matrix looks like $[0, 0, a, b]$, which produces, in homogeneous output, $z' = a \cdot z + b$ and $w' = z$. After the homogeneous division (step 4), we get $z_{ndc} = a + b/z$. The $1/z$ dependence means z-buffer precision is <em>concentrated near the camera</em>: an object at z = 5 and one at z = 5.01 are clearly distinguishable, whereas at z = 500 and z = 500.01 they're almost indistinguishable. This is intentional — we almost never look closely at what's at the back of the frustum, so we might as well put the precision where the eyes settle. This is the <em>hyperbolic z-buffer</em>. Some modern engines go further and use a <em>reversed z-buffer</em>: they map near to 1 and far to 0, which exploits the logarithmic distribution of floats near zero even better and gives nearly perfect precision throughout.
+        </p>
+      </aside>
+
+      <hr class="ornament">
+
+      <h2>Everything is in place</h2>
+
+      <p>
+        We now have both ends of the tunnel: the source (a frustum defined by fov, ratio, near, far) and the target (a cube where X and Y live in [-1, 1] and Z lives in [0, 1]). Six conditions link the two. Building the projection matrix means finding coefficients such that, line by line, these six conditions are satisfied. That's exactly the work of the next step, where we'll derive each row of the 4×4 matrix separately — first the x row, then the y row, then the z row (with its OpenGL trap), then the mysterious w row that triggers the perspective divide.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="05-frustum.html">
+          <span class="nav-label">← Step 05</span>
+          <span class="nav-title">The frustum</span>
+        </a>
+        <a class="next" href="07-matrix-row-by-row.html">
+          <span class="nav-label">Step 07 →</span>
+          <span class="nav-title">Matrix row by row</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

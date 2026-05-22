@@ -1,6 +1,6 @@
-/* Ch3 §2 — Sketches pour "Multiplier une matrice".
-   Sketch 1 : M·v vu comme combinaison lineaire des colonnes (construction bout-a-bout).
-   Sketch 2 : Composition A·B vs A∘B (deux chemins, meme arrivee).
+/* Ch3 §2 — Sketches for "Multiplying a matrix".
+   Sketch 1: M·v viewed as a linear combination of the columns (tip-to-tail construction).
+   Sketch 2: Composition A·B vs A∘B (two paths, same destination).
 */
 (function () {
   const M = MatrixCours;
@@ -44,28 +44,28 @@
       const partA = { x: v.x * col0.x, y: v.x * col0.y };
       const result = { x: partA.x + v.y * col1.x, y: partA.y + v.y * col1.y };
 
-      // Construction bout-a-bout : v.x · col_0, puis v.y · col_1 a partir du bout
-      // Pointille pour les colonnes scalees
+      // Tip-to-tail construction: v.x · col_0, then v.y · col_1 starting from the tip
+      // Dashed lines for the scaled columns
       M.drawDashedArrow(p, 0, 0, partA.x, partA.y, { color: '#c9d4dc' });
       M.drawDashedArrow(p, partA.x, partA.y, result.x, result.y, { color: '#e8c6b5' });
 
-      // Colonnes "originales" en pointille leger pour rappel
+      // "Original" columns in light dashed lines as a reminder
       const ghostCol0End = { x: col0.x, y: col0.y };
       const ghostCol1End = { x: col1.x, y: col1.y };
       M.drawArrow(p, 0, 0, ghostCol0End.x, ghostCol0End.y, { color: 'rgba(30, 90, 122, 0.45)', weight: 1.5 });
       M.drawArrow(p, 0, 0, ghostCol1End.x, ghostCol1End.y, { color: 'rgba(184, 67, 31, 0.45)', weight: 1.5 });
 
-      // Vecteur d'entree v
+      // Input vector v
       M.drawArrow(p, 0, 0, v.x, v.y, { color: '#4d473d', label: 'v', weight: 2.5 });
 
-      // Resultat M·v en violet (souligne le resultat)
+      // Result M·v in purple (emphasizes the result)
       M.drawArrow(p, 0, 0, result.x, result.y, { color: '#7c2d12', label: 'M·v', weight: 3 });
 
       const mx = p.mouseX, my = p.mouseY;
       const overV = M.distanceScreenToWorld(p, mx, my, v.x, v.y) < 12;
       M.drawHandle(p, v.x, v.y, { color: '#4d473d', hover: overV || dragging });
 
-      // Lecture
+      // Readout
       p.noStroke();
       p.fill('#4d473d');
       p.textSize(12);
@@ -75,7 +75,7 @@
       p.fill('#7c2d12');
       p.text(`M·v = ${v.x.toFixed(1)} · col₀ + ${v.y.toFixed(1)} · col₁ = (${result.x.toFixed(2)}, ${result.y.toFixed(2)})`, 12, 48);
 
-      // Mini legende
+      // Mini legend
       p.textAlign(p.RIGHT, p.BOTTOM);
       p.fill('#1e5a7a');
       p.text('col_0 = T(i)', p.width - 12, p.height - 28);
@@ -97,14 +97,14 @@
   });
 
   // ============================================================
-  // SKETCH 2 — Composition : A · B
-  // Trois etats : original / apres B / apres A∘B
+  // SKETCH 2 — Composition: A · B
+  // Three stages: original / after B / after A∘B
   // ============================================================
   const presetsCompose = {
-    'rot-then-scale': { B: [0, -1, 1, 0], A: [1.5, 0, 0, 1.5], name: 'rotation puis zoom' },
-    'scale-then-rot': { B: [1.5, 0, 0, 1.5], A: [0, -1, 1, 0], name: 'zoom puis rotation' },
-    'rot-then-shear': { B: [0, -1, 1, 0], A: [1, 1, 0, 1], name: 'rotation puis shear' },
-    'shear-then-rot': { B: [1, 1, 0, 1], A: [0, -1, 1, 0], name: 'shear puis rotation' },
+    'rot-then-scale': { B: [0, -1, 1, 0], A: [1.5, 0, 0, 1.5], name: 'rotate then scale' },
+    'scale-then-rot': { B: [1.5, 0, 0, 1.5], A: [0, -1, 1, 0], name: 'scale then rotate' },
+    'rot-then-shear': { B: [0, -1, 1, 0], A: [1, 1, 0, 1], name: 'rotate then shear' },
+    'shear-then-rot': { B: [1, 1, 0, 1], A: [0, -1, 1, 0], name: 'shear then rotate' },
   };
 
   let composeKey = 'rot-then-scale';
@@ -146,15 +146,15 @@
         { x: 0, y: 1 },
       ];
 
-      // Trois mini-cadres horizontaux
+      // Three horizontal mini-frames
       const cellW = p.width / 3;
-      const labels = ['1. depart', '2. apres B', '3. apres A (= apres A·B)'];
+      const labels = ['1. start', '2. after B', '3. after A (= after A·B)'];
 
       [0, 1, 2].forEach((stage, i) => {
         p.push();
         p.translate(i * cellW, 0);
 
-        // Mini-grille centree
+        // Centered mini-grid
         const cx = cellW / 2;
         const cy = p.height / 2 + 10;
         const scale = 28;
@@ -170,7 +170,7 @@
         if (i >= 1) corners = corners.map(pt => mulMatVec(B, pt));
         if (i >= 2) corners = corners.map(pt => mulMatVec(A, pt));
 
-        // Polygone
+        // Polygon
         p.push();
         p.noStroke();
         if (i === 0) p.fill('rgba(140, 140, 140, 0.25)');
@@ -188,7 +188,7 @@
         p.textAlign(p.CENTER, p.TOP);
         p.text(labels[i], cellW / 2, 12);
 
-        // Separateur entre cellules
+        // Separator between cells
         if (i < 2) {
           p.stroke('#d8d3c0');
           p.strokeWeight(1);
@@ -198,7 +198,7 @@
         p.pop();
       });
 
-      // Texte resume en bas
+      // Summary text at the bottom
       p.noStroke();
       p.fill('#4d473d');
       p.textSize(11);

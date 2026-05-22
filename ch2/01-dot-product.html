@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The dot product — Chapter 2 §1</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html" class="current">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 2 · §1</div>
+      <h1>The dot product</h1>
+      <p class="lede">
+        The dot product is a modest operation — a few multiplications, one sum, and that's it. Yet it serves as a bridge between two worlds that have no obvious reason to talk to each other: the world of coordinates, where vectors are just lists of numbers, and the world of geometry, where they are arrows with lengths and angles. This section explains why this bridge exists, and what it carries.
+      </p>
+
+      <p>
+        Let's start with a question: how much do two arrows "point in the same direction"? You intuitively feel the difference between two aligned vectors (which resemble each other), two perpendicular vectors (which have nothing in common), and two opposite vectors (which contradict each other). But feeling isn't enough — we want a number. A single one, measuring that alignment. The dot product is precisely that number, and it is extraordinarily simple to compute.
+      </p>
+
+      <h2>The formula, first</h2>
+
+      <p>
+        Take two vectors $u$ and $v$ of the same dimension. Their <strong>dot product</strong>, written $u \cdot v$, is computed by multiplying their components pairwise and then summing the results:
+      </p>
+
+      $$\begin{aligned}
+u &= (u_1, u_2, \dots, u_n) \\
+v &= (v_1, v_2, \dots, v_n) \\
+u \cdot v &= u_1 v_1 + u_2 v_2 + \dots + u_n v_n
+\end{aligned}$$
+
+      <p>
+        A <em>component</em> is one of the coordinates of a vector — the i-th number in its list. The formula takes the coordinates position by position, multiplies each pair, and accumulates. The result is a <strong>scalar</strong> — a plain real number, not a vector. That's where the operation gets its name: you walk in with two vectors and walk out with a scalar.
+      </p>
+
+      <p>
+        It's worth contrasting this signature with the other vector operations we've already met. Addition $u + v$ returns a vector. Scaling $k \cdot u$ returns a vector. The dot product $u \cdot v$, on the other hand, returns a scalar. That's a change of nature, and it's what makes it interesting: we leave the world of arrows for the world of numbers, so what we've built is a <em>measurement</em>.
+      </p>
+
+      <p>
+        But a measurement of <em>what</em>, exactly? The formula doesn't say. It mixes the coordinates of the two vectors without giving any clue as to why this particular combination — and not some other, not the sum of cross products for instance — should have any geometric meaning. To understand what this sum hides, we need a detour through a construction that seems entirely unrelated: the projection of a vector onto the line carried by another.
+      </p>
+
+      <h2>Detour: orthogonal projection</h2>
+
+      <p>
+        To understand what the dot product really measures, we first need to talk about <strong>projection</strong>. The idea is elementary: given two arrows starting from the same point, you can "project" one onto the line carried by the other, like a shadow falling straight down.
+      </p>
+
+      <p>
+        Concretely, to project $v$ onto the line carried by $u$:
+      </p>
+
+      <ol>
+        <li>Draw the infinite line that carries $u$.</li>
+        <li>From the tip of $v$, drop a perpendicular onto that line.</li>
+        <li>The foot of that perpendicular is the <em>projected point</em>. The arrow from the origin to that point is the <strong>orthogonal projection</strong> of $v$ onto $u$.</li>
+      </ol>
+
+      <svg class="illu" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c2s1-u" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+          <marker id="arrow-c2s1-v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1e5a7a"/>
+          </marker>
+          <marker id="arrow-c2s1-proj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#6e2716"/>
+          </marker>
+        </defs>
+        <!-- Droite portée par u (ligne complète, prolongée) -->
+        <line x1="20" y1="200" x2="410" y2="200" stroke="#8b8474" stroke-width="1" stroke-dasharray="4 4"/>
+        <!-- u (terracotta) -->
+        <line x1="60" y1="200" x2="220" y2="200" stroke="#b8431f" stroke-width="2.4" marker-end="url(#arrow-c2s1-u)"/>
+        <text x="140" y="222" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#b8431f" font-style="italic" text-anchor="middle">u</text>
+        <text x="380" y="218" font-family="Inter, sans-serif" font-size="11" fill="#8b8474">line carried by u</text>
+        <!-- v (prussian) -->
+        <line x1="60" y1="200" x2="270" y2="60" stroke="#1e5a7a" stroke-width="2.4" marker-end="url(#arrow-c2s1-v)"/>
+        <text x="158" y="120" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" font-style="italic">v</text>
+        <!-- Perpendiculaire pointillée du tip de v vers P -->
+        <line x1="270" y1="60" x2="270" y2="200" stroke="#8b8474" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <!-- Petit angle droit en P -->
+        <polyline points="262,200 262,192 270,192" fill="none" stroke="#8b8474" stroke-width="1"/>
+        <text x="285" y="135" font-family="Inter, sans-serif" font-size="11" fill="#8b8474">perpendicular</text>
+        <!-- Projection (terracotta sombre) -->
+        <line x1="60" y1="200" x2="270" y2="200" stroke="#6e2716" stroke-width="3.2"/>
+        <!-- Point P -->
+        <circle cx="270" cy="200" r="3.5" fill="#6e2716"/>
+        <text x="270" y="248" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#6e2716" text-anchor="middle">P</text>
+        <text x="270" y="262" font-family="Inter, sans-serif" font-size="11" fill="#6e2716" text-anchor="middle">projection of v onto u</text>
+        <!-- Origin -->
+        <circle cx="60" cy="200" r="3" fill="#1c1a15"/>
+        <text x="50" y="218" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1c1a15" text-anchor="end">O</text>
+      </svg>
+      <p class="illu-caption">Drop a perpendicular from the tip of v onto the line carried by u. The foot P is the orthogonal projection.</p>
+
+      <p>
+        The projection is another arrow, but it lives entirely on the line of $u$. It's the shadow of $v$ in the direction of $u$. The more $v$ aligns with $u$, the longer that shadow. The more it leans off to the side, the shorter the shadow gets. When $v$ is exactly perpendicular to $u$, the shadow shrinks to a single point: the foot of the perpendicular lands on the origin.
+      </p>
+
+      <h2>Signed length: three cases</h2>
+
+      <p>
+        We'd like to attach a <em>number</em> to this projection. The most natural choice would be its length, but that's not enough: a length is always positive, and the projection can land "on the right side" or "on the wrong side" of the origin. So we introduce the <strong>signed length</strong>: the length of the projection, counted positively if it points in the direction of $u$, negatively if it points the opposite way.
+      </p>
+
+      <p>
+        Three configurations tell the whole story.
+      </p>
+
+      <p>
+        <strong>Positive case.</strong> $v$ leans the same way as $u$. The projection moves forward along the line, in the direction of $u$. Its signed length is positive.
+      </p>
+
+      <svg class="illu" viewBox="0 0 420 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c2s1-pos-u" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+          <marker id="arrow-c2s1-pos-v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1e5a7a"/>
+          </marker>
+        </defs>
+        <line x1="20" y1="150" x2="410" y2="150" stroke="#8b8474" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="60" y1="150" x2="320" y2="150" stroke="#b8431f" stroke-width="2.4" marker-end="url(#arrow-c2s1-pos-u)"/>
+        <text x="334" y="146" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#b8431f" font-style="italic">u</text>
+        <!-- v penche du même côté que u -->
+        <line x1="60" y1="150" x2="200" y2="40" stroke="#1e5a7a" stroke-width="2.4" marker-end="url(#arrow-c2s1-pos-v)"/>
+        <text x="135" y="80" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" font-style="italic">v</text>
+        <line x1="200" y1="40" x2="200" y2="150" stroke="#8b8474" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <polyline points="192,150 192,142 200,142" fill="none" stroke="#8b8474" stroke-width="1"/>
+        <line x1="60" y1="150" x2="200" y2="150" stroke="#6e2716" stroke-width="3.2"/>
+        <circle cx="200" cy="150" r="3.5" fill="#6e2716"/>
+        <text x="200" y="175" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#6e2716" text-anchor="middle">P</text>
+        <circle cx="60" cy="150" r="3" fill="#1c1a15"/>
+        <text x="50" y="168" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1c1a15" text-anchor="end">O</text>
+        <text x="360" y="180" font-family="Inter, sans-serif" font-size="12" fill="#1c1a15">signed length &gt; 0</text>
+      </svg>
+
+      <p>
+        <strong>Zero case.</strong> $v$ is perpendicular to $u$. The projection collapses to the origin. Its signed length is zero.
+      </p>
+
+      <svg class="illu" viewBox="0 0 420 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c2s1-zero-u" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+          <marker id="arrow-c2s1-zero-v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1e5a7a"/>
+          </marker>
+        </defs>
+        <line x1="20" y1="150" x2="410" y2="150" stroke="#8b8474" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="60" y1="150" x2="320" y2="150" stroke="#b8431f" stroke-width="2.4" marker-end="url(#arrow-c2s1-zero-u)"/>
+        <text x="334" y="146" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#b8431f" font-style="italic">u</text>
+        <!-- v perpendiculaire à u -->
+        <line x1="60" y1="150" x2="60" y2="30" stroke="#1e5a7a" stroke-width="2.4" marker-end="url(#arrow-c2s1-zero-v)"/>
+        <polyline points="60,142 68,142 68,150" fill="none" stroke="#8b8474" stroke-width="1"/>
+        <text x="44" y="80" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" font-style="italic" text-anchor="end">v</text>
+        <circle cx="60" cy="150" r="4.5" fill="#6e2716"/>
+        <text x="50" y="172" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#6e2716" text-anchor="end">O = P</text>
+        <text x="360" y="180" font-family="Inter, sans-serif" font-size="12" fill="#1c1a15">signed length = 0</text>
+      </svg>
+
+      <p>
+        <strong>Negative case.</strong> $v$ leans the opposite way. The projection lands "before" the origin along the line. Its signed length is negative.
+      </p>
+
+      <svg class="illu" viewBox="0 0 420 200" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c2s1-neg-u" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+          <marker id="arrow-c2s1-neg-v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1e5a7a"/>
+          </marker>
+        </defs>
+        <line x1="20" y1="150" x2="410" y2="150" stroke="#8b8474" stroke-width="1" stroke-dasharray="4 4"/>
+        <line x1="180" y1="150" x2="380" y2="150" stroke="#b8431f" stroke-width="2.4" marker-end="url(#arrow-c2s1-neg-u)"/>
+        <text x="392" y="146" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#b8431f" font-style="italic">u</text>
+        <!-- v penche du côté opposé : projection à gauche de O -->
+        <line x1="180" y1="150" x2="80" y2="40" stroke="#1e5a7a" stroke-width="2.4" marker-end="url(#arrow-c2s1-neg-v)"/>
+        <text x="115" y="80" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" font-style="italic">v</text>
+        <line x1="80" y1="40" x2="80" y2="150" stroke="#8b8474" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <polyline points="72,150 72,142 80,142" fill="none" stroke="#8b8474" stroke-width="1"/>
+        <!-- Projection segment (à gauche de O) -->
+        <line x1="80" y1="150" x2="180" y2="150" stroke="#6e2716" stroke-width="3.2"/>
+        <circle cx="80" cy="150" r="3.5" fill="#6e2716"/>
+        <text x="80" y="175" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#6e2716" text-anchor="middle">P</text>
+        <circle cx="180" cy="150" r="3" fill="#1c1a15"/>
+        <text x="180" y="175" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1c1a15" text-anchor="middle">O</text>
+        <text x="270" y="180" font-family="Inter, sans-serif" font-size="12" fill="#1c1a15">signed length &lt; 0</text>
+      </svg>
+
+      <p>
+        This signed length is the right object, because it encodes both <em>how much</em> $v$ aligns with $u$, and <em>in which direction</em>.
+      </p>
+
+      <h2>The bridge: dot product = projection × length</h2>
+
+      <p>
+        Here's the central theorem. The dot product of two vectors $u$ and $v$ is exactly:
+      </p>
+
+      $$\begin{aligned}
+u \cdot v &= \|u\| \times (\text{signed length of the projection of } v \text{ onto } u) \\
+&= \|v\| \times (\text{signed length of the projection of } u \text{ onto } v)
+\end{aligned}$$
+
+      <p>
+        We write $\|u\|$ for the length (the norm) of $u$ — the next section will cover it in detail, but for now it's enough to think of it as "the size of the arrow". The formula says: <em>take the projection of one onto the other, measure it with a sign, multiply by the length of the other one</em>. The result is our number.
+      </p>
+
+      <p class="pull-quote">
+        <strong>$u \cdot v$ is the signed length of the projection of one onto the other, times the length of the other.</strong>
+      </p>
+
+      <p>
+        The fact that the algebraic sum $u_1 v_1 + u_2 v_2 + \dots$ coincides with this geometric quantity is not at all obvious — it's actually quite deep. We'll come back to it briefly further down. For now we accept the theorem as a fact, because it's what makes everything that follows clear.
+      </p>
+
+      <h2>The form $\|u\| \cdot \|v\| \cdot \cos(\theta)$</h2>
+
+      <p>
+        There's a classical reformulation that shows up in every textbook, and you can derive it from the above in three lines. Trigonometry says that, in the right triangle formed by $v$, its projection onto $u$, and the perpendicular:
+      </p>
+
+      $$\text{signed length of the projection of } v \text{ onto } u = \|v\| \times \cos(\theta)$$
+
+      <p>
+        where $\theta$ is the angle between $u$ and $v$. That's the very definition of cosine: adjacent over hypotenuse, and the hypotenuse here is the whole of $v$. Plugging this into the bridge formula:
+      </p>
+
+      $$u \cdot v = \|u\| \times (\|v\| \times \cos(\theta)) = \|u\| \times \|v\| \times \cos(\theta)$$
+
+      <p>
+        There's the famous formula. It doesn't come out of nowhere — it's exactly the bridge theorem, read after replacing the projection's length with its trigonometric version. The geometric proof fits inside a single right triangle.
+      </p>
+
+      <p>
+        The great virtue of this form is that it separates three independent ingredients: the size of $u$, the size of $v$, and the angle between them. If you know two of the three, the dot product gives you the third.
+      </p>
+
+      <h2>The three sign regimes</h2>
+
+      <p>
+        Since $\|u\|$ and $\|v\|$ are always positive (a length can't be negative), the sign of the dot product is entirely governed by the sign of $\cos(\theta)$. And cosine is no mystery when it comes to angles:
+      </p>
+
+      <ul>
+        <li>$u \cdot v > 0$ — the angle is <em>acute</em> ($0 \leq \theta < 90°$). The two vectors broadly point in the same direction.</li>
+        <li>$u \cdot v = 0$ — the angle is right ($\theta = 90°$). The vectors are <strong>orthogonal</strong>. They share nothing in their directions.</li>
+        <li>$u \cdot v < 0$ — the angle is <em>obtuse</em> ($90° < \theta \leq 180°$). The two vectors point to opposite sides.</li>
+      </ul>
+
+      <p>
+        This three-way split is the most useful day-to-day takeaway about the dot product. Want to test whether two directions are compatible? Compute the dot product and look at its sign. Want to detect orthogonality? Look for vectors whose dot product is zero. In practice, the dot product is the alignment detector par excellence.
+      </p>
+
+      <p>
+        One sentence captures it all: the dot product measures <em>how much two vectors point in the same direction</em>. A lot — then the number is large and positive. Not at all (perpendicular) — then it's zero. Outright opposite — then it's large and negative. All the subtlety — the lengths of the vectors, the exact angle between them — is encoded in this single signed quantity.
+      </p>
+
+      <h2>A slightly mysterious symmetry</h2>
+
+      <p>
+        The dot product is <strong>symmetric</strong>: for any vectors $u$ and $v$,
+      </p>
+
+      $$u \cdot v = v \cdot u$$
+
+      <p>
+        Algebraically, this falls out without drama: the sum $u_1 v_1 + u_2 v_2 + \dots$ doesn't change if we reorder it as $v_1 u_1 + v_2 u_2 + \dots$, since multiplication of reals is commutative. Geometrically, however, it's more surprising than it looks. Projecting $v$ onto $u$ and projecting $u$ onto $v$ are not at all the same operations: the two projections don't have the same length in general.
+      </p>
+
+      <p>
+        And yet, when you multiply each projection by the length of the <em>other</em> vector, the two products come out equal. It's a small miracle of arrangement: the factor that one projection "lacks", the other one supplies exactly. The form $\|u\| \times \|v\| \times \cos(\theta)$ makes this miracle obvious — the three factors commute — but the raw geometric intuition didn't see it coming. This symmetry hides something deeper than the commutativity of multiplication; we'll touch on it in the tangent below.
+      </p>
+
+      <h2>A very special case: $u \cdot u$</h2>
+
+      <p>
+        What happens if you take the dot product of a vector with itself? The angle between $u$ and $u$ is zero, so $\cos(\theta) = 1$. The formula gives:
+      </p>
+
+      $$u \cdot u = \|u\| \times \|u\| \times 1 = \|u\|^2$$
+
+      <p>
+        And algebraically, it's even more telling:
+      </p>
+
+      $$u \cdot u = u_1^2 + u_2^2 + \dots + u_n^2$$
+
+      <p>
+        The dot product of a vector with itself is the <strong>square of its length</strong>. Without meaning to, we've just built the formula for the Euclidean norm: to measure the size of a vector, compute $u \cdot u$ and take the square root. So the dot product is also the machine that produces lengths. The next section, on norms, picks up from exactly this point.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Tangent · Why the two formulas are equal (duality)</span>
+        <p>
+          We took on faith that the algebraic sum $u_1 v_1 + u_2 v_2 + \dots$ coincides with the geometric quantity $\|u\| \times \|v\| \times \cos(\theta)$. The deep justification — beautifully laid out by 3blue1brown in episode 9 of <em>Essence of linear algebra</em> — is called <strong>duality</strong>. The idea: a vector can be seen in two ways, either as a point/arrow in space, or as a linear transformation that crushes the space onto a line. The two formulas for the dot product describe, in fact, the <em>same</em> linear transformation, just read from two different sides. We'll come back to this once we have linear transformations in hand, in chapter 3. For now, just keep in mind that the equality isn't a numerical coincidence: it's the signature of a structural equivalence between vectors and certain linear maps.
+        </p>
+      </aside>
+
+      <hr class="ornament" />
+
+      <h2>Key takeaways</h2>
+
+      <p>
+        The dot product is a simple operation to compute, but it carries a rich geometric intuition. Three things to remember:
+      </p>
+
+      <ol>
+        <li><strong>Algebraic definition</strong>: $u \cdot v = u_1 v_1 + u_2 v_2 + \dots + u_n v_n$. A sum of component-by-component products, returning a number.</li>
+        <li><strong>Geometric definition</strong>: $u \cdot v = \|u\| \times \|v\| \times \cos(\theta)$. A signed alignment detector — positive when the vectors lean the same way, zero when they're orthogonal, negative when they oppose.</li>
+        <li><strong>Mirror case</strong>: $u \cdot u = \|u\|^2$. The dot product of a vector with itself is the square of its norm. This sets up the formula for Euclidean length, which is the topic of the next section.</li>
+      </ol>
+
+      <p>
+        When you meet a dot product later on — and you'll meet them everywhere, in the projection of light onto a surface, in the similarity between two descriptors, in the orthogonality test of two directions — you'll need to read it both ways at once: the algebraic gesture that computes it, and the geometric gesture that gives it meaning.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Further reading</span>
+        <p>
+          <strong>3blue1brown · Essence of Linear Algebra, ep. 9 — Dot products and duality.</strong>
+          The big insight of the episode: the dot product <em>u · v</em> is secretly a measured projection. Duality with linear transformations explains why this simple formula captures so much.
+          <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+      </aside>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="#">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">← Chapter 1 §3 — Interpolation</span>
+        </a>
+        <a class="next" href="02-norms.html">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">§2 — Norms →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

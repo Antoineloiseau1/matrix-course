@@ -1,6 +1,6 @@
-/* Ch3 §3 — Sketch transposee.
-   Une matrice 3x3 editable. La transposee est affichee a cote.
-   Hover sur une case : la case symetrique de la transposee s'allume.
+/* Ch3 §3 — Transpose sketch.
+   An editable 3x3 matrix. Its transpose is shown next to it.
+   Hovering a cell lights up the matching cell on the other side.
 */
 (function () {
   const initial = [
@@ -63,15 +63,15 @@
       const left = originLeft();
       const right = originRight();
 
-      // Titres
+      // Titles
       p.noStroke();
       p.fill('#4d473d');
       p.textSize(13);
       p.textAlign(p.CENTER, p.BOTTOM);
       p.text('M', left.x + 1.5 * cellW, left.y - 8);
-      p.text('Mᵀ (transposee)', right.x + 1.5 * cellW, right.y - 8);
+      p.text('Mᵀ (transpose)', right.x + 1.5 * cellW, right.y - 8);
 
-      // Diagonale (visuel pour M et Mᵀ)
+      // Diagonal (visual cue for M and Mᵀ)
       p.push();
       p.stroke('rgba(184, 67, 31, 0.35)');
       p.strokeWeight(2);
@@ -79,13 +79,13 @@
       p.line(right.x, right.y, right.x + 3 * cellW, right.y + 3 * cellH);
       p.pop();
 
-      // Cellules gauche (M)
+      // Left cells (M)
       for (let r = 0; r < 3; r++) {
         for (let c = 0; c < 3; c++) {
           const rect = cellRectAt(left, r, c);
           const isHovered = hover && hover.side === 'left' && hover.r === r && hover.c === c;
-          // Mirror hover : si on hover (i,j) a gauche → (j,i) a droite
-          // ou (j,i) a droite → (i,j) a gauche
+          // Mirror hover: hover (i,j) on the left → (j,i) on the right
+          // or (j,i) on the right → (i,j) on the left
           let isMirrored = false;
           if (hover) {
             if (hover.side === 'left' && hover.r === c && hover.c === r) isMirrored = true;
@@ -113,7 +113,7 @@
         }
       }
 
-      // Cellules droite (M^T)
+      // Right cells (M^T)
       for (let r = 0; r < 3; r++) {
         for (let c = 0; c < 3; c++) {
           const rect = cellRectAt(right, r, c);
@@ -151,7 +151,7 @@
       p.fill('#8b8474');
       p.textSize(11);
       p.textAlign(p.CENTER, p.BOTTOM);
-      let msg = 'Survole une case pour voir sa correspondance dans la transposee.';
+      let msg = 'Hover a cell to see its match in the transpose.';
       if (hover) {
         const r = hover.r, c = hover.c;
         const val = hover.side === 'left' ? mat[r][c] : mat[c][r];

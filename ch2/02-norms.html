@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Norms — Chapter 2 §2</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html" class="current">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 2 · §2</div>
+      <h1>Norms</h1>
+      <p class="lede">
+        You think you know what "the size" of an arrow means, until you realize there are at least three reasonable ways to measure it. Three different geometries answering the same question. This section tells the story of why they all coexist, what each one sees, and why changing the norm comes down to changing the shape of what we call "the unit".
+      </p>
+
+      <p>
+        In the previous section we saw that the dot product of a vector with itself gives the square of its length. The word "length" slipped into the sentence without us pausing on it. Now we'll pause. What, exactly, is the length of an arrow? And more importantly — is there just one, or several?
+      </p>
+
+      <h2>Starting intuition: an arrow and its length</h2>
+
+      <p>
+        Set aside the axioms for now. A vector is an arrow starting from the origin. Its <strong>norm</strong> is <em>the distance between the tail and the tip</em> — exactly what you'd read off a ruler laid along the arrow.
+      </p>
+
+      <svg class="illu" viewBox="0 0 420 160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c2s2-u" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+        </defs>
+        <!-- Brace under the arrow -->
+        <path d="M 60 100 q 0 12 12 12 l 130 0 q 12 0 12 12 q 0 -12 12 -12 l 130 0 q 12 0 12 -12" fill="none" stroke="#1e5a7a" stroke-width="1.3"/>
+        <text x="218" y="148" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" font-style="italic" text-anchor="middle">‖u‖ = distance from O to the tip</text>
+        <!-- The arrow -->
+        <line x1="60" y1="80" x2="370" y2="80" stroke="#b8431f" stroke-width="2.6" marker-end="url(#arrow-c2s2-u)"/>
+        <text x="215" y="62" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#b8431f" font-style="italic" text-anchor="middle">u</text>
+        <!-- Origin and tip -->
+        <circle cx="60" cy="80" r="3.5" fill="#1c1a15"/>
+        <text x="50" y="78" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1c1a15" text-anchor="end">O</text>
+        <circle cx="370" cy="80" r="3.5" fill="#b8431f"/>
+        <text x="380" y="78" font-family="Inter, sans-serif" font-size="11" fill="#8b8474">tip</text>
+      </svg>
+
+      <p>
+        Nothing mysterious here. Everything we'll build in this section is just an extension of that idea: we'll give it rules, and then we'll discover that there are several ways to honor them.
+      </p>
+
+      <h2>How to compute it: Pythagoras</h2>
+
+      <p>
+        In 2D, a vector $u = (u_x, u_y)$ is the arrow that goes from the origin to the point $(u_x, u_y)$. That arrow is the <em>hypotenuse</em> of a right triangle whose two sides are $u_x$ (horizontal) and $u_y$ (vertical). Pythagoras' theorem gives the answer directly:
+      </p>
+
+      <svg class="illu" viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c2s2-pyth" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+        </defs>
+        <!-- Triangle right angle at bottom right -->
+        <line x1="80" y1="220" x2="280" y2="220" stroke="#1c1a15" stroke-width="1.6"/>
+        <line x1="280" y1="220" x2="280" y2="80" stroke="#1c1a15" stroke-width="1.6"/>
+        <!-- Hypotenuse = u vector -->
+        <line x1="80" y1="220" x2="280" y2="80" stroke="#b8431f" stroke-width="2.6" marker-end="url(#arrow-c2s2-pyth)"/>
+        <!-- Right angle marker -->
+        <polyline points="272,220 272,212 280,212" fill="none" stroke="#1c1a15" stroke-width="1.2"/>
+        <!-- Labels -->
+        <text x="180" y="240" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1c1a15" font-style="italic" text-anchor="middle">uₓ</text>
+        <text x="295" y="155" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1c1a15" font-style="italic">u_y</text>
+        <text x="160" y="135" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#b8431f" font-style="italic">‖u‖</text>
+        <!-- O and tip -->
+        <circle cx="80" cy="220" r="3.5" fill="#1c1a15"/>
+        <text x="68" y="240" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1c1a15" text-anchor="end">O</text>
+        <circle cx="280" cy="80" r="3.5" fill="#b8431f"/>
+        <text x="290" y="68" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#b8431f">tip (uₓ, u_y)</text>
+      </svg>
+      <p class="illu-caption">The vector u is the hypotenuse of a right triangle with sides uₓ and u_y. Pythagoras gives ‖u‖² = uₓ² + u_y².</p>
+
+      $$\|u\|^2 = u_x^2 + u_y^2 \quad \Longrightarrow \quad \|u\| = \sqrt{u_x^2 + u_y^2}$$
+
+      <p>
+        In 3D, you stack two right triangles on top of each other, and the formula gains one more term. In dimension $n$, it's the same: take the root of the sum of the squares of the components. It's exactly the formula everyone has known since middle school, simply extended to whatever dimension you want.
+      </p>
+
+      <h2>Notation convention</h2>
+
+      <p>
+        A small clarification that avoids a lot of confusion later. When you write $|v|$ or $\|v\|$ <strong>without a subscript</strong>, you're <em>always</em> talking about the Euclidean norm — Pythagoras's, the one matching the true geometric length of the arrow. It's the default norm, the primary meaning of the word "length".
+      </p>
+
+      <p>
+        The two other norms we're about to meet are written with a subscript: $\|v\|_1$ for the 1-norm, $\|v\|_\infty$ for the infinity norm. When no subscript appears, it's the 2-norm doing the talking.
+      </p>
+
+      <h2>Axiomatic definition</h2>
+
+      <p>
+        If you want to understand why there are several norms and not just one, you have to step away from the arrow picture and formalize. A <em>norm</em> is a function that takes a vector and returns a non-negative real number. But not any function: it needs to behave the way a measure of size ought to. Three rules, called <em>axioms</em>:
+      </p>
+
+      <p>
+        <strong>(a) Positivity.</strong> The size of a vector is always non-negative, and it equals zero <em>only</em> for the zero vector.
+      </p>
+
+      $$\|v\| \geq 0 \text{ for every } v, \qquad \|v\| = 0 \Leftrightarrow v = 0$$
+
+      <p>
+        Obvious enough: only the arrow shrunk down to a point has size zero. Any other arrow, however small, has strictly positive size. Otherwise the word "size" loses all meaning.
+      </p>
+
+      <p>
+        <strong>(b) Homogeneity.</strong> If you multiply a vector by a scalar $k$, its size is multiplied by the absolute value of $k$.
+      </p>
+
+      $$\|k \cdot v\| = |k| \times \|v\|$$
+
+      <p>
+        Doubling an arrow doubles its size. Multiplying it by $-3$ triples its size — not divides it or makes it negative. The absolute value is crucial: a minus sign flips the arrow but doesn't change its length. Orientation, yes; size, no.
+      </p>
+
+      <p>
+        <strong>(c) Triangle inequality.</strong> The size of the sum of two vectors is always less than or equal to the sum of the sizes.
+      </p>
+
+      $$\|u + v\| \leq \|u\| + \|v\|$$
+
+      <p>
+        This is the vector version of the saying "the straight line is the shortest path". If you stick two arrows tip-to-tail, the direct trip from the origin to the final endpoint is shorter — or at worst equal to — the two trips combined. Equality only occurs when the two arrows point in exactly the same direction.
+      </p>
+
+      <p>
+        These three rules capture what we expect from a measure of size. Any function that respects them deserves to be called a norm. And there are infinitely many. We'll see the three main ones.
+      </p>
+
+      <h2>1-norm: the taxicab distance</h2>
+
+      <p>
+        The first norm is computed by summing the absolute values of the components — no squaring, no square root, nothing else.
+      </p>
+
+      $$\|v\|_1 = |v_1| + |v_2| + \dots + |v_n|$$
+
+      <p>
+        Example: for $v = (3, 4)$, the 1-norm equals $3 + 4 = 7$. For $v = (-2, 5, 1)$, it equals $2 + 5 + 1 = 8$. Signs disappear, and each component contributes independently.
+      </p>
+
+      <p>
+        The image that fits this norm is a taxi in Manhattan. A grid city, with streets running perfectly north-south and east-west. The taxi can't cut diagonally through the buildings: it has to drive along the streets. To go from corner $(0, 0)$ to corner $(3, 4)$, it has to travel 3 blocks horizontally <em>plus</em> 4 blocks vertically — 7 blocks in total. The order doesn't matter — the distance traveled is the same.
+      </p>
+
+      <p>
+        That's exactly what the 1-norm is. You accumulate the gaps dimension by dimension, never taking the diagonal shortcut. Hence its other names: <em>taxicab norm</em>, <em>Manhattan norm</em>, <em>L1 norm</em>.
+      </p>
+
+      <h2>2-norm: Pythagoras, the true length</h2>
+
+      <p>
+        The second norm is the one we started with above: the square root of the sum of the squares of the components.
+      </p>
+
+      $$\|v\|_2 = \sqrt{v_1^2 + v_2^2 + \dots + v_n^2}$$
+
+      <p>
+        For $v = (3, 4)$, we compute $\sqrt{9 + 16} = \sqrt{25} = 5$. That's the famous 3-4-5 triangle from school, and the 5 is exactly the length of the hypotenuse — the straight-line, as-the-crow-flies distance from the origin to the point $(3, 4)$.
+      </p>
+
+      <p>
+        This is the norm matching the authentic geometric length. If you lay a ruler along the arrow, this is the number you read. Generalized Pythagoras simply propagates the idea to 3D, and then to dimension $n$ without any further drama.
+      </p>
+
+      <p>
+        This norm is also the one we met implicitly in the previous section: we saw that $u \cdot u = \|u\|^2$. In other words, $\|u\|_2 = \sqrt{u \cdot u}$. The dot product of a vector with itself produces exactly the square of the Euclidean length. The two notions are twins.
+      </p>
+
+      <h2>Infinity norm: the worst gap</h2>
+
+      <p>
+        The third norm doesn't sum anything at all. It looks at all the components and keeps only the largest in absolute value.
+      </p>
+
+      $$\|v\|_\infty = \max(|v_1|, |v_2|, \dots, |v_n|)$$
+
+      <p>
+        For $v = (3, 4)$, it's $\max(3, 4) = 4$. For $v = (-7, 2, 5)$, it's $\max(7, 2, 5) = 7$. All the other components are ignored; only the worst gap counts.
+      </p>
+
+      <p>
+        This norm answers a particular question: "how far does this vector stray from the origin, at worst, along a single dimension at a time?". If each component represents a deviation from an ideal value, the infinity norm tells you which dimension is the most problematic. The others could be perfect — it's the worst one that sums up the vector.
+      </p>
+
+      <p>
+        The name "infinity" comes from a larger family of norms parameterized by a number $p$. The 1-norm is the case $p = 1$, the Euclidean norm is the case $p = 2$, and as $p$ tends to infinity, the largest component ends up dominating the whole sum — it alone remains. Hence the symbol $\infty$.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Three norms, three different geometries answering the same question.</strong> And each time, what changes isn't what we're measuring, but the shape we give to "the unit of length".
+      </p>
+
+      <h2>Unit spheres: seeing the norms</h2>
+
+      <p>
+        The best way to grasp the difference between these three norms is to draw their <em>unit sphere</em> — the set of vectors whose norm is exactly 1. For the Euclidean norm in 2D, you get back the classic circle. For the other two, the shape is completely different.
+      </p>
+
+      <svg class="illu" viewBox="0 0 660 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- Trois panneaux : norme 2 (cercle), norme 1 (losange), norme infinie (carré) -->
+        <!-- Panel 1 : norme 2 -->
+        <g transform="translate(110, 110)">
+          <text x="0" y="-90" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" text-anchor="middle">2-norm (Euclidean)</text>
+          <!-- Axes -->
+          <line x1="-75" y1="0" x2="75" y2="0" stroke="#1c1a15" stroke-width="1"/>
+          <line x1="0" y1="-75" x2="0" y2="75" stroke="#1c1a15" stroke-width="1"/>
+          <!-- Cercle unité -->
+          <circle cx="0" cy="0" r="60" fill="none" stroke="#b8431f" stroke-width="2.2"/>
+          <text x="0" y="100" font-family="Inter, sans-serif" font-size="11" fill="#8b8474" text-anchor="middle">circle</text>
+          <text x="0" y="116" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15" font-style="italic" text-anchor="middle">x² + y² = 1</text>
+        </g>
+        <!-- Panel 2 : norme 1 -->
+        <g transform="translate(330, 110)">
+          <text x="0" y="-90" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" text-anchor="middle">1-norm (Manhattan)</text>
+          <line x1="-75" y1="0" x2="75" y2="0" stroke="#1c1a15" stroke-width="1"/>
+          <line x1="0" y1="-75" x2="0" y2="75" stroke="#1c1a15" stroke-width="1"/>
+          <!-- Losange -->
+          <polygon points="0,-60 60,0 0,60 -60,0" fill="none" stroke="#b8431f" stroke-width="2.2"/>
+          <text x="0" y="100" font-family="Inter, sans-serif" font-size="11" fill="#8b8474" text-anchor="middle">diamond</text>
+          <text x="0" y="116" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15" font-style="italic" text-anchor="middle">|x| + |y| = 1</text>
+        </g>
+        <!-- Panel 3 : norme infinie -->
+        <g transform="translate(550, 110)">
+          <text x="0" y="-90" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" text-anchor="middle">infinity norm (max)</text>
+          <line x1="-75" y1="0" x2="75" y2="0" stroke="#1c1a15" stroke-width="1"/>
+          <line x1="0" y1="-75" x2="0" y2="75" stroke="#1c1a15" stroke-width="1"/>
+          <!-- Carré -->
+          <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#b8431f" stroke-width="2.2"/>
+          <text x="0" y="100" font-family="Inter, sans-serif" font-size="11" fill="#8b8474" text-anchor="middle">square</text>
+          <text x="0" y="116" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15" font-style="italic" text-anchor="middle">max(|x|, |y|) = 1</text>
+        </g>
+      </svg>
+      <p class="illu-caption">Three unit spheres in 2D, three different shapes: changing the norm is changing the shape we call "round".</p>
+
+      <p>
+        Three shapes, three answers to the question "which vectors have size 1?". The circle is round because Pythagoras treats all directions on equal footing. The diamond has its corners on the axes because the 1-norm "spends" its whole unit on a single direction when you align with an axis — whereas on the diagonal, you have to split 0.5 across each component, which uses up the same unit faster. The square has its sides parallel to the axes because the infinity norm ignores everything except the dominant component: as long as no component exceeds 1, you're inside the unit sphere.
+      </p>
+
+      <p>
+        This picture is extraordinarily useful to remember, because it sums up everything. <strong>Changing the norm is changing the shape we call "round".</strong> The notions of "close", "small", and "unit" shift along with the shape. The diamond is the unit when you ride in a taxi; the circle is the unit when you fly; the square is the unit when you look at the worst dimension.
+      </p>
+
+      <h2>Inequalities between the norms</h2>
+
+      <p>
+        On the same vector, the three norms don't give the same number, but they always obey a fixed order:
+      </p>
+
+      $$\|v\|_\infty \leq \|v\|_2 \leq \|v\|_1$$
+
+      <p>
+        You can verify it on $v = (3, 4)$: we get $4 \leq 5 \leq 7$. The infinity norm gives the smallest number, the Euclidean norm an intermediate one, the 1-norm the largest. It's not a coincidence — it tells the same story as the three shapes above.
+      </p>
+
+      <p>
+        Three ways to tell the same journey from the origin to $(3, 4)$:
+      </p>
+
+      <ul>
+        <li>The <strong>urban walker</strong> (1-norm) follows the streets, takes the longest route: 7.</li>
+        <li>The <strong>crow</strong> (2-norm) flies in a straight line, takes the shortcut: 5.</li>
+        <li>A <strong>single axis</strong> (infinity norm) only looks at the dominant dimension: 4.</li>
+      </ul>
+
+      <p>
+        The taxi always takes a detour relative to the bird's flight, which itself covers more than any single one of its dimensions. The inequality is strict as soon as at least two components are non-zero; when the vector aligns with an axis, all three norms coincide.
+      </p>
+
+      <h2>What norms are for</h2>
+
+      <p>
+        You might think all this is just a classification exercise, but norms show up everywhere whenever you want to quantify something in a vector space.
+      </p>
+
+      <p>
+        <strong>Measuring a distance.</strong> The distance between two points $u$ and $v$ is simply the norm of their difference: $\mathrm{distance}(u, v) = \|u - v\|$. Depending on the norm chosen, that's a crow-flight distance, a city-grid distance, or the worst gap dimension by dimension. Three valid answers, picked according to what you want to measure.
+      </p>
+
+      <p>
+        <strong>Measuring an error.</strong> In statistics and machine learning, you often compare a prediction to a ground truth, and quantify the gap with a norm. The 2-norm gives the famous <em>least-squares method</em>, which heavily penalizes large errors. The 1-norm is more robust to outliers. The infinity norm guarantees that no dimension has too large an error. The choice of norm determines what the algorithm considers "unacceptable".
+      </p>
+
+      <p>
+        <strong>Normalizing a vector.</strong> When you want to keep a direction but forget the length, you divide a vector by its norm. The result is a <em>unit</em> vector — same direction, length 1. This is the basic operation in 3D graphics for surface normal vectors, in physics for separating a direction from an intensity, and in data analysis for comparing objects only by their orientation.
+      </p>
+
+      <p>
+        <strong>Convergence criterion.</strong> In any iterative algorithm that hunts for a solution little by little, you need a moment to stop. The general rule reads: "while $\|x_{n+1} - x_n\| > \varepsilon$, continue". When the gap between two iterations becomes tiny, you've converged. The norm quantifies that "almost no more movement".
+      </p>
+
+      <p>
+        <strong>Regularization in learning.</strong> To stop a model from fitting too closely to its training data, you add a penalty on the size of its parameters. A 1-norm penalty (called <em>Lasso</em>) tends to drive some parameters all the way to zero, simplifying the model. A 2-norm penalty (<em>Ridge</em>) keeps parameters small without zeroing them out entirely. Two norms, two profoundly different behaviors — once again, the choice of norm encodes a geometric preference.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Tangent · The bridge with the dot product</span>
+        <p>
+          We glossed over an equality earlier that deserves underlining: the Euclidean norm of a vector is exactly the square root of its dot product with itself, that is $\|u\|_2 = \sqrt{u \cdot u}$. This isn't a coincidence — it's the bridge between the previous section and this one. The dot product that you were computing without quite seeing what it was for, applied to a vector with itself, produces the square of a true length. All of Euclidean geometry, in fact, springs from this simple operation. The norm is the <em>child</em> of the dot product — its "self-applied" version. And that's also why the Euclidean norm is the "default" norm: it's the only one of the three built from a dot product. The 1-norm and infinity norm don't share that ancestry — they live their own lives without needing a two-input operation to exist.
+        </p>
+      </aside>
+
+      <hr class="ornament" />
+
+      <h2>Key takeaways</h2>
+
+      <p>
+        A norm answers the question "what's the size of this arrow?", but there's no single answer. Four points to keep in mind:
+      </p>
+
+      <ol>
+        <li><strong>Three main norms.</strong> 1-norm: sum of absolute values, taxicab distance. 2-norm: root of the sum of squares, Euclidean distance, Pythagoras' true length. Infinity norm: the largest component in absolute value, the worst gap.</li>
+        <li><strong>Default notation.</strong> When you write $|v|$ or $\|v\|$ with no subscript, you mean the Euclidean norm. That's the convention everywhere.</li>
+        <li><strong>Three shared axioms.</strong> Positivity, homogeneity, triangle inequality. Any function satisfying them is a valid norm.</li>
+        <li><strong>Three different geometries.</strong> Circle, diamond, square — each norm draws its own unit sphere, and choosing a norm is choosing the shape of what we call "round". Context dictates which one is relevant.</li>
+      </ol>
+
+      <p>
+        We can now move on to the next question, which combines the dot product and the Euclidean norm: if $u \cdot v = \|u\| \times \|v\| \times \cos(\theta)$, we have a direct formula for extracting the angle between two vectors from their coordinates. That's the subject of the next section.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="01-dot-product.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">← §1 — Dot product</span>
+        </a>
+        <a class="next" href="03-cosine.html">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">§3 — Cosine →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

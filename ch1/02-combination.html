@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linear combination — Chapter 1 §2</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html" class="current">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 1 · §2</div>
+      <h1>Linear combination</h1>
+      <p class="lede">
+        If linear algebra had a single idea to defend, this would be it. The <em>linear combination</em> isn't one concept among many: it's <strong>the</strong> central notion, the one from which everything else flows. Basis, span, transformations, matrices, systems of equations, determinant — each of these objects will, in one way or another, be a story told about linear combinations. Worth meeting it properly.
+      </p>
+
+      <p>
+        We saw in the previous section that a vector can do two things, and only two: it can be <em>added</em> to another vector, and it can be <em>scaled</em> by a number. These two gestures are the entirety of vector algebra. Everything else is built from those two bricks. The linear combination is, very precisely, the name we give to that assembly.
+      </p>
+
+      <h2>The definition</h2>
+
+      <p>
+        Take a family of vectors $v_1, v_2, \dots, v_k$ and a family of numbers $a_1, a_2, \dots, a_k$. The <strong>linear combination</strong> of these vectors with these coefficients is the vector you get by scaling each one by its coefficient, then adding everything together:
+      </p>
+
+      $$a_1 \cdot v_1 + a_2 \cdot v_2 + \dots + a_k \cdot v_k$$
+
+      <p>
+        That's all. Read that line slowly. You see two operations, both already familiar: each vector gets its own individual scaling; then a global addition gathers the results. The linear combination invents nothing — it <em>chains</em> the two fundamental operations of the vector. It's their natural composition.
+      </p>
+
+      <p>
+        You can combine two vectors, or three, or a thousand. The coefficients can be positive, negative, zero, integer, or fractional. The result is always a vector of the same dimension as the input vectors — the addition rule requires that they all have the same size, and scaling doesn't change that size.
+      </p>
+
+      <h2>The image that helps: a recipe</h2>
+
+      <p>
+        A picture is often worth more than a formula, and this one is especially good. Imagine your vectors are <em>ingredients</em>, and your coefficients are the <em>amounts</em>. The linear combination is then a <strong>recipe</strong>.
+      </p>
+
+      $$\text{recipe} = 10 \cdot \text{flour} + (-2) \cdot \text{salt} + 0.5 \cdot \text{sugar}$$
+
+      <p>
+        Each ingredient brings its own contribution. The amounts say <em>how much</em> of each ingredient goes into the final dish. A negative amount is ingredient you remove — perfectly legal in algebra, even if it takes some imagination in cooking. A zero amount is an ingredient you don't use at all. And the final dish, the resulting vector, is entirely determined by these two choices: <em>which ingredients</em> and <em>how much of each</em>.
+      </p>
+
+      <p>
+        The metaphor holds up in every direction. Change the amounts, you change the dish. Swap out an ingredient, and you change the very nature of what you can cook. The family of ingredients defines your universe of possible recipes; the amounts pick one specific recipe within that universe. We'll see this double choice again very soon, under different names.
+      </p>
+
+      <h2>2D visualization: sweeping the plane</h2>
+
+      <p>
+        Let's drop down to 2D to see this with our eyes. Take two particularly simple vectors: $u$, pointing one unit to the right, and $v$, pointing one unit up. Now build the linear combination $\alpha \cdot u + \beta \cdot v$, where $\alpha$ and $\beta$ are two scalars we leave free.
+      </p>
+
+      <p>
+        What happens as we vary $\alpha$ and $\beta$? For each choice of coefficients, we get one specific point of the plane. Scaling $u$ by $\alpha$ moves us $\alpha$ units horizontally. Scaling $v$ by $\beta$ moves us $\beta$ units vertically. The addition combines the two displacements. The result: the vector $\alpha \cdot u + \beta \cdot v$ lands on the point whose coordinates are exactly $(\alpha, \beta)$.
+      </p>
+
+      <svg class="illu" viewBox="0 0 380 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c1s2-u" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+          <marker id="arrow-c1s2-v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1e5a7a"/>
+          </marker>
+          <marker id="arrow-c1s2-axis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1c1a15"/>
+          </marker>
+        </defs>
+        <!-- Axes -->
+        <line x1="60" y1="250" x2="370" y2="250" stroke="#1c1a15" stroke-width="1.4" marker-end="url(#arrow-c1s2-axis)"/>
+        <line x1="60" y1="260" x2="60" y2="20" stroke="#1c1a15" stroke-width="1.4" marker-end="url(#arrow-c1s2-axis)"/>
+        <!-- Basis vectors u and v -->
+        <line x1="60" y1="250" x2="120" y2="250" stroke="#b8431f" stroke-width="2.4" marker-end="url(#arrow-c1s2-u)"/>
+        <text x="95" y="270" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#b8431f" font-style="italic">u</text>
+        <line x1="60" y1="250" x2="60" y2="190" stroke="#1e5a7a" stroke-width="2.4" marker-end="url(#arrow-c1s2-v)"/>
+        <text x="40" y="218" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" font-style="italic">v</text>
+        <!-- alpha and beta point -->
+        <line x1="260" y1="250" x2="260" y2="90" stroke="#8b8474" stroke-width="1.2" stroke-dasharray="4 4"/>
+        <line x1="60" y1="90" x2="260" y2="90" stroke="#8b8474" stroke-width="1.2" stroke-dasharray="4 4"/>
+        <!-- Point alpha u + beta v -->
+        <circle cx="260" cy="90" r="4" fill="#6e2716"/>
+        <text x="270" y="86" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#6e2716" font-style="italic">α·u + β·v</text>
+        <!-- alpha label on x axis -->
+        <text x="260" y="270" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#b8431f" font-style="italic" text-anchor="middle">α</text>
+        <text x="42" y="94" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" font-style="italic" text-anchor="end">β</text>
+        <!-- Axis labels at end -->
+        <text x="370" y="244" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1c1a15" font-style="italic" text-anchor="end">u</text>
+        <text x="68" y="26" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1c1a15" font-style="italic">v</text>
+        <!-- Origin -->
+        <circle cx="60" cy="250" r="2.5" fill="#1c1a15"/>
+        <text x="48" y="266" font-family="Inter, sans-serif" font-size="11" fill="#8b8474">o</text>
+      </svg>
+      <p class="illu-caption">For each choice of coefficients (α, β), the combination α·u + β·v reaches one specific point in the plane.</p>
+
+      <p>
+        And what if we let $\alpha$ and $\beta$ range over every real number imaginable? Then we sweep out <em>the entire plane</em>. Every point in the plane, from nearest to farthest, can be reached as a linear combination of $u$ and $v$. No point is out of reach. With these two vectors and their amounts, we can land anywhere. That's a strong claim, and it deserves a moment: two well-chosen arrows are enough to generate a whole plane.
+      </p>
+
+      <h2>The bridge to coordinates: the standard basis</h2>
+
+      <p>
+        The choice of $u$ and $v$ we just made — one step right, one step up — has a name. We call them the <strong>standard basis vectors</strong>, and we traditionally write them $e_1$ and $e_2$ in 2D, $e_1, e_2, e_3$ in 3D, and so on. They are the "unit" vectors aligned with each axis of the coordinate system.
+      </p>
+
+      $$e_1 = [1, 0, 0], \quad e_2 = [0, 1, 0], \quad e_3 = [0, 0, 1]$$
+
+      <p>
+        Now take an arbitrary vector, say one with coordinates $(x, y, z)$, and try to write it as a linear combination of the $e_i$. The result falls out by itself:
+      </p>
+
+      $$[x, y, z] = x \cdot e_1 + y \cdot e_2 + z \cdot e_3$$
+
+      <p>
+        Look at what these coefficients say. <em>They are the coordinates of the vector</em>. Not some derived number, not some clever transformation: <em>the same numbers, unchanged, in the same order</em>. This isn't a computational accident; it's a structural identity between two ways of describing the same object. Coordinates aren't a label stuck onto a vector from the outside — they <em>are</em> the amounts in the recipe that builds it out of the basis ingredients.
+      </p>
+
+      <p class="pull-quote">
+        <strong>The coordinates of a vector are nothing other than the coefficients of a linear combination of the basis vectors.</strong> Writing <code>[3, 4]</code> is shorthand for "three doses of $e_1$, four doses of $e_2$." The vector and its recipe are the same thing.
+      </p>
+
+      <p>
+        This equivalence is one of the most useful bridges in the course. When we later reason about complicated geometric transformations, we'll use it constantly: knowing where each $e_i$ maps to under a transformation is enough to know where <em>any</em> vector goes, by a simple linear combination. But we have time. What matters here is to see that a notation as ordinary as <code>[3, 4]</code> already hides a linear combination.
+      </p>
+
+      <h2>The span: everything you can reach</h2>
+
+      <p>
+        We can now give a name to the idea we brushed against in the 2D visualization. For a given family of vectors, the set of <em>all</em> possible linear combinations — that is, the set of points reachable by varying the coefficients freely — is called the <strong>span</strong> of those vectors.
+      </p>
+
+      <p>
+        You can think of it as the "reach" or the "space generated by" — but the English word <em>span</em> has become so standard that we keep it. It's the direct translation of the question: "with these ingredients, what can I cook?"
+      </p>
+
+      <p>
+        With a single nonzero vector, say a horizontal arrow, you can scale it by any number. Result: you get every horizontal arrow, long or short, in one direction or the other. The span of a single vector is <em>the line</em> that contains it, passing through the origin.
+      </p>
+
+      <p>
+        With two vectors pointing in genuinely different directions — like $e_1$ and $e_2$ above — we saw that the span becomes <em>the entire plane</em>. Every point becomes reachable.
+      </p>
+
+      <p>
+        With three well-chosen vectors in space, the span becomes <em>all of 3D space</em>. And so on. The span is what you can <strong>generate</strong> with the bricks you've been given: it measures the richness of the family.
+      </p>
+
+      <div class="math">span(u)        = the line through u
+span(u, v)     = the plane, if u and v are not aligned
+span(u, v, w)  = 3D space, if w lies outside the u-v plane</div>
+
+      <p>
+        You can see the important nuance creeping in: these results assume that each vector contributes <em>a genuinely new direction</em>. What happens when that's not the case?
+      </p>
+
+      <h2>Linear independence: who actually contributes something</h2>
+
+      <p>
+        Imagine two arrows pointing in the <em>same</em> direction — one is just longer than the other. You can take linear combinations of them, scale each, add them. But no matter what you try, you stay stuck on the line they both share. The second arrow adds nothing the first couldn't already do on its own (up to scaling). It's <em>redundant</em>.
+      </p>
+
+      <p>
+        In that case, we say the two vectors are <strong>linearly dependent</strong>: one is a linear combination of the other (here, just a multiple). Conversely, if no vector in the family can be written as a linear combination of the others, the family is said to be <strong>linearly independent</strong>.
+      </p>
+
+      <p>
+        The intuition fits in one sentence: a family is independent if <em>each vector contributes a direction the others didn't already cover</em>. Remove any one of them, and the span strictly shrinks. No one is excess. No one is redundant.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Beyond arrows: why everything becomes a vector</span>
+        <p>
+          The definition by linear combination is so abstract that it applies to objects that don't look anything like arrows. Polynomials can be viewed as vectors: we know how to add them, we know how to multiply them by a number, and the linear combination of two polynomials is still a polynomial. Functions too: the sum of two functions is still a function, multiplying a function by a number stays a function.
+        </p>
+        <p>
+          As a result, everything we learn here — span, independence, basis — carries over directly to those other worlds. The linear combination is the universal staple that binds together apparently unrelated domains. That's why linear algebra is one of the most widely used languages in applied mathematics, physics, machine learning, and signal processing. The framework is everywhere.
+        </p>
+      </aside>
+
+      <p>
+        This notion of independence will become very concrete later in the course. It will let us define what a <em>basis</em> is: a family that's both <em>independent</em> (no one is excess) and <em>generating</em> (the span covers the whole space). Not too many vectors, not too few. The right dosage. The standard basis $(e_1, e_2, e_3, \dots)$ is the model example, but it's far from the only possible one.
+      </p>
+
+      <h2>Key takeaways</h2>
+
+      <p>
+        A linear combination is a sum of vectors that have been scaled first: $a_1 \cdot v_1 + a_2 \cdot v_2 + \dots + a_k \cdot v_k$. It's the natural chaining of the two fundamental vector operations — addition and scaling — and that's why it shows up everywhere in linear algebra. Every more complex structure is built from this brick.
+      </p>
+
+      <p>
+        Geometrically, a linear combination sweeps out a certain space as we vary the coefficients. That space, the set of reachable vectors, is called the <strong>span</strong> of the family. Depending on the available directions, the span can be a line, a plane, or a higher-dimensional space.
+      </p>
+
+      <p>
+        The coordinates of a vector are, in essence, the coefficients of its linear combination in the standard basis. That's the bridge that makes lists of numbers so convenient: writing <code>[3, 4]</code> is already choosing a recipe.
+      </p>
+
+      <p>
+        A family of vectors can contain redundancies: if one vector can be written as a linear combination of the others, it doesn't enlarge the span. We call this <strong>linear dependence</strong>. Conversely, a family in which no one is redundant is <strong>linearly independent</strong>. These two notions, combined with span, are the building blocks we'll use to define basis, dimension, and rank later in the course.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Further reading</span>
+        <p>
+          <strong>3blue1brown · Essence of Linear Algebra, ep. 2 — Linear combinations, span, basis.</strong>
+          The episode visually shows how two vectors sweep out the entire plane as their coefficients vary — exactly the span intuition we're building here.
+          <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+      </aside>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="01-three-ways.html" title="← §1 — Three ways of seeing a vector">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">← §1 — Three ways of seeing a vector</span>
+        </a>
+        <a class="next" href="03-interpolation.html" title="§3 — Linear interpolation →">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">§3 — Linear interpolation →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

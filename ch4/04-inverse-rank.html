@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inverse and rank — Chapter 4 §4</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html" class="current">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 4 · §4</div>
+      <h1>Inverse and rank</h1>
+      <p class="lede">
+        A transformation, as we've seen, warps space. Now we're going to look for the one that <em>undoes</em> that warp — the matrix that replays the film in reverse. And while we're at it, we'll learn to measure how much space a transformation actually kept alive after passing through it. Two related ideas: the inverse and the rank. They talk to each other so much that we'll handle them together.
+      </p>
+
+      <p>
+        The determinant already answered a binary question: does the transformation collapse space, or not? But knowing that we <em>can</em> reverse the journey isn't enough — we still need to explain <em>how</em>. That's the first half of this section. The second generalizes the question: even when the matrix isn't invertible, we can precisely quantify what survives the transformation, and that's what rank measures.
+      </p>
+
+      <h2>Undoing the transformation</h2>
+
+      <p>
+        Let's start by stating the thing cleanly. Let $A$ be a square matrix. The <strong>inverse</strong> of $A$, written $A^{-1}$, is the matrix that, composed with $A$, gives back the identity. Concretely:
+      </p>
+
+      $$A \cdot A^{-1} = A^{-1} \cdot A = I$$
+
+      <p>
+        Recall that the identity $I$ is the transformation that does nothing — every vector stays where it is. Asking that the composition of $A$ and $A^{-1}$ yield $I$ is exactly saying that $A^{-1}$ cancels the effect of $A$. If $A$ sends a vector $v$ to $A \cdot v$, then $A^{-1}$ brings $A \cdot v$ back to precisely where it started. It's a recipe for going in reverse.
+      </p>
+
+      <p>
+        Notice that we impose both equalities — <em>left</em> and <em>right</em>. In general, the order of factors matters for matrices: $A \cdot B$ and $B \cdot A$ are rarely the same thing. But for the inverse, we're lucky enough that both compositions coincide.
+      </p>
+
+      <h2>The geometric picture: twist, then untwist</h2>
+
+      <p>
+        If you picture $A$ as a grid that's been stretched, sheared, and rotated, then $A^{-1}$ is exactly the transformation that puts that grid back into its original state. Not approximately: <em>exactly</em>. Composing the two leaves space strictly motionless.
+      </p>
+
+      <p>
+        This image tells you immediately when the inverse can't exist. If $A$ collapses space — say, by flattening the whole plane onto a single line — then several different starting points ended up at the same destination. There's no way, looking at the destination, to guess where it came from. Information is lost. No transformation $A^{-1}$ can reconstruct what's been destroyed.
+      </p>
+
+      <p>
+        But "collapsing at least one dimension" is precisely what a <strong>zero determinant</strong> signals. So we have a direct equivalence:
+      </p>
+
+      $$A \text{ is invertible} \quad \Leftrightarrow \quad \det(A) \neq 0$$
+
+      <p>
+        The determinant acts as a detector. As long as it stays nonzero, the final volume isn't flat, no information has been lost, and the inverse transformation exists. We'll also say, in the language of rank, that the matrix has <strong>full rank</strong> — that it makes use of every available dimension on output. The same truths phrased from different angles.
+      </p>
+
+      <h2>The algorithm: Gauss-Jordan on the augmented matrix</h2>
+
+      <p>
+        Now we want to compute $A^{-1}$. The trick is nicely economical: we'll reuse the Gauss-Jordan algorithm we already know, without adding anything to it — we just apply it to a slightly different object.
+      </p>
+
+      <p>
+        We tack the identity matrix $I$ onto the right of $A$. We get what's called the <strong>augmented matrix</strong>, written $[A | I]$, which has twice as many columns as $A$. The vertical bar is just a visual landmark to remind us that the two halves play distinct roles. On the left, the matrix we want to invert. On the right, the starting frame, untouched.
+      </p>
+
+      $$[A | I] = \left( \begin{array}{cc|cc} a & b & 1 & 0 \\ c & d & 0 & 1 \end{array} \right)$$
+
+      <p>
+        Now we apply Gauss-Jordan elimination to the <em>rows</em> of this whole object, as if it were one big matrix. We normalize the pivots, we cancel the entries above and below the pivots, exactly as we did to solve a system. The only difference: every operation is applied <em>also</em> to the right half, which transforms accordingly.
+      </p>
+
+      <p>
+        When the left half has become the identity, the algorithm stops. At that point, by a small miracle we'll explain in a moment, the right half contains exactly $A^{-1}$.
+      </p>
+
+      $$[A | I] \xrightarrow{\text{Gauss-Jordan}} [I | A^{-1}]$$
+
+      <p class="pull-quote">
+        We reduce the left half to the identity. The right half, which started as the identity, becomes the inverse.
+      </p>
+
+      <h2>Why this miracle works</h2>
+
+      <p>
+        Every elementary row operation can be viewed as <em>left</em>-multiplication by a certain matrix. That matrix is called an <strong>elementary matrix</strong>: it's just the identity with the operation in question applied to it. To swap the first two rows of a matrix $M$, for example, we left-multiply $M$ by the identity with its first two rows interchanged.
+      </p>
+
+      <p>
+        The Gauss-Jordan algorithm consists of a long sequence of such operations. Say we apply $E_1$, then $E_2$, …, all the way through $E_k$. The result on the left half is:
+      </p>
+
+      $$E_k \cdot \dots \cdot E_2 \cdot E_1 \cdot A = I$$
+
+      <p>
+        And since the same operations are applied to the right half, which started as $I$, the result on the right half is:
+      </p>
+
+      $$E_k \cdot \dots \cdot E_2 \cdot E_1 \cdot I = E_k \cdot \dots \cdot E_2 \cdot E_1$$
+
+      <p>
+        But the equation above says precisely that the product $E_k \cdot \dots \cdot E_1$ is the inverse of $A$. That's the very definition: the matrix which, multiplied by $A$, gives the identity. The right half, having quietly accumulated all of these operations, therefore ends up containing $A^{-1}$.
+      </p>
+
+      <p>
+        We found the inverse <em>without ever looking for it directly</em>. We just recorded, in the right half, the sequence of moves that turn $A$ into $I$. That sequence, strung together, is exactly the transformation that undoes $A$.
+      </p>
+
+      <h2>A worked example, from start to finish</h2>
+
+      <p>
+        Take a concrete 2×2 matrix with no hidden tricks:
+      </p>
+
+      $$A = \begin{pmatrix} 2 & 1 \\ 5 & 3 \end{pmatrix}$$
+
+      <p>
+        Its determinant is $2 \times 3 - 1 \times 5 = 1$, nonzero, so $A$ is invertible. We tack the identity onto the right:
+      </p>
+
+      $$[A | I] = \left( \begin{array}{cc|cc} 2 & 1 & 1 & 0 \\ 5 & 3 & 0 & 1 \end{array} \right)$$
+
+      <p>
+        Step one: bring a pivot equal to 1 into position (0, 0). Divide the first row by 2.
+      </p>
+
+      $$L_1 \leftarrow L_1 / 2 : \quad \left( \begin{array}{cc|cc} 1 & 0.5 & 0.5 & 0 \\ 5 & 3 & 0 & 1 \end{array} \right)$$
+
+      <p>
+        Step two: cancel the entry at (1, 0). Subtract 5 times the first row from the second.
+      </p>
+
+      $$L_2 \leftarrow L_2 - 5 \cdot L_1 : \quad \left( \begin{array}{cc|cc} 1 & 0.5 & 0.5 & 0 \\ 0 & 0.5 & -2.5 & 1 \end{array} \right)$$
+
+      <p>
+        Step three: normalize the pivot at (1, 1). Divide the second row by 0.5 — that is, multiply it by 2.
+      </p>
+
+      $$L_2 \leftarrow L_2 / 0.5 : \quad \left( \begin{array}{cc|cc} 1 & 0.5 & 0.5 & 0 \\ 0 & 1 & -5 & 2 \end{array} \right)$$
+
+      <p>
+        Final step: cancel the entry at (0, 1). Subtract 0.5 times the second row from the first.
+      </p>
+
+      $$L_1 \leftarrow L_1 - 0.5 \cdot L_2 : \quad \left( \begin{array}{cc|cc} 1 & 0 & 3 & -1 \\ 0 & 1 & -5 & 2 \end{array} \right)$$
+
+      <p>
+        The left half has become the identity. The right half has accumulated the inverse. We read off:
+      </p>
+
+      $$A^{-1} = \begin{pmatrix} 3 & -1 \\ -5 & 2 \end{pmatrix}$$
+
+      <p>
+        Direct sanity check: multiply $A$ by $A^{-1}$ to make sure we land on the identity.
+      </p>
+
+      $$A \cdot A^{-1} = \begin{pmatrix} 2 & 1 \\ 5 & 3 \end{pmatrix} \cdot \begin{pmatrix} 3 & -1 \\ -5 & 2 \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$$
+
+      <p>
+        The identity, with no residue. The inverse is correct.
+      </p>
+
+      <hr class="ornament" />
+
+      <h2>Rank: what survives the transformation</h2>
+
+      <p>
+        Now we move on to a finer question, one that really earns its keep for matrices that are <em>not</em> invertible, and that generalizes everything we've just seen. When a transformation collapses space, it doesn't do so arbitrarily. It preserves certain directions and eliminates others. The <strong>rank</strong> is the number that measures precisely how many dimensions survive the trip.
+      </p>
+
+      <p>
+        To define it properly, we need names for three spaces associated with a matrix.
+      </p>
+
+      <p>
+        The first is the <strong>domain</strong>. It's the source space, the place where vectors live <em>before</em> we apply the matrix. For a matrix with $m$ columns, the domain is the entire $m$-dimensional space — the set of all possible inputs.
+      </p>
+
+      <p>
+        The second is the <strong>image</strong> of the matrix. It's the set of all vectors you can get as output — that is, all $A \cdot v$ as $v$ ranges over the domain. If $A$ flattens three-dimensional space onto a plane, then its image is that plane. If $A$ preserves all dimensions, the image is the entire space.
+      </p>
+
+      <p>
+        The third is the <strong>kernel</strong> — also called the <em>nullspace</em>. It's the set of vectors $v$ in the domain that the transformation sends to the zero vector: the $v$ such that $A \cdot v = 0$. If the transformation flattens space, the kernel contains the directions it annihilates. For a matrix that loses no information, the kernel reduces to the zero vector alone.
+      </p>
+
+      <p>
+        The rank is defined as the <strong>dimension of the image</strong>. Not the number of vectors in the image — there are infinitely many — but the number of independent directions it contains. If the image is the entire three-dimensional space, the rank is 3. If the image is a plane, the rank is 2. If the image is a line, the rank is 1.
+      </p>
+
+      <p class="pull-quote">
+        Rank = dimension of the image. The directions that survive the transformation.
+      </p>
+
+      <h2>The rank-nullity theorem</h2>
+
+      <p>
+        Here's the central result tying the three spaces together. It fits on one line:
+      </p>
+
+      $$\mathrm{rank}(A) + \dim(\mathrm{kernel}\,A) = \text{number of columns of } A$$
+
+      <p>
+        The intuition is beautiful. The domain, which has $m$ dimensions, splits in two. One part goes to the image and constitutes the rank. The other vanishes into the kernel. Every dimension of the input has a fate: either it survives in the output, or it's annihilated. None gets lost in limbo, none appears by magic.
+      </p>
+
+      <p>
+        For an invertible matrix, the kernel is trivial — reduced to the zero vector alone — so its dimension is zero. The theorem simplifies to $\mathrm{rank}(A) = m$, which we call <strong>full rank</strong>. For a collapsing matrix, the kernel is nontrivial and the rank drops strictly below $m$.
+      </p>
+
+      <h2>How to compute the rank in practice</h2>
+
+      <p>
+        In practice, there's a direct recipe: apply Gaussian elimination to the matrix, and count the pivots that show up in the reduced form.
+      </p>
+
+      <p>
+        Each pivot corresponds to an independent direction that survives the reduction. The rows that end up entirely zero are the ones that were redundant — linear combinations of the others — and that got exposed by elimination. Counting pivots therefore amounts to counting the genuinely independent directions the matrix exports to the image.
+      </p>
+
+      $$\mathrm{rank}(A) = \text{number of nonzero rows in the reduced row-echelon form of } A$$
+
+      <p>
+        This formula is algorithmic: we already have the engine that produces the row-echelon form, and all that's left to do is count. The same machine that solves systems, inverts matrices, and computes determinants also gives the rank. Four questions, one algorithm.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Five ways of saying the same thing</span>
+        <p>
+          For a square matrix, we now have a cascade of equivalences. All of these statements are strictly equivalent:
+        </p>
+        <ul>
+          <li>The matrix is invertible.</li>
+          <li>Its determinant is nonzero.</li>
+          <li>Its rank is full, equal to its number of columns.</li>
+          <li>Its columns are linearly independent — none is a linear combination of the others.</li>
+          <li>Its kernel is trivial — the only vector it sends to zero is the zero vector.</li>
+        </ul>
+        <p>
+          The same truth stated five times, in five different languages. For a 2×2 matrix, the determinant is immediate. For a wider matrix, rank via Gaussian elimination is usually more economical. To understand <em>why</em> a matrix is singular, it's the independence of the columns that speaks most clearly.
+        </p>
+      </aside>
+
+      <h2>Two concrete examples</h2>
+
+      <p>
+        Let's revisit the matrix from the first half of the section:
+      </p>
+
+      $$A = \begin{pmatrix} 2 & 1 \\ 5 & 3 \end{pmatrix}$$
+
+      <p>
+        Its determinant is 1, so it's invertible. The rank-nullity theorem guarantees its rank is 2 — full. The two pivots we found while computing the inverse, at (0, 0) and then at (1, 1), are both nonzero. Two pivots, two nonzero rows, rank 2.
+      </p>
+
+      <p>
+        Now let's compare to a <em>singular</em> matrix — not invertible:
+      </p>
+
+      $$B = \begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix}$$
+
+      <p>
+        The second row is twice the first: $L_2 = 2 \cdot L_1$. Its determinant is $1 \times 4 - 2 \times 2 = 0$. If we apply Gaussian elimination, the very first step zeroes out the entire second row. The echelon form then has only one nonzero row, so the rank is 1, not 2.
+      </p>
+
+      <p>
+        Geometrically: the two columns $(1, 2)$ and $(2, 4)$ are collinear — the second is twice the first. They point in only one direction. The transformation therefore flattens the entire plane onto a line. The image is that line, of dimension 1. And the rank-nullity theorem tells us the kernel has dimension $2 - 1 = 1$: there is indeed an entire direction that the transformation annihilates.
+      </p>
+
+      <h2>Key takeaways</h2>
+
+      <p>
+        The inverse and the rank are two sides of the same question: how much information does a linear transformation preserve, and can we run time backward when it preserves enough?
+      </p>
+
+      <p>
+        The inverse exists if and only if the matrix loses no information — nonzero determinant, or equivalently full rank. We compute it by attaching the identity on the right and reducing the left half to the identity via Gauss-Jordan; the right half then holds the inverse. The mechanism: each elementary operation is a multiplication by an elementary matrix, and the accumulated product of these matrices is precisely the inverse we were looking for.
+      </p>
+
+      <p>
+        The rank, by contrast, is defined for any matrix. It's the dimension of the image, the number of independent directions the transformation exports. We compute it by counting the pivots in the row-echelon form. It's tied to the kernel by the rank-nullity theorem: the sum of the two dimensions always equals the number of columns. Everything that comes in goes somewhere — either into the image or into the kernel, never elsewhere.
+      </p>
+
+      <p>
+        These two notions close out the chapter on inversion. We can solve a system, decide whether a matrix is invertible, measure its determinant, compute its inverse, and read off its rank. A whole workshop that ultimately rests on a single algorithm — Gaussian elimination — used from four different angles. The beauty of chapter 4 is this economy of means.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Further reading</span>
+        <p>
+          <strong>3blue1brown · Essence of Linear Algebra, ep. 7 — Inverse matrices, column space, null space.</strong>
+          The central episode on the inverse: why a matrix is invertible exactly when its determinant is nonzero, and what the kernel is when it isn't.
+          <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+        <p>
+          <strong>3blue1brown · Essence of Linear Algebra, ep. 8 — Nonsquare matrices.</strong>
+          For nonsquare matrices and the notion of rank in the general case.
+          <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+      </aside>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="03-determinant.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">← §3 — Determinant</span>
+        </a>
+        <a class="next" href="../ch5/01-the-problem.html">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">§1 — The problem →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

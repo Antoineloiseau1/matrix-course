@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Linear systems — Chapter 4 §1</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html" class="current">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 4 · §1</div>
+      <h1>Linear systems</h1>
+      <p class="lede">
+        In the previous chapter, we learned that a matrix is nothing more than a <em>recipe for warping space</em>. You start with a vector, apply the matrix, and out comes a warped vector. But this story has two sides. What if we flipped the problem around?
+      </p>
+
+      <p>
+        Picture this. You're told that after the warp, some point landed here, at this position. Where was it <em>before</em> the warp? Put another way: given the rule that transforms space, and given the final image, recover the original. It's the same question a detective faces at a crime scene — they see only the outcome and must work backward to the starting point. All of chapter 4 is devoted to this inverse problem, and the first tool for stating it cleanly is what we call a <strong>system of linear equations</strong>.
+      </p>
+
+      <h2>A system is several truths that must hold at once</h2>
+
+      <p>
+        A <strong>linear equation</strong> is an equality in which the unknowns appear only to the first power — no squares, no roots, no unknowns multiplied by each other. Just coefficients multiplying unknowns, summed together. Taken in isolation, an equation like this usually has far too many solutions to be interesting. A single equation in two unknowns, for instance, has infinitely many pairs that satisfy it.
+      </p>
+
+      <p>
+        A <strong>system</strong> is what happens when you impose <em>several</em> equations at once and look for the values of the unknowns that satisfy them <em>all simultaneously</em>. Here's a typical scene with two unknowns:
+      </p>
+
+      $$\begin{aligned}
+2x + 3y &= 8 \\
+-7x + 4y &= 2
+\end{aligned}$$
+
+      <p>
+        Read carefully. There's a classic trap people fall into the first few times: you might think the $x$ in the first row and the $x$ in the second row are different things — two independent pairs of unknowns. They aren't. It's the <em>same pair</em> $(x, y)$ that must make both equalities hold at once. A pair that makes the first row true but misses the second is not a solution. The system demands consensus.
+      </p>
+
+      <p>
+        That word — <em>simultaneously</em> — is what gives the topic both its difficulty and its richness. We're looking for a single point in the space of unknowns that satisfies every constraint at once.
+      </p>
+
+      <h2>Each equation is a geometric shape</h2>
+
+      <p>
+        Here's the step that unlocks the whole intuition. A linear equation isn't just an algebraic equality: it <em>draws</em> something. More precisely, the set of points that satisfy it forms a very regular geometric object.
+      </p>
+
+      <ul>
+        <li>With two unknowns, the solution set of an equation is a <strong>line</strong> in the plane.</li>
+        <li>With three unknowns, it's a <strong>plane</strong> in space.</li>
+        <li>With $n$ unknowns, it's what we call a <strong>hyperplane</strong> in $\mathbb{R}^n$ — a flat copy of dimension $n - 1$ sitting inside an $n$-dimensional space. The word sounds intimidating, but the idea is just the direct generalization of a line and a plane: a flat subspace one dimension lower than its host.</li>
+      </ul>
+
+      <p>
+        When you gather several equations into a system, each one draws its own object. The algebraic question "which $x$, $y$, … satisfy all these equations at the same time?" then becomes a geometric question of remarkable clarity: <em>which points belong to all of these objects at once?</em>
+      </p>
+
+      <p class="pull-quote">
+        <strong>Solving a system means finding the intersection.</strong> Nothing more, nothing less.
+      </p>
+
+      <p>
+        Here's the image to fix in your mind. Two lines in the plane drift independently, each embodying one equation. The solution to the system is the point — if it exists — where they meet.
+      </p>
+
+      <svg class="illu" viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c4s1-axis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1c1a15"/>
+          </marker>
+        </defs>
+        <!-- Axes -->
+        <line x1="40" y1="170" x2="430" y2="170" stroke="#1c1a15" stroke-width="1.4" marker-end="url(#arrow-c4s1-axis)"/>
+        <line x1="170" y1="280" x2="170" y2="30" stroke="#1c1a15" stroke-width="1.4" marker-end="url(#arrow-c4s1-axis)"/>
+        <text x="170" y="22" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1c1a15" font-style="italic" text-anchor="middle">y</text>
+        <text x="425" y="190" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1c1a15" font-style="italic">x</text>
+        <!-- Droite 1 : 2x + 3y = 8 ⇒ y = (8 - 2x)/3. Passe par (1, 2) et (4, 0). Calé pour passer par intersection. -->
+        <line x1="40" y1="60" x2="430" y2="234" stroke="#b8431f" stroke-width="2.2"/>
+        <text x="370" y="222" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f" font-style="italic">2x + 3y = 8</text>
+        <!-- Droite 2 : -7x + 4y = 2 (passe par (-2/7, 0.5) et (2, 4)) -->
+        <line x1="60" y1="270" x2="430" y2="70" stroke="#1e5a7a" stroke-width="2.2"/>
+        <text x="350" y="80" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" font-style="italic">−7x + 4y = 2</text>
+        <!-- Point d'intersection (à peu près au centre) -->
+        <circle cx="245" cy="146" r="5.5" fill="#6e2716" stroke="#fff" stroke-width="1.5"/>
+        <text x="258" y="142" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#6e2716" font-style="italic">solution</text>
+        <text x="258" y="160" font-family="Inter, sans-serif" font-size="11" fill="#8b8474">intersection point</text>
+      </svg>
+      <p class="illu-caption">Each equation draws a line; the solution to the system is their intersection point.</p>
+
+      <p>
+        This image has a name: the <strong>row picture</strong>, as opposed to the column picture we'll mention in a moment. "Row" because we read each <em>row</em> of the system on its own and interpret it as a geometric shape. It's the most natural view for understanding <em>what</em> a solution is.
+      </p>
+
+      <h2>Three scenarios, and only three</h2>
+
+      <p>
+        When you look for the intersection of several lines, or several hyperplanes, the number of possible configurations isn't unlimited. Geometrically, there are only three cases. And each one carries a crisp meaning.
+      </p>
+
+      <p>
+        <strong>Case 1 — Unique solution.</strong> The lines cross at a single point. The planes meet at a single point. This is the case you hope for, the "generic" case in the sense that it arises for almost any random choice of coefficients. The system has one answer, and only one. We say the coefficient matrix is <em>invertible</em> — a word that hints at the possibility of running time backward, of recovering the original input. We'll define it properly later, but the intuition is already there: if you can "invert" the transformation, you can deduce the starting point from the arrival point.
+      </p>
+
+      <p>
+        <strong>Case 2 — No solution.</strong> The lines are parallel and distinct. They never meet. Picture two incompatible equalities that demand simultaneously that some sum equal 1 and equal 5. No pair $(x, y)$ can accomplish the impossible. The system is called <em>inconsistent</em>. Geometrically, this is what happens when the constraints contradict each other: you've asked for the impossible.
+      </p>
+
+      <p>
+        <strong>Case 3 — Infinitely many solutions.</strong> The lines coincide, layered on top of each other, identical. Every point on the line satisfies both equations at once. Algebraically, this happens when one equation carries no new information, because it's just a disguised copy — say, a multiple — of another. The second constraint is <em>redundant</em>. As a result, one degree of freedom is left undetermined, and the solution is no longer a point but an entire line (or an entire plane, in higher dimensions).
+      </p>
+
+      <p>
+        These three cases are distinguished by something we'll soon call the <strong>rank</strong> of the system — a measure of how many "truly independent" equations we have on hand. A proper definition will come later; for now, just remember that rank counts how many constraints actually carry information, as opposed to those that are merely echoes of other equations.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">The other view, in passing: the column picture</span>
+        <p>
+          There's a second, complementary way to look at a system. Instead of reading $Ax = b$ row by row and drawing lines, you read the matrix $A$ by <em>columns</em>. The question then becomes: "which linear combination of the columns of $A$ produces the vector $b$?" This is the <strong>column picture</strong>, beautifully defended by Grant Sanderson in the 3blue1brown series. It's more natural when you think in terms of transformations: $b$ is the destination, the columns are where the basis vectors land, and $x$ holds the coefficients that mix them to land on $b$. Both views say the same thing; depending on the problem, one lights the path more clearly than the other.
+        </p>
+      </aside>
+
+      <h2>How we encode a system: the augmented matrix</h2>
+
+      <p>
+        If you ever solve a system by hand, you quickly notice that you spend a lot of energy copying out $x$'s, $y$'s, equals signs, plus signs. Row after row, those symbols are scenery — they never change. What changes are the coefficients and the constants on the right. That's exactly the kind of observation that calls for a compact notation.
+      </p>
+
+      <p>
+        So we line the coefficients up in a matrix — one row per equation, one column per unknown — and tack the constants on as a final column, separated by a vertical bar to remind us that they don't play the same role:
+      </p>
+
+      <div class="math">System:                          Augmented matrix:
+
+  2x + 3y = 8                     |  2   3  |  8 |
+ −7x + 4y = 2                     | −7   4  |  2 |</div>
+
+      <p>
+        That vertical bar is purely a reading convention: it visually separates the coefficients (the matrix $A$) from the right-hand-side vector (the vector $b$). All the work ahead will consist of disciplined manipulations of this augmented matrix until it reveals the solution.
+      </p>
+
+      <p>
+        The upside is obvious: from now on we only write numbers. The subtler upside is that we've turned a syntactic object (equations with unknowns floating around) into a purely numerical one (a rectangular table), which opens the door to mechanical algorithms. A machine knows how to manipulate tables.
+      </p>
+
+      <h2>Three moves that leave the solutions untouched</h2>
+
+      <p>
+        It remains to explain <em>which</em> manipulations we're allowed to perform on these rows without betraying the system. The golden rule is that we may modify the matrix as long as its solution set stays exactly the same. And it turns out there are three operations, and three only, that meet this condition. We call them the <strong>elementary row operations</strong>.
+      </p>
+
+      <p>
+        <strong>1. Swap two rows.</strong> Permuting the equations in our list obviously changes nothing: a system is a set of simultaneous constraints, and the order in which we list them is immaterial. This is the most innocent of the three operations. We mostly use it to arrange things in a convenient order.
+      </p>
+
+      <p>
+        <strong>2. Multiply a row by a nonzero scalar.</strong> If the constraint "$2x + 3y = 8$" is true, then "$4x + 6y = 16$" is true too: it's the same equation doubled on both sides. And conversely, given the doubled version we could recover the original by dividing by 2. This <em>reversibility</em> is what guarantees that no solution is lost or invented. The "nonzero" condition is crucial: multiplying by zero would destroy the equation rather than transform it, and the operation would no longer be reversible.
+      </p>
+
+      <p>
+        <strong>3. Add a multiple of one row to another row.</strong> If $L_1$ and $L_2$ are two true equations, then $L_2 + k \cdot L_1$ is also true. We've simply combined two truths to form a third. And again, we can undo it by subtracting $k \cdot L_1$. Reversibility is preserved, so the solution set is too.
+      </p>
+
+      <p>
+        The keyword in all three cases is <strong>reversibility</strong>. Each operation has an obvious, explicit inverse. And since we can always step back, we can neither lose a solution nor invent a fake one along the way. The manipulations are innocent, in the strong sense.
+      </p>
+
+      <p>
+        This property is the keystone of everything that follows. Without it, manipulating the augmented matrix would be meaningless: we'd be turning one system into a different system that no longer represents anything. With it, we're free to pull, twist, and simplify the matrix as much as we like, in the hope that by the end it takes a form so readable that the solution leaps off the page.
+      </p>
+
+      <hr class="ornament" />
+
+      <h2>What's next</h2>
+
+      <p>
+        That's the stage set. We have a problem — finding the intersection of geometric objects — a compact notation — the augmented matrix — and three legitimate moves — the elementary row operations. What remains is to turn these ingredients into an algorithm: a systematic recipe that, for any system whatsoever, reaches the solution in a finite number of steps. That recipe is called <strong>Gaussian elimination</strong>, and it's the subject of the next section.
+      </p>
+
+      <p>
+        Here's the lovely part: this procedure isn't just for solving systems. The same engine — mechanically applying the three operations in a carefully chosen order until the matrix takes a canonical, simple form — will also give us the <strong>determinant</strong> (a number that measures how much the transformation contracts or stretches volumes, and which is zero exactly when the matrix is not invertible), the <strong>inverse</strong> of a matrix (the transformation that undoes the original) and the <strong>rank</strong> (that measure of truly independent equations we mentioned earlier). Four objects, one algorithm. That economy is what makes chapter 4 beautiful.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Further reading</span>
+        <p>
+          <strong>MIT 18.06 (Gilbert Strang) · Lecture 1 — The geometry of linear equations.</strong>
+          The opening lecture of MIT's linear algebra course, which dives straight into the <em>row picture vs. column picture</em> duality of a system. It's the parent lecture of this section.
+          <a href="https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+      </aside>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="../ch3/03-trace-transpose.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">← Chapter 3 §3 — Trace, transpose, special matrices</span>
+        </a>
+        <a class="next" href="02-gauss.html">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">§2 — Gaussian elimination →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

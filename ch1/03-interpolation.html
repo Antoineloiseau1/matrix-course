@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>L'interpolation linéaire — Chapitre 1 §3</title>
+  <title>Linear interpolation — Chapter 1 §3</title>
   <link rel="stylesheet" href="../styles.css" />
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
@@ -22,167 +22,134 @@
 <body>
   <div class="layout">
     <aside class="toc">
-      <div class="toc-title">Cours</div>
+      <div class="toc-title">Course</div>
 
       <details class="toc-chapter" open>
-        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
         <ol>
-          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
-          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
-          <li><a href="../ch1/03-interpolation.html" class="current">Interpolation linéaire</a></li>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html" class="current">Linear interpolation</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
         <ol>
-          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
-          <li><a href="../ch2/02-normes.html">Normes</a></li>
-          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
-          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
         <ol>
-          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
-          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
-          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
         <ol>
-          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
-          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
-          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
-          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
         <ol>
-          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
-          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
-          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
-          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
-          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
-          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
-          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
         </ol>
       </details>
 
       <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
         <ol>
-          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
-          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
-          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
         </ol>
       </details>
 
-      <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
-        <ol>
-          <li><a href="../3b1b/index.html">Sommaire</a></li>
-          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
-          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
-          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
-          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
-          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
-          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
-          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
-          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
-          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
-          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
-          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
-          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
-          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
-          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
-          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
-          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
-        </ol>
-      </details>
-
-      <details class="toc-chapter">
-        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
-        <ol>
-          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
-          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
-          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
-          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
-        </ol>
-      </details>
-
-      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
     </aside>
 
     <main>
-      <div class="chapter-meta">Chapitre 1 · §3</div>
-      <h1>L'interpolation linéaire</h1>
+      <div class="chapter-meta">Chapter 1 · §3</div>
+      <h1>Linear interpolation</h1>
       <p class="lede">
-        Voici une question qui a l'air banale et qui ouvre pourtant une des opérations les plus utiles de toute l'algèbre linéaire : <em>donne-moi le point qui se trouve à un certain endroit entre deux points donnés</em>. On part de quelque part, on va vers ailleurs, et un petit curseur dit où on en est sur le trajet. Ce petit curseur s'appelle $t$, l'opération s'appelle l'<strong>interpolation linéaire</strong>, et tout ce qu'on a vu sur l'addition et le scaling se met soudainement au service d'une idée très concrète.
+        Here's a question that sounds mundane and yet opens up one of the most useful operations in all of linear algebra: <em>give me the point that sits somewhere between two given points</em>. We start somewhere, we head somewhere else, and a little slider says where we are along the way. That little slider is called $t$, the operation is called <strong>linear interpolation</strong>, and everything we've seen about addition and scaling suddenly comes together in the service of a very concrete idea.
       </p>
 
       <p>
-        Imagine deux points dans le plan, ou deux nombres sur une règle, ou deux couleurs sur une palette. On veut un troisième objet qui se situe « entre » les deux — pas n'importe où, mais à une fraction précise du chemin. À mi-chemin, ou au quart, ou aux trois quarts. Cette demande revient partout : une animation qui glisse une icône d'un endroit à un autre, un dégradé de couleurs entre deux teintes, un curseur de volume qui transite progressivement. La machinerie derrière tout ça tient en une formule simple, et cette section est l'occasion de la construire avec les mains.
+        Picture two points in the plane, or two numbers on a ruler, or two colors on a palette. We want a third object that sits "between" the two — not just anywhere, but at a precise fraction of the way. Halfway, or a quarter, or three-quarters. This request shows up everywhere: an animation sliding an icon from one place to another, a color gradient between two hues, a volume slider easing across its range. The machinery behind all of this fits in one simple formula, and this section is our chance to build it from scratch.
       </p>
 
-      <h2>Commencer par des nombres</h2>
+      <h2>Start with numbers</h2>
 
       <p>
-        Avant de parler de vecteurs ou de quoi que ce soit de plus exotique, prends deux nombres. $10$ et $20$, par exemple. La question : <em>quel nombre se trouve au quart du chemin entre les deux</em> ?
+        Before talking about vectors or anything more exotic, take two numbers. $10$ and $20$, for instance. The question: <em>what number sits a quarter of the way between them</em>?
       </p>
 
       <p>
-        Mentalement, on fait trois choses sans y réfléchir. D'abord on mesure la distance entre les deux points : $20 - 10 = 10$. Ensuite on prend la fraction demandée de cette distance : un quart de $10$, c'est $2.5$. Enfin on part du point de départ et on avance de cette portion : $10 + 2.5 = 12.5$. Résultat : $12.5$ est le nombre cherché.
+        Mentally, we do three things without thinking. First we measure the distance between the two points: $20 - 10 = 10$. Then we take the requested fraction of that distance: a quarter of $10$ is $2.5$. Finally we start from the starting point and step forward by that portion: $10 + 2.5 = 12.5$. Result: $12.5$ is the number we wanted.
       </p>
 
-      <div class="math">depart  : 10
-arrivee : 20
-ecart   : 20 − 10 = 10
-portion : (1/4) · 10 = 2.5
-resultat: 10 + 2.5 = 12.5</div>
+      <div class="math">start    : 10
+end      : 20
+gap      : 20 − 10 = 10
+portion  : (1/4) · 10 = 2.5
+result   : 10 + 2.5 = 12.5</div>
 
       <p>
-        Écris la même opération en une ligne, et tu obtiens déjà la formule complète :
+        Write the same operation on one line and you've already got the full formula:
       </p>
 
       $$10 + \tfrac{1}{4} \cdot (20 - 10) = 12.5$$
 
       <p>
-        Renomme maintenant le point de départ $u$, le point d'arrivée $v$, et la fraction du trajet $t$. La formule devient la règle générale qu'on cherchait :
+        Now rename the starting point $u$, the ending point $v$, and the fraction of the trip $t$. The formula becomes the general rule we were looking for:
       </p>
 
       $$\mathrm{lerp}(u, v, t) = u + t \cdot (v - u)$$
 
       <p>
-        Le mot <strong>lerp</strong> vient de l'anglais <em>linear interpolation</em> et c'est le nom universel de l'opération. On le prononce comme il se lit. C'est moche, c'est court, ça colle.
+        The word <strong>lerp</strong> comes from <em>linear interpolation</em>, and it's the universal name for this operation. You pronounce it just like it reads. It's ugly, it's short, it sticks.
       </p>
 
-      <h2>Formule 1 : « je pars de u, je me déplace »</h2>
+      <h2>Formula 1: "start at u, then move"</h2>
 
       <p>
-        Décortique $u + t \cdot (v - u)$ morceau par morceau. C'est une lecture en trois temps qui donne tout le sens géométrique.
+        Let's unpack $u + t \cdot (v - u)$ piece by piece. It's a three-step reading that gives you all the geometric meaning.
       </p>
 
       <ol>
-        <li><strong>$v - u$</strong> : la différence entre l'arrivée et le départ. C'est le <em>déplacement complet</em> qui mène de $u$ jusqu'à $v$. Si $u$ est ton domicile et $v$ ta boulangerie, $v - u$ est le trajet à faire pour y aller.</li>
-        <li><strong>$t \cdot (v - u)$</strong> : on prend une fraction de ce déplacement. $t = 1/2$ donne la moitié du trajet, $t = 1/4$ en donne un quart, $t = 0$ donne rien du tout.</li>
-        <li><strong>$u + \dots$</strong> : on repart du point de départ et on avance de la portion qu'on vient de calculer.</li>
+        <li><strong>$v - u$</strong>: the difference between the endpoint and the starting point. It's the <em>complete displacement</em> that takes you from $u$ to $v$. If $u$ is your home and $v$ is the bakery, $v - u$ is the trip you have to make.</li>
+        <li><strong>$t \cdot (v - u)$</strong>: we take a fraction of that displacement. $t = 1/2$ gives half the trip, $t = 1/4$ gives a quarter, $t = 0$ gives nothing at all.</li>
+        <li><strong>$u + \dots$</strong>: we start back at the starting point and move forward by the portion we just computed.</li>
       </ol>
 
       <p>
-        L'image : tu poses un doigt sur $u$, tu regardes en direction de $v$, et tu glisses ton doigt d'une fraction $t$ du chemin. Tu t'arrêtes où tu t'arrêtes. C'est cet endroit-là, $\mathrm{lerp}(u, v, t)$.
+        The picture: you put a finger on $u$, look toward $v$, and slide your finger a fraction $t$ of the way. Wherever you stop is where you stop. That's $\mathrm{lerp}(u, v, t)$.
       </p>
 
-      <h2>Formule 2 : un mélange à doses qui somment à 1</h2>
+      <h2>Formula 2: a blend whose weights sum to 1</h2>
 
       <p>
-        Il existe une seconde écriture, plus algébrique, qui dit exactement la même chose mais sous un éclairage différent. On l'obtient en faisant simplement <em>les calculs</em> dans la première formule. Distribue le $t$ dans le facteur $(v - u)$, puis regroupe les termes en $u$ :
+        There's a second way to write this, more algebraic, which says exactly the same thing under a different light. We get it by just <em>doing the algebra</em> on the first formula. Distribute the $t$ across the factor $(v - u)$, then group the $u$ terms:
       </p>
 
       $$\begin{aligned}
@@ -192,56 +159,56 @@ u + t \cdot (v - u) &= u + t \cdot v - t \cdot u \\
 \end{aligned}$$
 
       <p>
-        Et donc, équivalente, la <em>seconde</em> formule :
+        And so, equivalently, the <em>second</em> formula:
       </p>
 
       $$\mathrm{lerp}(u, v, t) = (1 - t) \cdot u + t \cdot v$$
 
       <p>
-        Cette écriture raconte une autre histoire. Plus de soustraction, plus de point de départ privilégié. À la place, $u$ et $v$ sont sur un pied d'égalité, chacun affecté d'une <em>dose</em>. La dose de $u$ est $1 - t$, celle de $v$ est $t$. Et quand on les additionne — c'est là l'observation centrale —, ces deux doses font <em>toujours</em> exactement un :
+        This version tells a different story. No more subtraction, no more privileged starting point. Instead, $u$ and $v$ stand on equal footing, each assigned a <em>weight</em>. The weight on $u$ is $1 - t$, the weight on $v$ is $t$. And when you add them — this is the central observation — those two weights <em>always</em> sum to exactly one:
       </p>
 
       $$(1 - t) + t = 1$$
 
       <p>
-        Plus on donne d'importance à $v$ (en augmentant $t$), plus la dose de $u$ diminue d'autant. C'est un mélange à somme constante. À $t = 0$, on a 100% de $u$ et 0% de $v$. À $t = 1$, c'est l'inverse. Et à $t = 1/2$, on a 50% de chaque — pile au milieu.
+        The more importance we give to $v$ (by increasing $t$), the more the weight on $u$ drops by the same amount. It's a blend whose total stays constant. At $t = 0$, we have 100% of $u$ and 0% of $v$. At $t = 1$, the reverse. And at $t = 1/2$, we have 50% of each — right in the middle.
       </p>
 
       <p class="pull-quote">
-        <strong>Lerp est une combinaison linéaire à deux termes dont les coefficients somment à 1.</strong> C'est la clef qui relie l'interpolation à tout ce qu'on a vu dans la section précédente.
+        <strong>Lerp is a two-term linear combination whose coefficients sum to 1.</strong> That's the key that ties interpolation back to everything we saw in the previous section.
       </p>
 
       <p>
-        Le fait que les coefficients somment à 1 n'est pas un détail technique : c'est exactement ce qui garantit qu'on reste <em>sur la droite</em> qui passe par $u$ et $v$. Si on les laissait varier librement, on s'échapperait dans toutes les directions du plan ou de l'espace. La contrainte « les doses font 1 » est ce qui nous tient sur le trajet.
+        The fact that the coefficients sum to 1 isn't a technical detail: it's precisely what guarantees that we stay <em>on the line</em> through $u$ and $v$. If we let them vary freely, we'd wander off in any direction of the plane or of space. The "weights sum to 1" constraint is what keeps us on the path.
       </p>
 
-      <h2>Une petite table de valeurs pour fixer les idées</h2>
+      <h2>A quick table of values to anchor the idea</h2>
 
       <p>
-        Reprends la formule, et fais-la tourner pour quelques valeurs de $t$ que tout le monde devrait avoir en tête :
+        Take the formula and run it for a few values of $t$ that everyone should have at their fingertips:
       </p>
 
-      <div class="math">t = 0     →  lerp(u, v, 0)   = u                au depart
-t = 1/2   →  lerp(u, v, 0.5) = milieu de u et v exactement au centre
-t = 1     →  lerp(u, v, 1)   = v                a l'arrivee</div>
+      <div class="math">t = 0     →  lerp(u, v, 0)   = u                at the start
+t = 1/2   →  lerp(u, v, 0.5) = midpoint of u and v   right in the middle
+t = 1     →  lerp(u, v, 1)   = v                at the end</div>
 
       <p>
-        Les bornes sont saines : $t = 0$ redonne le point de départ, $t = 1$ redonne le point d'arrivée. Et $t = 1/2$ tombe pile au milieu — la moyenne des deux. Vérifie avec la formule 2 : $(1 - 0.5) \cdot u + 0.5 \cdot v = 0.5 \cdot u + 0.5 \cdot v$, c'est-à-dire la moyenne arithmétique. Tout colle.
+        The endpoints behave nicely: $t = 0$ gives back the starting point, $t = 1$ gives back the ending point. And $t = 1/2$ lands right in the middle — the average of the two. Double-check with formula 2: $(1 - 0.5) \cdot u + 0.5 \cdot v = 0.5 \cdot u + 0.5 \cdot v$, which is the arithmetic mean. Everything lines up.
       </p>
 
       <p>
-        Pour les valeurs intermédiaires, $t$ agit comme un curseur de progression. $t = 0.3$ place le résultat à 30% du trajet depuis $u$. $t = 0.9$ le place à 90%, presque à destination. C'est aussi simple que ça.
+        For intermediate values, $t$ acts like a progress slider. $t = 0.3$ places the result 30% of the way from $u$. $t = 0.9$ places it 90% of the way, almost at the destination. It's that simple.
       </p>
 
-      <h2>Et si t sort de l'intervalle ?</h2>
+      <h2>What if t leaves the interval?</h2>
 
       <p>
-        Rien dans la formule n'oblige $t$ à rester entre $0$ et $1$. Tu peux y mettre n'importe quel nombre réel. La machinerie tourne. Mais le sens géométrique change.
+        Nothing in the formula forces $t$ to stay between $0$ and $1$. You can plug in any real number. The machinery keeps working. But the geometric meaning shifts.
       </p>
 
       <ul>
-        <li>Quand $t$ est dans $[0, 1]$, on <strong>interpole</strong> : le résultat est <em>entre</em> $u$ et $v$, sur le segment qui les relie.</li>
-        <li>Quand $t$ sort de $[0, 1]$ — par exemple $t = 2$ ou $t = -0.5$ —, on <strong>extrapole</strong> : le résultat est toujours sur la <em>droite</em> qui passe par $u$ et $v$, mais on a dépassé l'une des deux bornes.</li>
+        <li>When $t$ is in $[0, 1]$, we <strong>interpolate</strong>: the result lies <em>between</em> $u$ and $v$, on the segment connecting them.</li>
+        <li>When $t$ leaves $[0, 1]$ — say $t = 2$ or $t = -0.5$ — we <strong>extrapolate</strong>: the result still lies on the <em>line</em> through $u$ and $v$, but we've gone past one of the endpoints.</li>
       </ul>
 
       <svg class="illu" viewBox="0 0 520 160" xmlns="http://www.w3.org/2000/svg">
@@ -289,20 +256,20 @@ t = 1     →  lerp(u, v, 1)   = v                a l'arrivee</div>
           <text x="395" y="135">extrapolation</text>
         </g>
       </svg>
-      <p class="illu-caption">Quand t reste dans [0, 1], on interpole : le point est entre u et v. Hors de l'intervalle, on extrapole sur la même droite.</p>
+      <p class="illu-caption">When t stays in [0, 1], we interpolate: the point sits between u and v. Outside the interval, we extrapolate along the same line.</p>
 
       <p>
-        Avec $t = 2$, par exemple, le résultat se trouve à <em>deux longueurs de segment</em> après $u$ en direction de $v$ — donc une longueur entière après $v$. Avec $t = -1$, on recule d'une longueur de segment depuis $u$ dans la direction opposée à $v$. La droite est infinie, le paramètre $t$ aussi.
+        With $t = 2$, for instance, the result lies <em>two segment-lengths</em> past $u$ in the direction of $v$ — so one full length beyond $v$. With $t = -1$, we step back one segment-length from $u$ in the direction opposite to $v$. The line is infinite, and so is the parameter $t$.
       </p>
 
       <p>
-        Cette extension du domaine de $t$ est utile partout en pratique : une animation qui dépasse légèrement sa cible avant de revenir, un signal qui extrapole les prochaines valeurs à partir de deux mesures, ou simplement un raisonnement qui prolonge une droite au-delà des points connus.
+        Extending the domain of $t$ is useful all over the place: an animation that slightly overshoots its target before coming back, a signal that extrapolates upcoming values from two measurements, or simply a line of reasoning that extends a line past the known points.
       </p>
 
       <aside class="tangent">
-        <span class="tangent-label">Piège classique : lerp(u, v, 2) n'est pas u + v</span>
+        <span class="tangent-label">Classic trap: lerp(u, v, 2) is not u + v</span>
         <p>
-          Quand on débarque sur la formule, une confusion fréquente est de croire que $\mathrm{lerp}(u, v, 2)$ doit valoir $u + v$. Après tout, on a un $2$ et deux objets, c'est tentant. Mais ça ne marche pas. La formule donne :
+          When you first meet the formula, a common confusion is to believe that $\mathrm{lerp}(u, v, 2)$ should equal $u + v$. After all, there's a $2$ and two objects — tempting. But it doesn't work. The formula gives:
         </p>
         $$\begin{aligned}
 \mathrm{lerp}(u, v, 2) &= u + 2 \cdot (v - u) \\
@@ -310,28 +277,28 @@ t = 1     →  lerp(u, v, 1)   = v                a l'arrivee</div>
 &= 2v - u
 \end{aligned}$$
         <p>
-          Donc $\mathrm{lerp}(u, v, 2)$ vaut $2v - u$, pas $u + v$. Prends $u = 5$ et $v = 20$ pour t'en convaincre : la formule donne $2 \cdot 20 - 5 = 35$, alors que $u + v = 25$. Les deux nombres n'ont rien à voir.
+          So $\mathrm{lerp}(u, v, 2)$ equals $2v - u$, not $u + v$. Try $u = 5$ and $v = 20$ to convince yourself: the formula gives $2 \cdot 20 - 5 = 35$, while $u + v = 25$. The two numbers have nothing to do with each other.
         </p>
         <p>
-          La morale : $t$ n'est pas un facteur multiplicatif appliqué à un mélange uniforme, c'est un <em>paramètre de progression</em> sur une droite. Au-delà de $t = 1$, on continue dans la même direction au lieu de revenir vers $u$. La formule 2 le dit autrement : à $t = 2$, les doses sont $-1$ pour $u$ et $2$ pour $v$, leur somme fait toujours $1$, mais l'une des doses est négative — c'est l'extrapolation au-delà de $v$.
+          The moral: $t$ isn't a multiplicative factor applied to a uniform blend, it's a <em>progression parameter</em> along a line. Past $t = 1$, you keep going in the same direction instead of swinging back toward $u$. Formula 2 says it differently: at $t = 2$, the weights are $-1$ on $u$ and $2$ on $v$; they still sum to $1$, but one weight is negative — that's the extrapolation beyond $v$.
         </p>
       </aside>
 
-      <h2>Et pour des vecteurs ?</h2>
+      <h2>What about vectors?</h2>
 
       <p>
-        La beauté de la formule, c'est qu'elle ne change pas. Strictement pas. Si $u$ et $v$ sont des vecteurs au lieu de simples nombres, on applique <em>la même opération</em> :
+        The beauty of the formula is that it doesn't change. Not at all. If $u$ and $v$ are vectors instead of plain numbers, we apply <em>the same operation</em>:
       </p>
 
       $$\mathrm{lerp}(u, v, t) = u + t \cdot (v - u)$$
 
       <p>
-        Sauf qu'à présent, $v - u$ est une soustraction de vecteurs (composante par composante, comme on l'a vu au chapitre précédent), $t \cdot (v - u)$ est un scaling de vecteur, et $u + \dots$ est une addition de vecteurs. Trois opérations qu'on sait déjà faire. La formule hérite gratuitement de toute la machinerie.
-        Le scalaire $t$, lui, reste un simple nombre — un paramètre de progression, pas une direction.
+        Except that now, $v - u$ is a vector subtraction (component by component, as we saw in the previous chapter), $t \cdot (v - u)$ is a vector scaling, and $u + \dots$ is a vector addition. Three operations we already know how to do. The formula inherits all that machinery for free.
+        The scalar $t$ remains a plain number — a progression parameter, not a direction.
       </p>
 
       <p>
-        Prenons un exemple en 2D pour rendre ça tangible. Soit $u = [2, 1]$ et $v = [4, 5]$. On cherche le point à mi-chemin, donc $t = 0.5$. On applique la formule sous-étape par sous-étape :
+        Let's take a 2D example to make this concrete. Let $u = [2, 1]$ and $v = [4, 5]$. We want the midpoint, so $t = 0.5$. We apply the formula sub-step by sub-step:
       </p>
 
       $$\begin{aligned}
@@ -341,7 +308,7 @@ u + t \cdot (v - u) &= [2, 1] + [1, 2] = [3, 3]
 \end{aligned}$$
 
       <p>
-        Résultat : $\mathrm{lerp}([2, 1], [4, 5], 0.5) = [3, 3]$. Vérifie géométriquement : la moyenne des abscisses est $(2 + 4) / 2 = 3$, celle des ordonnées est $(1 + 5) / 2 = 3$. C'est bien le milieu. Le voici dans le plan :
+        Result: $\mathrm{lerp}([2, 1], [4, 5], 0.5) = [3, 3]$. Check it geometrically: the average of the $x$-coordinates is $(2 + 4) / 2 = 3$, the average of the $y$-coordinates is $(1 + 5) / 2 = 3$. That's the midpoint. Here it is in the plane:
       </p>
 
       <svg class="illu" viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg">
@@ -393,46 +360,55 @@ u + t \cdot (v - u) &= [2, 1] + [1, 2] = [3, 3]
         <circle cx="220" cy="80" r="4" fill="#1e5a7a"/>
         <text x="232" y="78" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" font-style="italic">v = [4, 5]</text>
       </svg>
-      <p class="illu-caption">À t = 0.5, le point m = lerp(u, v, 0.5) tombe exactement au milieu du segment [u, v].</p>
+      <p class="illu-caption">At t = 0.5, the point m = lerp(u, v, 0.5) lands exactly at the midpoint of the segment [u, v].</p>
 
       <p>
-        Et si tu fais varier $t$ continûment de $0$ à $1$, le point $\mathrm{lerp}(u, v, t)$ <em>balaie</em> tout le segment qui va de $u$ jusqu'à $v$. C'est exactement le même phénomène que sur les nombres, sauf qu'au lieu de glisser sur une règle, on glisse sur un trajet rectiligne dans le plan.
+        And if you sweep $t$ continuously from $0$ to $1$, the point $\mathrm{lerp}(u, v, t)$ <em>traces out</em> the whole segment running from $u$ to $v$. It's exactly the same phenomenon as with numbers, except that instead of sliding along a ruler, we slide along a straight path in the plane.
       </p>
 
       <p>
-        Et tant qu'on y est : rien n'oblige à rester en 2D. La même formule fonctionne en 3D, en 10D, en n'importe quelle dimension. Elle fonctionne aussi sur des objets qui ne sont même pas des vecteurs au sens géométrique — sur des couleurs (chaque canal interpole tout seul), sur des matrices, sur des séquences de nombres. Du moment qu'on sait additionner deux objets et scaler par un nombre, on sait interpoler.
+        And while we're at it: nothing forces us to stay in 2D. The same formula works in 3D, in 10D, in any dimension. It also works on objects that aren't even vectors in the geometric sense — on colors (each channel interpolates on its own), on matrices, on sequences of numbers. As long as you can add two objects and scale by a number, you can interpolate.
       </p>
 
-      <h2>Ce qu'il faut retenir</h2>
+      <h2>Key takeaways</h2>
 
       <p>
-        L'interpolation linéaire est l'opération qui place un point entre $u$ et $v$ à une fraction $t$ du chemin. Deux écritures équivalentes coexistent, et c'est utile d'avoir les deux en tête : $u + t \cdot (v - u)$ raconte un trajet (« je pars de $u$, j'avance d'une fraction du déplacement »), et $(1 - t) \cdot u + t \cdot v$ raconte un mélange (« je dose $u$ et $v$ avec des poids qui font $1$ »).
-      </p>
-
-      <p>
-        Quand $t$ reste dans $[0, 1]$, on interpole : on est sur le segment. Hors de $[0, 1]$, on extrapole : on est toujours sur la droite, mais au-delà des bornes. Et le piège classique, c'est de croire que $\mathrm{lerp}(u, v, 2)$ donne $u + v$ — non, ça donne $2v - u$, qui n'a rien à voir.
+        Linear interpolation is the operation that places a point between $u$ and $v$ at a fraction $t$ of the way. Two equivalent forms coexist, and it's useful to keep both in mind: $u + t \cdot (v - u)$ tells the story of a trip ("I start at $u$ and move forward by a fraction of the displacement"), and $(1 - t) \cdot u + t \cdot v$ tells the story of a blend ("I weight $u$ and $v$ with coefficients that sum to $1$").
       </p>
 
       <p>
-        Mais le point le plus profond est ailleurs. La formule $\mathrm{lerp}(u, v, t) = u + t \cdot (v - u)$ repose <em>uniquement</em> sur trois choses : pouvoir additionner deux objets, pouvoir les soustraire, et pouvoir multiplier un objet par un nombre. Si tu as un type d'objet qui sait faire ces trois opérations, tu peux y faire de l'interpolation. Des nombres ? Oui. Des flèches dans le plan ? Oui. Des couleurs ? Oui. Des fonctions ? Oui aussi.
+        When $t$ stays in $[0, 1]$, we interpolate: we're on the segment. Outside $[0, 1]$, we extrapolate: still on the line, but past the endpoints. And the classic trap is thinking $\mathrm{lerp}(u, v, 2)$ gives $u + v$ — no, it gives $2v - u$, which is something else entirely.
       </p>
 
       <p>
-        Ce que tu touches du doigt sans en avoir encore le nom, c'est la notion d'<strong>espace vectoriel</strong> : un ensemble d'objets sur lesquels les opérations $+$ et $\cdot$ ont un sens et se comportent de manière cohérente. Tout ce qu'on a fait dans ce chapitre — additionner, scaler, combiner linéairement, interpoler — fonctionne <em>partout où ces deux opérations existent</em>. C'est le secret pour lequel l'algèbre linéaire est si réutilisable : les mêmes gestes s'appliquent à une foule d'objets très différents, du moment qu'ils habitent un espace vectoriel.
+        But the deepest point is elsewhere. The formula $\mathrm{lerp}(u, v, t) = u + t \cdot (v - u)$ rests <em>only</em> on three things: being able to add two objects, being able to subtract them, and being able to multiply an object by a number. If you have a type of object that supports these three operations, you can interpolate. Numbers? Yes. Arrows in the plane? Yes. Colors? Yes. Functions? Also yes.
       </p>
 
       <p>
-        Le chapitre suivant change d'angle. On a vu ce qu'on pouvait <em>faire</em> aux vecteurs (additionner, scaler, interpoler). On va maintenant apprendre à les <em>mesurer</em> : leur longueur, l'angle entre eux, leur alignement. C'est par là qu'on entre dans la géométrie au sens propre.
+        What you're feeling without yet having the name for it is the notion of a <strong>vector space</strong>: a set of objects on which the operations $+$ and $\cdot$ make sense and behave consistently. Everything we did in this chapter — adding, scaling, combining linearly, interpolating — works <em>everywhere these two operations exist</em>. That's the secret behind why linear algebra is so reusable: the same gestures apply to a whole zoo of very different objects, as long as they live in a vector space.
       </p>
+
+      <p>
+        The next chapter changes angles. We've seen what we can <em>do</em> to vectors (add, scale, interpolate). We're now going to learn how to <em>measure</em> them: their length, the angle between them, their alignment. That's where we step into geometry proper.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Further reading</span>
+        <p>
+          <strong>3blue1brown · Essence of Linear Algebra, ep. 2 — Linear combinations, span, basis.</strong>
+          Linear interpolation is a special case of a linear combination with coefficients (1−t, t). Revisiting ep. 2 through that lens consolidates the intuition.
+          <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+      </aside>
 
       <nav class="chapter-nav">
-        <a class="prev" href="02-combinaison.html" title="← §2 — Combinaison linéaire">
-          <span class="nav-label">Précédent</span>
-          <span class="nav-title">← §2 — Combinaison linéaire</span>
+        <a class="prev" href="02-combination.html" title="← §2 — Linear combination">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">← §2 — Linear combination</span>
         </a>
-        <a class="next" href="../ch2/01-produit-scalaire.html" title="§1 — Produit scalaire →">
-          <span class="nav-label">Suivant</span>
-          <span class="nav-title">§1 — Produit scalaire →</span>
+        <a class="next" href="../ch2/01-dot-product.html" title="§1 — Dot product →">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">§1 — Dot product →</span>
         </a>
       </nav>
     </main>

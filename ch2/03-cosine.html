@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cosine and the angle between two vectors — Chapter 2 §3</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html" class="current">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 2 · §3</div>
+      <h1>Cosine and the angle between two vectors</h1>
+      <p class="lede">
+        The dot product blends three ingredients into a single number: the lengths of the two vectors and the angle they form. If you want to isolate <em>only</em> the angle — to know how alike two directions are, without being distracted by their size — you have to neutralize the lengths. The cosine of the angle is precisely the quotient that does that job. It's a pure measure of similarity, indifferent to scale, and it's the tool industry uses to compare just about anything that can be represented as a vector.
+      </p>
+
+      <p>
+        Picture two arrows starting from the same point. We want a number that answers a single question, simple and delicate: <em>how much do they point in the same direction?</em> Not their size, not their position, not their sum: only their alignment. And while we're at it, we'd like this number to be the same if we replaced one arrow with another, ten times longer but pointing the same way — because the direction, after all, wouldn't have changed. The cosine is precisely that number.
+      </p>
+
+      <h2>Isolating the angle in the dot product formula</h2>
+
+      <p>
+        The previous section on the dot product established a key equality between two readings of the same object: the algebraic reading (sum of products of components) and the geometric reading (lengths and angle). Here's the geometric form as it was proven:
+      </p>
+
+      $$u \cdot v = \|u\| \times \|v\| \times \cos(\theta)$$
+
+      <p>
+        We write $\|u\|$ and $\|v\|$ for the lengths (the <em>norms</em>) of the two vectors, and $\theta$ for the unoriented angle between them — a number between 0 and 180 degrees, or equivalently between 0 and $\pi$ radians. The formula says that the dot product builds its number by combining three quantities: the size of the first arrow, the size of the second, and the cosine of the angle they form.
+      </p>
+
+      <p>
+        These three quantities are independent. If you know two of them and the dot product, you can deduce the third with simple algebra. That's exactly what we're going to do: knowing $u \cdot v$, $\|u\|$ and $\|v\|$, we isolate $\cos(\theta)$ by dividing both sides by the product of the lengths:
+      </p>
+
+      $$\cos(\theta) = \frac{u \cdot v}{\|u\| \cdot \|v\|}$$
+
+      <p>
+        There's the central formula of this section. It reads like a recipe: take the dot product of the two vectors, divide by the product of their lengths, and you get the cosine of the angle between them. Three operations you already know how to do, recombined in a single gesture.
+      </p>
+
+      <p>
+        And why not extract the angle $\theta$ itself, rather than its cosine? Because it's rarely useful. The function that goes from cosine to angle — the <em>arccosine</em> — is expensive to compute and loses precision near its bounds. For the vast majority of uses (measuring similarity, detecting orthogonality, ranking candidates by closeness), the cosine is enough. It carries exactly the same information as the angle, encoded in a bounded and well-behaved interval.
+      </p>
+
+      <h2>What the cosine measures</h2>
+
+      <p>
+        The cosine of the angle between two vectors always lives in the interval $[-1, 1]$. This isn't an arbitrary choice: it's a direct consequence of its trigonometric definition. Being bounded is excellent news, because it makes the values immediately interpretable. Here's the canonical reading:
+      </p>
+
+      $$\begin{aligned}
+\cos(\theta) = +1 &\Rightarrow \text{angle} = 0°,\ \text{same direction, perfectly aligned} \\
+\cos(\theta) > 0 &\Rightarrow \text{acute angle, broadly compatible directions} \\
+\cos(\theta) = 0 &\Rightarrow \text{angle} = 90°,\ \text{perpendicular} \\
+\cos(\theta) < 0 &\Rightarrow \text{obtuse angle, broadly opposite directions} \\
+\cos(\theta) = -1 &\Rightarrow \text{angle} = 180°,\ \text{opposite, perfectly antialigned}
+\end{aligned}$$
+
+      <p>
+        The three integer values are the landmarks to remember. $+1$ is total agreement: both arrows point in exactly the same direction, one is a magnification or reduction of the other. $0$ is geometric indifference: the two arrows cross at a right angle, each fully in the other's blind spot. $-1$ is head-on opposition: the arrows are aligned but look in opposite directions. Between these three landmarks, the cosine varies continuously and measures the intermediate degree.
+      </p>
+
+      <p>
+        The point that makes the tool so powerful is this: <strong>the cosine is insensitive to lengths</strong>. Dividing by $\|u\| \cdot \|v\|$ is precisely there for that reason. If you replace $u$ with a vector twice as long but pointing the same way, its dot product with $v$ doubles, but its norm doubles too, and the quotient stays the same. More generally, multiplying either vector by any <em>strictly positive</em> scalar doesn't change the cosine. Magnitude no longer counts, only orientation matters.
+      </p>
+
+      <p class="pull-quote">
+        <strong>The cosine is a measure of directional similarity, insensitive to lengths.</strong>
+      </p>
+
+      <p>
+        This property has a name: the cosine is said to be <em>invariant under positive scaling</em>. That's what makes it so different from — and often superior to — the distance between two vectors. Distance feels the lengths, cosine ignores them. Depending on what you want to measure, one or the other will be more appropriate, but when the question is "do these two things resemble each other in their proportions?", the cosine is the natural tool.
+      </p>
+
+      <h2>Three classic pitfalls</h2>
+
+      <p>
+        The cosine has a reputation for simplicity that hides a few traps. Three in particular come up often enough to deserve attention.
+      </p>
+
+      <p>
+        <strong>Pitfall 1: thinking that $\cos = 0$ means "aligned vectors".</strong> It's the exact opposite. When the cosine is zero, the angle between the vectors is 90 degrees: they are <em>perpendicular</em>, hence as poorly aligned as possible without being opposite. The trap comes from confusing "zero" with "nothing to report". Here, zero means precisely "no directional similarity". On the contrary, it's $\cos = 1$ that corresponds to perfect alignment. The mnemonic to engrave: the smaller the angle, the closer the cosine is to one. The cosine of zero degrees is one, the cosine of 90 degrees is zero. This scale is inverted relative to the naive "zero = neutral" intuition.
+      </p>
+
+      <p>
+        <strong>Pitfall 2: thinking the zero vector makes a well-defined angle with another vector.</strong> It doesn't. The zero vector is the vector whose components are all zero; geometrically, it points nowhere — it's a point at the origin, not an arrow. The question "what angle does it make with another arrow?" simply has no answer, because you'd need to compare two directions, and one of them doesn't exist. This indeterminacy is reflected in the formula itself, as we'll see in a moment.
+      </p>
+
+      <p>
+        <strong>Pitfall 3: thinking that two "proportional" vectors have a cosine of zero.</strong> Another frequent misreading. Two proportional vectors — that is, one a scalar multiple of the other — point in exactly the same direction (if the factor is positive) or in exactly opposite directions (if the factor is negative). Their cosine is therefore <strong>+1 or -1, never zero</strong>. Zero is reserved for <em>orthogonal</em> pairs of vectors, which on the contrary are the opposite of proportionality. To fix ideas: being proportional means resembling each other exactly (or being exactly opposite); being orthogonal means having no resemblance at all.
+      </p>
+
+      <p>
+        These three pitfalls share a family resemblance: they all stem from miscalibrated intuition about the meanings of zero and one in the cosine context. The basic rule, worth overlearning: <em>maximum similarity gives one, absence of similarity gives zero, opposition gives minus one</em>.
+      </p>
+
+      <h2>The degenerate case of the zero vector</h2>
+
+      <p>
+        Let's come back to the zero vector, because it deserves more than a passing note. Look at the formula again:
+      </p>
+
+      $$\cos(\theta) = \frac{u \cdot v}{\|u\| \cdot \|v\|}$$
+
+      <p>
+        If either vector is zero, its norm is zero. The denominator becomes zero. The division is undefined. This isn't a computational accident that could be patched up by convention — it's the algebraic reflection of a geometric reality: the angle between a point and an arrow has no meaning. The formula politely refuses to answer a question that had no business being asked.
+      </p>
+
+      <p>
+        In practice, depending on the tools, this degenerate case shows up in several ways. A floating-point division by zero may produce a special value (<code>NaN</code>, for <em>not a number</em>) that propagates into subsequent computations and contaminates them. Another program may head off the problem by checking the norms before dividing and raising an error. Both strategies are defensible; what you need to understand is that <em>there's no right answer to invent</em>. The cosine isn't defined, and any conventional value (zero, one, anything else) would be a lie.
+      </p>
+
+      <p>
+        So we keep one simple rule: the cosine only makes sense between two <strong>non-zero</strong> vectors. Before applying the formula, you have to make sure that's the case. It's a precondition, in the same way that you don't add two vectors of different dimensions.
+      </p>
+
+      <h2>Applications: from orthogonality to cosine similarity</h2>
+
+      <p>
+        Cosine is everywhere in fields that handle vectors. Two uses dominate.
+      </p>
+
+      <p>
+        <strong>First use: testing orthogonality.</strong> Two vectors are perpendicular if and only if their cosine is zero. And since the cosine is $u \cdot v$ divided by a strictly positive denominator (when the vectors are non-zero), it vanishes exactly when the numerator does. Conclusion: to detect orthogonality, you don't even need to compute the cosine; it's enough to check whether the dot product is zero. That's faster, more numerically stable, and avoids handling the degenerate case. The cosine is conceptually the right measure, but the dot product alone is enough for the binary "is it orthogonal?" test.
+      </p>
+
+      <p>
+        <strong>Second use: cosine similarity.</strong> This is probably the most-used similarity measure in machine learning and information retrieval. The principle: each object you want to compare — a word, a text, a user, an image — is represented by a high-dimensional vector (an <em>embedding</em>, to use the standard term), usually learned by a statistical model. To measure how alike two objects are, you compute the cosine of the angle between their embeddings.
+      </p>
+
+      <p>
+        Why cosine rather than distance? Precisely because of its invariance under scaling. In vector representations of text, for example, the norm of the vector tends to reflect the length of the text rather than its subject. A long article and a short message on the same topic will have embeddings of very different sizes but similar orientations. Measuring their similarity by Euclidean distance mixes topic and size; measuring it by cosine focuses on topic alone. That's what makes the cosine so robust as a search tool: it compares content <em>signatures</em>, indifferent to volume.
+      </p>
+
+      <p>
+        The same logic shows up in recommendation systems (comparing user profiles encoded as taste vectors), in image similarity search (comparing visual descriptors), in speech processing (comparing acoustic fingerprints). The pattern is always the same: you've turned objects into vectors, you want to know which ones resemble each other, and the relevant resemblance is directional. The cosine is the natural tool.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Tangent · Pearson correlation is a cosine</span>
+        <p>
+          There's a famous formula in statistics that measures how much two series of measurements "move together" — <em>Pearson correlation</em>. It has the remarkable property of always lying between $-1$ and $+1$, with $+1$ for a perfect linear dependence, $0$ for independence, $-1$ for an inverse linear dependence. These bounds aren't set by hand: <strong>Pearson correlation <em>is</em> a cosine</strong>. More precisely, it's the cosine of the angle between the two series viewed as vectors, after centering them around their means. The same formula, the same interval, exactly the same interpretation: a directional alignment, stripped of lengths. When a statistician talks about the correlation coefficient and an ML engineer talks about cosine similarity, they're handling the same object under two names. It's a fine example of how linear algebra silently underlies fields that claim not to use it.
+        </p>
+      </aside>
+
+      <hr class="ornament" />
+
+      <h2>Key takeaways</h2>
+
+      <p>
+        The cosine of the angle between two vectors is a simple quotient, but it delivers three services that no other formula would deliver as cleanly.
+      </p>
+
+      <ol>
+        <li><strong>Definition</strong>: $\cos(\theta) = (u \cdot v) / (\|u\| \cdot \|v\|)$. It's the dot product normalized by the lengths — the angle isolated, stripped of magnitude.</li>
+        <li><strong>Reading</strong>: value in $[-1, 1]$. $+1$ = same direction, $0$ = perpendicular, $-1$ = opposite directions. The smaller the angle, the closer the cosine to one — the inverse of the naive zero-as-neutral intuition.</li>
+        <li><strong>Degenerate case</strong>: undefined if either vector is zero. The zero vector has no direction, so no angle.</li>
+        <li><strong>Central use</strong>: cosine similarity, omnipresent in anything that compares vector representations — text embeddings, user profiles, image descriptors. Its strength comes from its indifference to lengths: it compares orientations, not sizes.</li>
+      </ol>
+
+      <p>
+        We now have two complementary tools to talk about the relationship between two vectors: the dot product, which mixes angle and lengths into a single signed measure, and the cosine, which isolates the angle alone. Both rely on the notion of length, already met in the section on norms. One last operation remains in this chapter, specific to three dimensions, which no longer concerns the alignment between two vectors but the area they span and the direction perpendicular to the plane they define: the cross product.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Further reading</span>
+        <p>
+          <strong>3blue1brown · Essence of Linear Algebra, ep. 9 — Dot products and duality.</strong>
+          Same episode, another angle of reading: the cosine of the angle is what remains of the dot product once you've divided by the norms — that is, the normalized projection.
+          <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+      </aside>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="02-norms.html">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">← §2 — Norms</span>
+        </a>
+        <a class="next" href="04-cross-product.html">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">§4 — Cross product →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The problem: 3D on a screen — Chapter 5 · §1</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+  <style>
+    /* Petite illustration SVG en pleine largeur, neutre */
+    .illu {
+      display: block;
+      margin: 2rem auto;
+      max-width: 100%;
+    }
+    .illu-caption {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: #6b6b6b;
+      text-align: center;
+      margin-top: -1rem;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html" class="current">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 5 · §1</div>
+      <h1>The problem: 3D on a screen</h1>
+      <p class="lede">
+        Over this series, we'll build the 4×4 matrix that turns a 3D world into an image on a 2D screen. But before crunching any numbers, we need to understand <em>why</em> this matrix has to exist at all, and why simply "dropping depth" doesn't cut it. That's what this first step is about.
+      </p>
+
+      <p>
+        Picture yourself firing up your favorite 3D engine. You drop in a cube, a teapot, a character. Every vertex of every object is three numbers: $(x, y, z)$. Those numbers describe a position in a roomy space, where depth fully exists. Now look at your screen. It's a flat, two-dimensional grid of pixels. Each pixel is addressed by two numbers: $(u, v)$. Somewhere between the two worlds, we need a function — something that takes a 3D triple and returns a 2D pair.
+      </p>
+
+      <p>
+        This function isn't a detail. It's what decides, for every point in the world, which pixel gets drawn. It's what makes a cube look like a cube instead of a smear. It's what makes video games possible, what makes Blender possible, what lets your GPS show you 3D buildings. And this function is what we'll unpack, page by page, until we arrive at the projection matrix.
+      </p>
+
+      <h2>One dimension too many</h2>
+
+      <p>
+        The starting observation is arithmetic before it's geometric: we have three numbers coming in and we want two going out. One is missing — or more precisely, one is extra. How do we get rid of $z$?
+      </p>
+
+      <p>
+        The most naive answer imaginable is also the most tempting: <em>just ignore it</em>. Keep $x$ for the pixel's horizontal coordinate, keep $y$ for the vertical, and toss $z$ in the trash. A single line of code would do the job:
+      </p>
+
+      $$\begin{aligned} u &= x \\ v &= y \end{aligned}$$
+
+      <p>
+        This transformation is real. It has a name: <strong>orthographic projection</strong>. And it's no red herring — it's <em>the</em> right projection for a whole swath of technical graphics, where perspective would actually get in the way.
+      </p>
+
+      <div class="gallery">
+
+        <div class="gallery-card">
+          <div class="label">Architectural plan</div>
+          <svg viewBox="0 0 130 80" width="130" height="80" style="margin: 0.3rem 0; display:block;" aria-hidden="true">
+            <rect x="6" y="6" width="118" height="68" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="2"/>
+            <line x1="55" y1="6" x2="55" y2="45" stroke="#3a3a3a" stroke-width="2"/>
+            <line x1="55" y1="45" x2="124" y2="45" stroke="#3a3a3a" stroke-width="2"/>
+            <line x1="90" y1="45" x2="90" y2="74" stroke="#3a3a3a" stroke-width="2"/>
+            <path d="M 55 28 A 12 12 0 0 1 67 40" fill="none" stroke="#b8431f" stroke-width="1"/>
+            <path d="M 70 45 A 10 10 0 0 1 80 55" fill="none" stroke="#b8431f" stroke-width="1"/>
+            <text x="28" y="28" font-size="7" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">living</text>
+            <text x="90" y="28" font-size="7" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">kitchen</text>
+            <text x="72" y="63" font-size="7" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">bedroom</text>
+            <text x="107" y="63" font-size="7" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">bath</text>
+          </svg>
+          <div style="color: var(--muted); font-size: 11px;">top-down view, exact measurements</div>
+        </div>
+
+        <div class="gallery-card">
+          <div class="label">Isometric game</div>
+          <svg viewBox="0 0 130 80" width="130" height="80" style="margin: 0.3rem 0; display:block;" aria-hidden="true">
+            <polygon points="65,15 100,32 65,49 30,32" fill="#e2c590" stroke="#3a3a3a" stroke-width="1.3"/>
+            <polygon points="65,49 30,32 30,52 65,69" fill="#b8431f" stroke="#3a3a3a" stroke-width="1.3"/>
+            <polygon points="65,49 100,32 100,52 65,69" fill="#7a2a10" stroke="#3a3a3a" stroke-width="1.3"/>
+            <rect x="55" y="38" width="8" height="8" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="0.7"/>
+          </svg>
+          <div style="color: var(--muted); font-size: 11px;">tiles all the same size</div>
+        </div>
+
+        <div class="gallery-card">
+          <div class="label">Technical drawing</div>
+          <svg viewBox="0 0 130 80" width="130" height="80" style="margin: 0.3rem 0; display:block;" aria-hidden="true">
+            <rect x="35" y="8" width="40" height="20" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+            <text x="55" y="20" font-size="6" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">top</text>
+            <rect x="35" y="38" width="40" height="32" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+            <text x="55" y="56" font-size="6" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">front</text>
+            <rect x="85" y="38" width="22" height="32" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+            <text x="96" y="56" font-size="6" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">side</text>
+            <line x1="35" y1="32" x2="35" y2="38" stroke="#b8431f" stroke-width="0.5" stroke-dasharray="2,2"/>
+            <line x1="75" y1="32" x2="75" y2="38" stroke="#b8431f" stroke-width="0.5" stroke-dasharray="2,2"/>
+            <line x1="75" y1="54" x2="85" y2="54" stroke="#b8431f" stroke-width="0.5" stroke-dasharray="2,2"/>
+          </svg>
+          <div style="color: var(--muted); font-size: 11px;">three views, precise dimensions</div>
+        </div>
+
+        <div class="gallery-card">
+          <div class="label">Assembly instructions</div>
+          <svg viewBox="0 0 130 80" width="130" height="80" style="margin: 0.3rem 0; display:block;" aria-hidden="true">
+            <rect x="10" y="25" width="38" height="40" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="1.5"/>
+            <circle cx="19" cy="35" r="1.6" fill="#3a3a3a"/>
+            <circle cx="39" cy="35" r="1.6" fill="#3a3a3a"/>
+            <circle cx="19" cy="55" r="1.6" fill="#3a3a3a"/>
+            <circle cx="39" cy="55" r="1.6" fill="#3a3a3a"/>
+            <line x1="55" y1="45" x2="73" y2="45" stroke="#3a3a3a" stroke-width="1.3"/>
+            <polygon points="73,40 83,45 73,50" fill="#3a3a3a"/>
+            <rect x="90" y="36" width="32" height="20" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="1.5"/>
+            <line x1="95" y1="36" x2="95" y2="18" stroke="#b8431f" stroke-width="1.3"/>
+            <line x1="92" y1="20" x2="98" y2="20" stroke="#b8431f" stroke-width="1.3"/>
+            <line x1="92" y1="22" x2="98" y2="22" stroke="#b8431f" stroke-width="1.3"/>
+          </svg>
+          <div style="color: var(--muted); font-size: 11px;">parts shown at their true size</div>
+        </div>
+
+      </div>
+
+      <p>
+        What all these examples have in common is that depth carries no useful information: the goal is to <em>measure, compare, identify</em>. Perspective would distort lengths and warp angles, making the drawing harder to read. Orthographic projection preserves distances and angles in the plane — exactly what these fields need.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangent</span>
+        <p>
+          The same rule explains why <em>Civilization</em>, <em>Diablo</em>, <em>Stardew Valley</em>, and <em>Habbo Hotel</em> all use an isometric view: the player needs to read the terrain grid clearly, and every tile has to appear the same size — otherwise units in the back would look smaller than units in the front, which is workable but a nightmare to design around. Same story for Google Maps' top-down view, or the <em>orthophoto</em> mode in GIS software: you can't read true distances off a photograph taken with real perspective, so you remap to orthographic.
+        </p>
+      </aside>
+
+      <p>
+        But the moment we leave the technical world and try to simulate human vision, orthographic projection lets us down. To see why, try this thought experiment. Place two identical cubes — exactly the same dimensions — in the world. One sits at depth $z = 5$, right in front of your camera. The other is far away, at $z = 500$, almost out of sight. Apply orthographic projection. The result: on your screen, the two cubes show up at <strong>exactly the same size</strong>. As far as orthographic projection is concerned, distance doesn't exist. It isn't encoded, it isn't represented, it has zero visual effect.
+      </p>
+
+      <svg class="illu" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Panneau gauche : ortho -->
+        <text x="100" y="20" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" text-anchor="middle">orthographic projection</text>
+        <!-- Cube pres -->
+        <rect x="40" y="60" width="50" height="50" fill="none" stroke="#b8431f" stroke-width="2"/>
+        <text x="65" y="135" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle">z=5</text>
+        <!-- Cube loin -->
+        <rect x="120" y="60" width="50" height="50" fill="none" stroke="#b8431f" stroke-width="2"/>
+        <text x="145" y="135" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle">z=500</text>
+        <text x="100" y="170" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle" font-style="italic">same size on screen</text>
+
+        <!-- Separateur -->
+        <line x1="300" y1="40" x2="300" y2="180" stroke="#d8d2c2" stroke-width="1"/>
+
+        <!-- Panneau droite : perspective -->
+        <text x="450" y="20" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" text-anchor="middle">perspective projection</text>
+        <!-- Cube pres -->
+        <rect x="370" y="50" width="70" height="70" fill="none" stroke="#b8431f" stroke-width="2"/>
+        <text x="405" y="135" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle">z=5</text>
+        <!-- Cube loin -->
+        <rect x="490" y="80" width="20" height="20" fill="none" stroke="#b8431f" stroke-width="2"/>
+        <text x="500" y="135" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle">z=500</text>
+        <text x="450" y="170" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle" font-style="italic">distance shrinks it</text>
+      </svg>
+      <p class="illu-caption">On the left, depth vanishes. On the right, what the eyes want.</p>
+
+      <p>
+        Take five seconds with this picture. It's the whole stake. You're looking at the difference between <em>a mathematically honest projection that's useless for realistic rendering</em> and <em>the projection that mimics the human eye</em>.
+      </p>
+
+      <h2>What the eyes want</h2>
+
+      <p>
+        When you look at two real-world objects of the same size, one near and one far, your retina doesn't receive the same image of each. The farther the object, the smaller the angle it spans in your field of view, and the smaller its image on your retina. This phenomenon, and this one alone, is what we want to reproduce in order to generate an image that reads as "3D" on a flat screen.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Our eye never performs orthographic projection. If we want to fool the eye with a flat screen, we have to imitate what it does: shrink things with distance.</strong>
+      </p>
+
+      <p>
+        The projection that pulls this off is called <strong>perspective projection</strong>. Its behavior is easy to describe in words: the point's $z$ coordinate has to influence the result. The larger $z$ gets, the closer the point has to be pulled toward the center of the screen. The output magnitude has to depend on depth, not just on $x$ and $y$.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangent</span>
+        <p>
+          Size is only one of the depth cues the brain uses. There are others: stereopsis (two eyes give two slightly offset images), parallax (nearby objects move faster than distant ones when you move your head), focus, shadow, atmospheric perspective (distant mountains turn blue). A flat screen can't reproduce stereopsis (unless you have a VR headset), nor focus, nor parallax (unless you have head tracking). What it has left is size, shadow, and linear perspective. <em>Size as a function of distance</em> is the cheapest and most effective optical trick. That's why it was invented during the Renaissance, and why it sits at the heart of every modern 3D renderer.
+        </p>
+      </aside>
+
+      <h2>What we want, stated precisely</h2>
+
+      <p>
+        Now that the scene is set, let's restate the goal of this whole series of pages.
+      </p>
+
+      <p>
+        We want a function that takes a 3D point $(x, y, z)$ as input and returns a 2D point $(u, v)$ as output, such that:
+      </p>
+
+      <ul>
+        <li>When the point is close to the camera (small $z$), it takes up a lot of room on screen;</li>
+        <li>When the point is far away (large $z$), it takes up very little;</li>
+        <li>Points directly in front of the camera land at the center of the screen;</li>
+        <li>The result has to fit inside the visible rectangle of the screen (not the entire infinite real plane).</li>
+      </ul>
+
+      <p>
+        If you look closely, these four requirements sound an awful lot like a description of what a camera does. A lens turns an infinite 3D world into a bounded 2D image, and the farther something is, the smaller it appears in the viewfinder. Perspective projection is the mathematical model of that physical phenomenon.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>What's next</h2>
+
+      <p>
+        We now have a clear target: find the formula that performs perspective projection. In the next step, we'll derive it geometrically, using just two triangles. The formula will be embarrassingly simple — it fits on one line — and it will leave us facing a brand-new problem that will be the meat of the rest of this exercise: <em>that formula isn't linear</em>. This is what will force us to invent (or rather reinvent) homogeneous coordinates and the 4×4 matrix.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Further reading</span>
+        <p>
+          <strong>3blue1brown · Essence of Linear Algebra, ep. 5 — Three-dimensional linear transformations.</strong>
+          Chapter 5 strays from the classical sources (3D projection is more a computer-graphics topic than a pure linear-algebra one). This 3b1b episode on 3D transformations gives you the minimum baggage to follow along comfortably.
+          <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+      </aside>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="index.html">
+          <span class="nav-label">← Contents</span>
+          <span class="nav-title">Chapter 5</span>
+        </a>
+        <a class="next" href="02-similar-triangles.html">
+          <span class="nav-label">Step 02 →</span>
+          <span class="nav-title">Similar triangles</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

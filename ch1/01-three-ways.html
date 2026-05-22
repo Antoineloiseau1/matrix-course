@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Three ways of seeing a vector — Chapter 1 §1</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Course</div>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">01</span> The vector</summary>
+        <ol>
+          <li><a href="../ch1/01-three-ways.html" class="current">Three ways of seeing</a></li>
+          <li><a href="../ch1/02-combination.html">Linear combination</a></li>
+          <li><a href="../ch1/03-interpolation.html">Linear interpolation</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Measuring geometry</summary>
+        <ol>
+          <li><a href="../ch2/01-dot-product.html">Dot product</a></li>
+          <li><a href="../ch2/02-norms.html">Norms</a></li>
+          <li><a href="../ch2/03-cosine.html">Cosine</a></li>
+          <li><a href="../ch2/04-cross-product.html">Cross product</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> The matrix transforms</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Linear transformation</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplying a matrix</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transpose</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Solve, invert</summary>
+        <ol>
+          <li><a href="../ch4/01-systems.html">Linear systems</a></li>
+          <li><a href="../ch4/02-gauss.html">Gaussian elimination</a></li>
+          <li><a href="../ch4/03-determinant.html">Determinant</a></li>
+          <li><a href="../ch4/04-inverse-rank.html">Inverse and rank</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> 3D projection</summary>
+        <ol>
+          <li><a href="../ch5/01-the-problem.html">The problem</a></li>
+          <li><a href="../ch5/02-similar-triangles.html">Similar triangles</a></li>
+          <li><a href="../ch5/03-non-linear.html">Non-linear</a></li>
+          <li><a href="../ch5/04-homogeneous-coordinates.html">Homogeneous coordinates</a></li>
+          <li><a href="../ch5/05-frustum.html">The frustum</a></li>
+          <li><a href="../ch5/06-ndc-cube.html">The NDC cube</a></li>
+          <li><a href="../ch5/07-matrix-row-by-row.html">Matrix row by row</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Complex spaces</summary>
+        <ol>
+          <li><a href="../ch6/01-why-complex.html">Why complex numbers</a></li>
+          <li><a href="../ch6/02-algebra-geometry.html">Algebra and geometry</a></li>
+          <li><a href="../ch6/03-K-equals-C.html">K = C in our structures</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Home</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapter 1 · §1</div>
+      <h1>Three ways of seeing a vector</h1>
+      <p class="lede">
+        The vector is one of those rare objects that lives in three worlds at once — geometry, numerical computation, and abstract algebra. Realizing that all three worlds talk about the <em>same</em> object gives you a permanent bridge between visual intuition and computational rigor. More prosaically, it's the key that makes everything else in this course feel easy.
+      </p>
+
+      <p>
+        Ask three people what a vector is, and you'll get three answers that sound like three different disciplines. A physicist will show you an arrow floating in space. A programmer will write down a list of numbers. A mathematician will tell you about an abstract object equipped with two operations. All three answers are correct, and they describe <em>exactly the same thing</em>. The power of linear algebra begins with this equivalence: moving freely from one view to another depending on what you're trying to do.
+      </p>
+
+      <p>
+        Before diving into operations, let's take a few minutes to get comfortable with the three views, see how they fit together, and understand why this alignment is a gift rather than a coincidence.
+      </p>
+
+      <h2>The physicist's view: an arrow in space</h2>
+
+      <p>
+        This is the most tangible view. A vector is <strong>an arrow</strong>, characterized by exactly two things: a <em>length</em> (how much) and a <em>direction</em> (which way). A force, a velocity, a displacement — every quantity that needs a "how much" and a "which way" is a vector in the physical sense.
+      </p>
+
+      <p>
+        Crucial detail: the arrow's starting point <em>does not matter</em>. A 5-unit arrow pointing northeast drawn at the origin is the same vector as a 5-unit arrow pointing northeast drawn in Lyon. If you can slide one arrow onto another without rotating or stretching it, the two are representations of the same vector. We say that a vector is an <strong>equivalence class of arrows</strong> up to translation.
+      </p>
+
+      <p>
+        In practice, to keep things tidy, we adopt a convention: we always draw vectors <em>starting from the origin</em>. That convention will prove very handy once we want to identify each vector with a specific point in the plane.
+      </p>
+
+      <h2>The computer scientist's view: a list of numbers</h2>
+
+      <p>
+        A programmer or data scientist sees the vector differently: it's <strong>an ordered list of numbers</strong>. Nothing more. <code>[3, 4]</code> is a vector. <code>[1, -2, 7]</code> is a vector. The pixel <code>[255, 128, 0]</code> that encodes orange in RGB is a vector. The user profile <code>[age, salary, friend_count]</code> is a vector.
+      </p>
+
+      <p>
+        The number of entries in the list is called the <em>dimension</em> of the vector. A 2-entry vector is 2-dimensional, a 100-entry vector is 100-dimensional. No mystery here: the dimension is simply how many numbers you need to describe the object completely.
+      </p>
+
+      <p>
+        Order matters. <code>[3, 4]</code> and <code>[4, 3]</code> are two different vectors. Each position in the list has its own meaning — the first coordinate is not the second.
+      </p>
+
+      <h2>The mathematician's view: something you can add and scale</h2>
+
+      <p>
+        The third view is the most abstract and, paradoxically, the most powerful. For a mathematician, a vector is <strong>any object on which you can perform two operations</strong>:
+      </p>
+
+      <ul>
+        <li>Add two objects together to get a third object of the same type.</li>
+        <li>Multiply an object by a number (a <em>scalar</em>) to get another object of the same type.</li>
+      </ul>
+
+      <p>
+        And these two operations have to behave reasonably: commutativity, associativity, distributivity — everything you'd expect. The full set of rules defines what's called a <strong>vector space</strong>, but the name doesn't matter yet. What matters is the idea.
+      </p>
+
+      <p>
+        Why is this view so powerful? Because it opens the door to "vectors" that have neither length nor an obvious list of components. Functions can be vectors. Polynomials can be vectors. The solutions to a differential equation can form a vector space. Once you've understood the algebra of vectors, you can apply it to all of these objects without learning anything new.
+      </p>
+
+      <p class="pull-quote">
+        <strong>An arrow, a list of numbers, and an object you can add and scale: these three descriptions aren't three similar things — they're the same thing viewed from three different angles.</strong> That's what makes computation usable for reasoning about geometry, and geometry illuminating for understanding computation.
+      </p>
+
+      <h2>Visualizing a vector in 2D</h2>
+
+      <p>
+        Let's line up the three views in the simplest case: the plane. Take the vector $[3, 4]$. How do we draw it?
+      </p>
+
+      <p>
+        We start from the <strong>origin</strong>, the point $(0, 0)$. The first coordinate tells us how far to step <em>to the right</em> (along the horizontal axis, the $x$-axis). The second coordinate tells us how far to step <em>upward</em> (along the vertical axis, the $y$-axis). For $[3, 4]$: three steps right, then four steps up. The arrow points from $(0, 0)$ to its tip at $(3, 4)$.
+      </p>
+
+      <svg class="illu" viewBox="0 0 320 260" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c1s1-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+          <marker id="arrow-c1s1-axis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1c1a15"/>
+          </marker>
+        </defs>
+        <!-- Grid -->
+        <g stroke="#ddd6c2" stroke-width="0.8">
+          <line x1="60" y1="40" x2="60" y2="220"/>
+          <line x1="110" y1="40" x2="110" y2="220"/>
+          <line x1="160" y1="40" x2="160" y2="220"/>
+          <line x1="210" y1="40" x2="210" y2="220"/>
+          <line x1="260" y1="40" x2="260" y2="220"/>
+          <line x1="40" y1="60" x2="280" y2="60"/>
+          <line x1="40" y1="110" x2="280" y2="110"/>
+          <line x1="40" y1="160" x2="280" y2="160"/>
+          <line x1="40" y1="210" x2="280" y2="210"/>
+        </g>
+        <!-- Axes -->
+        <line x1="60" y1="230" x2="60" y2="30" stroke="#1c1a15" stroke-width="1.4" marker-end="url(#arrow-c1s1-axis)"/>
+        <line x1="40" y1="210" x2="290" y2="210" stroke="#1c1a15" stroke-width="1.4" marker-end="url(#arrow-c1s1-axis)"/>
+        <!-- Axis ticks/labels -->
+        <g font-family="Inter, sans-serif" font-size="11" fill="#8b8474">
+          <text x="60" y="247" text-anchor="middle">0</text>
+          <text x="110" y="247" text-anchor="middle">1</text>
+          <text x="160" y="247" text-anchor="middle">2</text>
+          <text x="210" y="247" text-anchor="middle">3</text>
+          <text x="260" y="247" text-anchor="middle">4</text>
+          <text x="50" y="214" text-anchor="end">0</text>
+          <text x="50" y="164" text-anchor="end">1</text>
+          <text x="50" y="114" text-anchor="end">2</text>
+          <text x="50" y="64" text-anchor="end">3</text>
+          <text x="295" y="214" font-style="italic">x</text>
+          <text x="55" y="28" text-anchor="end" font-style="italic">y</text>
+        </g>
+        <!-- Dashed projections -->
+        <line x1="210" y1="210" x2="210" y2="60" stroke="#8b8474" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="60" y1="60" x2="210" y2="60" stroke="#8b8474" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="210" y="225" font-family="Inter, sans-serif" font-size="11" fill="#1e5a7a" text-anchor="middle">3</text>
+        <text x="45" y="64" font-family="Inter, sans-serif" font-size="11" fill="#1e5a7a" text-anchor="end">4</text>
+        <!-- Vector arrow -->
+        <line x1="60" y1="210" x2="210" y2="60" stroke="#b8431f" stroke-width="2.2" marker-end="url(#arrow-c1s1-a)"/>
+        <!-- Tip dot and label -->
+        <circle cx="210" cy="60" r="3.2" fill="#b8431f"/>
+        <text x="220" y="55" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1c1a15">[3, 4]</text>
+        <!-- Origin dot -->
+        <circle cx="60" cy="210" r="2.5" fill="#1c1a15"/>
+      </svg>
+      <p class="illu-caption">The vector [3, 4]: three steps right, four steps up, from the origin.</p>
+
+      <p>
+        A vector in 2D is therefore <em>two instructions</em>: "how far right, how far up." In 3D, three (right, up, depth). In 10D, ten — impossible to draw, but the principle is unchanged: one number per axis.
+      </p>
+
+      <p>
+        This breakdown along axes has a name: the <strong>coordinates</strong> of the vector. Implicitly, we're relying on reference axes, what we call a <em>basis</em>. In 2D, the standard basis is the horizontal axis pointing right and the vertical axis pointing up. We'll come back to this later; for now, just remember that the coordinates of a vector depend on the choice of axes.
+      </p>
+
+      <h2>Adding and scaling: the two fundamental operations</h2>
+
+      <p>
+        We saw that the mathematician's view defines a vector by the two operations you can perform on it. Let's look at them concretely.
+      </p>
+
+      <p>
+        <strong>Addition is done component by component.</strong> We line up the vectors and add them slot by slot:
+      </p>
+
+      $$\begin{pmatrix} 3 \\ 4 \end{pmatrix} + \begin{pmatrix} 1 \\ 2 \end{pmatrix} = \begin{pmatrix} 3 + 1 \\ 4 + 2 \end{pmatrix} = \begin{pmatrix} 4 \\ 6 \end{pmatrix}$$
+
+      <p>
+        Geometrically, it's even clearer. Think of a vector as a <em>displacement instruction</em>. Adding two vectors means <strong>chaining displacements</strong>: you follow the first, then follow the second starting from where you ended up. We draw this by placing the tail of the second vector at the tip of the first — the so-called "tip-to-tail" rule. The sum vector runs from the origin to the final tip.
+      </p>
+
+      <svg class="illu" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c1s1-add-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+          <marker id="arrow-c1s1-add-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1e5a7a"/>
+          </marker>
+          <marker id="arrow-c1s1-add-sum" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#6e2716"/>
+          </marker>
+          <marker id="arrow-c1s1-add-axis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1c1a15"/>
+          </marker>
+        </defs>
+        <!-- Grid -->
+        <g stroke="#ddd6c2" stroke-width="0.8">
+          <line x1="80" y1="40" x2="80" y2="260"/>
+          <line x1="120" y1="40" x2="120" y2="260"/>
+          <line x1="160" y1="40" x2="160" y2="260"/>
+          <line x1="200" y1="40" x2="200" y2="260"/>
+          <line x1="240" y1="40" x2="240" y2="260"/>
+          <line x1="280" y1="40" x2="280" y2="260"/>
+          <line x1="60" y1="60" x2="300" y2="60"/>
+          <line x1="60" y1="100" x2="300" y2="100"/>
+          <line x1="60" y1="140" x2="300" y2="140"/>
+          <line x1="60" y1="180" x2="300" y2="180"/>
+          <line x1="60" y1="220" x2="300" y2="220"/>
+          <line x1="60" y1="250" x2="300" y2="250"/>
+        </g>
+        <!-- Axes -->
+        <line x1="80" y1="270" x2="80" y2="30" stroke="#1c1a15" stroke-width="1.4" marker-end="url(#arrow-c1s1-add-axis)"/>
+        <line x1="60" y1="250" x2="310" y2="250" stroke="#1c1a15" stroke-width="1.4" marker-end="url(#arrow-c1s1-add-axis)"/>
+        <!-- Axis labels -->
+        <g font-family="Inter, sans-serif" font-size="11" fill="#8b8474">
+          <text x="80" y="287" text-anchor="middle">0</text>
+          <text x="120" y="287" text-anchor="middle">1</text>
+          <text x="160" y="287" text-anchor="middle">2</text>
+          <text x="200" y="287" text-anchor="middle">3</text>
+          <text x="240" y="287" text-anchor="middle">4</text>
+          <text x="280" y="287" text-anchor="middle">5</text>
+          <text x="70" y="254" text-anchor="end">0</text>
+          <text x="70" y="224" text-anchor="end">1</text>
+          <text x="70" y="184" text-anchor="end">2</text>
+          <text x="70" y="144" text-anchor="end">3</text>
+          <text x="70" y="104" text-anchor="end">4</text>
+          <text x="70" y="64" text-anchor="end">6</text>
+        </g>
+        <!-- u = [3, 4] from origin -->
+        <line x1="80" y1="250" x2="200" y2="90" stroke="#b8431f" stroke-width="2.2" marker-end="url(#arrow-c1s1-add-a)"/>
+        <text x="125" y="180" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f" font-style="italic">u = [3, 4]</text>
+        <!-- v = [1, 2] starting from tip of u -->
+        <line x1="200" y1="90" x2="240" y2="10" stroke="#1e5a7a" stroke-width="2.2" marker-end="url(#arrow-c1s1-add-b)"/>
+        <text x="248" y="50" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" font-style="italic">v = [1, 2]</text>
+        <!-- Sum vector dashed -->
+        <line x1="80" y1="250" x2="240" y2="10" stroke="#6e2716" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#arrow-c1s1-add-sum)"/>
+        <!-- Tips -->
+        <circle cx="200" cy="90" r="3" fill="#b8431f"/>
+        <circle cx="240" cy="10" r="3.5" fill="#6e2716"/>
+        <text x="250" y="18" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#6e2716">u + v = [4, 6]</text>
+        <circle cx="80" cy="250" r="2.5" fill="#1c1a15"/>
+      </svg>
+      <p class="illu-caption">Tip-to-tail addition: we place [1, 2] at the tip of [3, 4], and the sum arrow runs from the origin to the final endpoint.</p>
+
+      <p>
+        Subtraction follows the same logic: component by component. Geometrically, subtracting a vector is the same as adding its opposite — the same arrow, flipped around.
+      </p>
+
+      <p>
+        <strong>Scaling means multiplying a vector by a number.</strong> Each component gets multiplied by that number:
+      </p>
+
+      $$2 \cdot \begin{pmatrix} 3 \\ 4 \end{pmatrix} = \begin{pmatrix} 6 \\ 8 \end{pmatrix}$$
+
+      <p>
+        Geometrically, the arrow is <em>stretched</em> if the scalar is larger than 1, <em>shrunk</em> if it's between 0 and 1, and <em>flipped</em> the other way if it's negative. But — and this is the key observation — the direction of the arrow stays the same, or is exactly opposite. We never rotate the arrow: we lengthen it, shorten it, or flip it. Nothing else.
+      </p>
+
+      <p>
+        These two operations, addition and scaling, are enough to do all of linear algebra. When you combine them — adding several vectors scaled by different coefficients — you get what's called a <em>linear combination</em>, which will be the topic of the next section.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Why the equivalence of the three views is so powerful</span>
+        <p>
+          We glossed over the fact that the three views are the same thing, but it deserves a moment. The physicist's view (the arrow) is intuitive: you visualize it, draw it, spin it around in your head. The computer scientist's view (the list) is <em>computable</em>: you add, you multiply, a computer can handle it. The mathematician's view (the algebra) is <em>generalizable</em>: what you learn about arrows applies to anything that behaves algebraically the same way.
+        </p>
+        <p>
+          The equivalence comes from the fact that an arrow is perfectly encoded by its coordinates — the list of numbers says exactly where the arrow points from the origin. And the two geometric operations (laying tip-to-tail, stretching) translate exactly into the two numerical operations (adding slot by slot, multiplying every slot). That correspondence is what turns <em>a geometric intuition into a computable formula, and vice versa</em>. When we wrestle with some obscure matrix calculation, we can always ask: what does this mean geometrically? Conversely, when a visual intuition stays murky, we can always drop down to the coordinates and crunch.
+        </p>
+      </aside>
+
+      <h2>Vertical or horizontal? A convention that pays off later</h2>
+
+      <p>
+        When we write a vector by hand or in a text, we can lay it down horizontally or stand it up vertically:
+      </p>
+
+      <div class="math">Horizontal:  [ 3, 4, 5 ]
+
+Vertical:    [ 3 ]
+             [ 4 ]
+             [ 5 ]</div>
+
+      <p>
+        Same numbers, same vector, same mathematical object. It's purely a display choice. Still, the <strong>standard convention in linear algebra is vertical</strong>: we write vectors as columns by default.
+      </p>
+
+      <p>
+        Why this preference? Because it lines up nicely with what comes later. When we multiply matrices by vectors, the dimension rules fit together naturally if the vector is a column: an $m \times n$ matrix meets a column vector of height $n$, and the product comes out as a column vector of height $m$. Everything flows. If we had picked horizontal as the default, we'd have to transpose constantly to make the calculations work.
+      </p>
+
+      <p>
+        On the storage side, the vertical/horizontal distinction disappears entirely. A list of numbers in memory is just a list of numbers; orientation only exists on paper, as a reasoning aid. The convention is a mental tool, not a physical reality.
+      </p>
+
+      <h2>Vector or matrix?</h2>
+
+      <p>
+        While we're on the topic of vertical notation, let's clarify the difference between a vector and a matrix. A <em>vector</em> is a single column of numbers — a one-dimensional object, a plain list. A <em>matrix</em> is a rectangular grid — several columns placed side by side, or in other words, several vectors lined up next to each other.
+      </p>
+
+      <div class="math">vector:         matrix:
+[ 3 ]           [ 3  1  0 ]
+[ 4 ]           [ 4  2  7 ]
+[ 5 ]           [ 5  6  9 ]</div>
+
+      <p>
+        A useful way to read a matrix is to see it as a <strong>juxtaposition of column vectors</strong>. The matrix above is made of the three vectors <code>[3, 4, 5]</code>, <code>[1, 2, 6]</code>, <code>[0, 7, 9]</code>, lined up side by side.
+      </p>
+
+      <p>
+        This reading will come into its own in Chapter 3, where we'll discover that a matrix isn't a bag of numbers but <em>a transformation</em> of space — and that its columns are nothing other than the images of the basis vectors under that transformation. For now, just keep in mind: matrix = grid = several column vectors. The rest will come when it needs to.
+      </p>
+
+      <h2>Key takeaways</h2>
+
+      <p>
+        A vector has three equivalent descriptions: an arrow (geometric), an ordered list of numbers (numerical), an object you can add and scale (algebraic). The first gives visual intuition, the second enables concrete computation, the third guarantees that the same rules will work on objects other than arrows.
+      </p>
+
+      <p>
+        In 2D, a vector is drawn from the origin by following its two coordinates: first horizontally, then vertically. The dimension of a vector is simply the number of coordinates needed to describe it.
+      </p>
+
+      <p>
+        Two fundamental operations are enough: addition (component by component, geometrically tip-to-tail) and scaling (multiply each component by the same number, geometrically stretching or flipping). Everything else in linear algebra is built from these two gestures.
+      </p>
+
+      <p>
+        By convention, we write vectors as columns. It's a habit that will pay off when we multiply them by matrices. A matrix, in fact, is nothing other than a juxtaposition of several column vectors — but that's a Chapter 3 story.
+
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Further reading</span>
+        <p>
+          <strong>3blue1brown · Essence of Linear Algebra, ep. 1 — Vectors, what even are they?.</strong>
+          The episode lays out the same triple identity — arrow, list of numbers, algebraic object — with the animation that flips your view from one to another.
+          <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Open ↗</a>
+        </p>
+      </aside>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="../index.html" title="← Home">
+          <span class="nav-label">Previous</span>
+          <span class="nav-title">← Home</span>
+        </a>
+        <a class="next" href="02-combination.html" title="§2 — Linear combination →">
+          <span class="nav-label">Next</span>
+          <span class="nav-title">§2 — Linear combination →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>
