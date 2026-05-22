@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L'élimination de Gauss — Chapitre 4 §2</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html" class="current">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 4 · §2</div>
+      <h1>L'élimination de Gauss</h1>
+      <p class="lede">
+        La section précédente a posé le décor : un système d'équations, c'est une intersection de droites ou d'hyperplans, et trois manipulations innocentes permettent de le tirer dans tous les sens sans changer ses solutions. Cette section construit la <em>recette mécanique</em> qui résoud n'importe quel système en un nombre fini d'étapes — et qui, en prime, sert de moteur à trois autres calculs majeurs du chapitre. Un seul algorithme, quatre usages.
+      </p>
+
+      <p>
+        L'idée centrale est presque trop simple pour être vraie. Au lieu d'inventer une astuce nouvelle pour chaque système, on définit à l'avance une forme cible — une présentation tellement nette que la solution s'y lit à l'œil nu — et on applique les opérations élémentaires dans un ordre discipliné. La forme cible s'appelle la <strong>forme échelonnée réduite</strong>, abrégée <em>RREF</em>.
+      </p>
+
+      <h2>Ce qu'on cherche à obtenir : la RREF</h2>
+
+      <p>
+        Avant de tracer une route, il faut savoir où l'on va. Regarde ces deux versions de la même matrice. Celle de gauche est arbitraire, illisible. Celle de droite décrit exactement le même système, mais d'une manière où la réponse se donne sans calcul.
+      </p>
+
+      <div class="math">Matrice de depart                  Matrice apres reduction (RREF)
+
+[  2    4   -2   |  7 ]            [  1   0   0   |  3 ]
+[  4    9   -3   | 13 ]    ====&gt;   [  0   1   0   |  2 ]
+[ -2   -3    7   |  1 ]            [  0   0   1   |  1 ]</div>
+
+      <p>
+        Si la dernière colonne est celle des seconds membres, la version réduite affiche directement $x = 3$, $y = 2$, $z = 1$. Toute l'énergie de l'algorithme est de transformer la matrice de gauche en la matrice de droite sans jamais perdre une solution. Les $1$ qui descendent en escalier ont un nom : ce sont les <strong>pivots</strong>. Tout le reste est zéro, et c'est cette austérité qui rend la lecture immédiate.
+      </p>
+
+      <h2>Les quatre conditions formelles</h2>
+
+      <p>
+        Une matrice est en RREF si, et seulement si, elle satisfait les quatre conditions suivantes.
+      </p>
+
+      <ol>
+        <li><strong>Pivots à un.</strong> Dans chaque ligne non nulle, le premier coefficient non nul vaut exactement $1$. C'est le pivot de cette ligne.</li>
+        <li><strong>Escalier descendant.</strong> Chaque pivot est strictement plus à droite que celui de la ligne au-dessus. Les pivots forment une diagonale qui peut sauter des colonnes mais ne recule jamais.</li>
+        <li><strong>Colonnes pivot purgées.</strong> Dans toute colonne qui contient un pivot, ce pivot est le <em>seul</em> coefficient non nul. Zéros au-dessus, zéros en-dessous.</li>
+        <li><strong>Lignes nulles en bas.</strong> Toute ligne entièrement nulle, s'il y en a, est rangée tout en bas.</li>
+      </ol>
+
+      <p>
+        Attention à un détail : ces conditions ne contraignent que les <em>colonnes contenant un pivot</em>. Les colonnes qui n'en contiennent pas — qu'on appellera plus loin des <em>colonnes libres</em> — peuvent avoir n'importe quelles valeurs. La matrice est bien en RREF même si une colonne sans pivot affiche des chiffres bizarres. On reviendra à la fin sur l'interprétation de ces colonnes échappées.
+      </p>
+
+      <h2>Les trois opérations qu'on a le droit de faire</h2>
+
+      <p>
+        La section précédente a déjà introduit les trois <strong>opérations élémentaires sur les lignes</strong>. On les redonne ici sous forme de table, avec leur opération inverse, parce que c'est la <em>réversibilité</em> qui justifie qu'on ait le droit de les utiliser. Si on peut toujours revenir en arrière, aucune solution ne peut être créée ni détruite en route.
+      </p>
+
+      <table style="border-collapse: collapse; width: 100%; max-width: 620px; margin: 1.5rem auto; font-family: 'Iowan Old Style', Georgia, serif; font-size: 0.94rem; background: var(--bg-soft); border-left: 3px solid var(--accent-2); border-radius: 0 4px 4px 0;">
+        <thead>
+          <tr style="background: rgba(184, 67, 31, 0.08);">
+            <th style="padding: 0.55rem 0.9rem; text-align: left; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--ink); font-family: 'Inter', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; width: 40px;">#</th>
+            <th style="padding: 0.55rem 0.9rem; text-align: left; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--ink); font-family: 'Inter', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Opération</th>
+            <th style="padding: 0.55rem 0.9rem; text-align: left; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--ink); font-family: 'Inter', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Inverse</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--accent);">1</td>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-soft);">Échanger deux lignes</td>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-soft);">Les ré-échanger</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--accent);">2</td>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-soft);">Multiplier une ligne par k (k non nul)</td>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-soft);">Diviser cette ligne par k</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.5rem 0.9rem; font-weight: 600; color: var(--accent);">3</td>
+            <td style="padding: 0.5rem 0.9rem; color: var(--ink-soft);">Ajouter k fois une ligne à une autre</td>
+            <td style="padding: 0.5rem 0.9rem; color: var(--ink-soft);">Soustraire k fois cette même ligne</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        L'opération 1 sert à remonter une ligne qui contient un bon pivot à la bonne place. L'opération 2 sert à <em>normaliser</em> un pivot, c'est-à-dire le ramener à $1$. L'opération 3 est la véritable machine : c'est elle qui fait apparaître des zéros aux endroits désirés, en combinant deux lignes. Toute l'astuce tient dans le choix du coefficient.
+      </p>
+
+      <h2>La formule clé : « ce qu'on veut tuer, divisé par le pivot »</h2>
+
+      <p>
+        Voici le geste central. À un moment de l'algorithme, on dispose d'une ligne qui contient un pivot — appelons-la $L_i$ — et on veut faire disparaître le coefficient correspondant dans une autre ligne $L_j$, dans la même colonne. On veut remplacer cette case de $L_j$ par zéro, sans casser les autres cases. La technique est l'opération numéro 3, et le coefficient se calcule sans hésitation :
+      </p>
+
+      $$k = \frac{\text{coefficient de } L_j \text{ dans la colonne du pivot}}{\text{valeur du pivot dans } L_i}, \quad \text{puis } L_j \leftarrow L_j - k \cdot L_i$$
+
+      <p>
+        En clair : <em>$k$ égale ce qu'on cherche à annuler, divisé par le pivot</em>. Pourquoi ? Parce que si on retire $k$ fois $L_i$ à $L_j$, on retire $k \cdot (\text{pivot})$ dans la colonne — soit exactement ce qu'on voulait annuler. Le coefficient s'évapore. Les autres colonnes de $L_j$ bougent aussi, mais elles se rangeront à leur tour quand on s'occupera de leur propre colonne.
+      </p>
+
+      <p>
+        Maintenant la simplification qui rend la suite agréable. Si on a normalisé $L_i$ d'abord — diviser toute la ligne pour que son pivot vaille $1$ —, alors la division dans la formule de $k$ disparaît :
+      </p>
+
+      $$k = \text{coefficient de } L_j \text{ dans la colonne du pivot} \quad (\text{parce que pivot} = 1)$$
+
+      <p>
+        Plus de division : $k$ est directement la valeur qu'on veut tuer. C'est pour cette raison qu'on normalise <em>avant</em> d'éliminer. L'ordre des sous-étapes n'est pas décoratif, il économise du calcul et réduit les erreurs.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Un seul moteur, quatre usages.</strong> La même procédure qui résoud un système calcule aussi le rang, le déterminant et l'inverse d'une matrice. C'est cette mutualisation qui fait toute l'élégance du chapitre 4.
+      </p>
+
+      <h2>REF ou RREF : une marche d'écart</h2>
+
+      <p>
+        Dans la littérature, on rencontre deux formes échelonnées proches mais distinctes. La <strong>REF</strong> (<em>Row Echelon Form</em>, sans le « Reduced ») exige seulement que les pivots dessinent un escalier descendant et qu'il n'y ait que des zéros <em>en-dessous</em> des pivots ; les pivots eux-mêmes peuvent prendre n'importe quelle valeur non nulle, et au-dessus d'eux la matrice peut contenir n'importe quoi.
+      </p>
+
+      <p>
+        La <strong>RREF</strong> exige tout cela <em>plus deux choses</em> : les pivots valent exactement $1$, et les zéros descendent aussi <em>au-dessus</em> des pivots. La REF est intermédiaire, la RREF est terminale. Pour la lisibilité immédiate, c'est la RREF qu'on veut. La différence algorithmique est minime : même formule pour $k$, mais on élimine dans <em>toutes</em> les autres lignes (haut et bas), et on normalise chaque pivot à un en chemin.
+      </p>
+
+      <h2>La structure de l'algorithme</h2>
+
+      <p>
+        On peut maintenant décrire la machinerie. L'algorithme parcourt la matrice <em>colonne par colonne</em> de gauche à droite. Pour chaque colonne, il tente de placer un pivot. S'il y arrive, il fait le ménage dans toute cette colonne ; sinon, il passe à la suivante.
+      </p>
+
+      <div class="math">pivot_row ← 0
+
+pour chaque colonne c, de la premiere a la derniere :
+    si pivot_row a depasse la derniere ligne :
+        arret  (plus de lignes disponibles)
+
+    chercher dans la colonne c, parmi les lignes >= pivot_row,
+    une ligne dont le coefficient n'est pas zero.
+
+    si aucune ne convient :
+        colonne libre, on passe a la colonne suivante
+        (pivot_row reste a sa valeur courante)
+    sinon, en appelant j la ligne trouvee :
+        1. echanger les lignes j et pivot_row (si elles different)
+        2. normaliser pivot_row : diviser toute la ligne par le pivot
+        3. eliminer la colonne c dans toutes les autres lignes
+        pivot_row ← pivot_row + 1</div>
+
+      <p>
+        Deux indices se promènent dans cette boucle, et il est crucial qu'ils n'avancent <em>pas</em> au même rythme. L'indice <code>c</code> parcourt les colonnes une par une, du début à la fin. L'indice <code>pivot_row</code>, lui, ne s'incrémente que <em>quand un pivot a effectivement été placé</em>. Si la colonne courante ne contient que des zéros dans la zone utile, <code>c</code> avance mais <code>pivot_row</code> ne bouge pas.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Pourquoi dissocier ces deux indices</span>
+        <p>
+          Si <code>c</code> et <code>pivot_row</code> avançaient ensemble, on supposerait qu'il y a un pivot dans chaque colonne — que la matrice est « pleine » du point de vue des contraintes. Rien ne le garantit. Une colonne peut être entièrement nulle dans la zone qu'on examine, parce que toutes les contraintes correspondant à cette inconnue ont déjà été consommées plus haut, ou parce qu'aucune n'existait. La colonne est alors dite <em>libre</em>, et l'escalier des pivots fait un <em>saut</em> au-dessus d'elle. La dissociation des deux indices est exactement ce qui permet de gérer ce saut proprement. C'est aussi le mécanisme qui permettra plus tard de compter les pivots réels — le <em>rang</em> — sans se faire avoir par les colonnes libres.
+        </p>
+      </aside>
+
+      <hr class="ornament" />
+
+      <h2>Un exemple complet, du début à la fin</h2>
+
+      <p>
+        Reprenons le système de la section précédente et menons-le jusqu'à sa RREF. C'est petit, c'est carré, c'est inversible — la situation parfaite pour fixer la mécanique sans s'embarquer dans les cas particuliers.
+      </p>
+
+      $$\begin{aligned}
+2x + 3y &= 8 \\
+-7x + 4y &= 2
+\end{aligned}$$
+
+      <p>
+        On écrit la matrice augmentée : coefficients des inconnues à gauche de la barre, seconds membres à droite.
+      </p>
+
+      <div class="math">L_1 :  [  2    3   |  8  ]
+L_2 :  [ −7    4   |  2  ]</div>
+
+      <p>
+        <strong>Colonne 1, on cherche un pivot.</strong> La ligne $L_1$ affiche un $2$ : ça fera l'affaire. Inutile d'échanger. <strong>Normalisation</strong> : on divise toute la ligne $L_1$ par $2$ pour que son pivot devienne $1$.
+      </p>
+
+      <div class="math">L_1 :  [  1   1.5  |  4  ]
+L_2 :  [ −7    4   |  2  ]</div>
+
+      <p>
+        Ensuite l'<strong>élimination</strong>. La ligne $L_2$ contient un $-7$ dans la colonne du pivot, c'est ce qu'on veut tuer. Puisque le pivot vaut $1$, on a directement $k = -7$, donc $L_2 \leftarrow L_2 - (-7) \cdot L_1$, soit ajouter $7 \cdot L_1$ à $L_2$. Colonne 1 : $-7 + 7 \times 1 = 0$. Colonne 2 : $4 + 7 \times 1.5 = 14.5$. Colonne augmentée : $2 + 7 \times 4 = 30$.
+      </p>
+
+      <div class="math">L_1 :  [  1   1.5  |  4   ]
+L_2 :  [  0  14.5  | 30   ]</div>
+
+      <p>
+        Premier pivot placé. On incrémente <code>pivot_row</code> et on passe à la colonne suivante.
+      </p>
+
+      <p>
+        <strong>Colonne 2, on cherche un pivot.</strong> La ligne $L_2$ contient $14.5$ dans cette colonne, non nul, c'est un pivot. Pas de swap. <strong>Normalisation</strong> : on divise toute la ligne par $14.5$. Le second membre devient $30 / 14.5 = 60/29$, environ $2.069$.
+      </p>
+
+      <div class="math">L_1 :  [  1   1.5   |  4       ]
+L_2 :  [  0   1     |  60/29   ]</div>
+
+      <p>
+        <strong>Élimination.</strong> En RREF on tue aussi le coefficient <em>au-dessus</em> du pivot : le $1.5$ de $L_1$. Avec $k = 1.5$, on fait $L_1 \leftarrow L_1 - 1.5 \cdot L_2$. Colonne 1 : inchangée (puisque $L_2$ y vaut zéro). Colonne 2 : $1.5 - 1.5 \times 1 = 0$. Colonne augmentée : $4 - 1.5 \times 60/29 = 116/29 - 90/29 = 26/29$, environ $0.897$.
+      </p>
+
+      <div class="math">L_1 :  [  1   0   |  26/29  ]
+L_2 :  [  0   1   |  60/29  ]</div>
+
+      <p>
+        Voilà la RREF. Plus de pivot à placer, l'algorithme s'arrête. La lecture est immédiate : $x = 26/29$ et $y = 60/29$. Pas d'inverse, pas de substitution dans une autre équation. La discipline des trois opérations élémentaires, appliquées dans le bon ordre, a fait émerger la solution toute seule. Vérification : $2 \times 26/29 + 3 \times 60/29 = 232/29 = 8$, et $-7 \times 26/29 + 4 \times 60/29 = 58/29 = 2$. La machine ne ment pas.
+      </p>
+
+      <h2>Quand l'escalier saute une marche : colonnes libres</h2>
+
+      <p>
+        Tout ne se passe pas toujours aussi proprement. Parfois, en arrivant sur une colonne, on s'aperçoit qu'elle ne contient que des zéros dans la zone où l'on a encore le droit de chercher (en-dessous de la dernière ligne pivot déjà placée). Aucun candidat. L'algorithme avance sans incrémenter <code>pivot_row</code> : l'escalier des pivots a sauté une marche.
+      </p>
+
+      <p>
+        La colonne sans pivot est dite <strong>libre</strong>, et l'inconnue qui lui correspond est une <strong>variable libre</strong>. Concrètement, cette variable n'est déterminée par aucune contrainte directe : on peut lui donner n'importe quelle valeur, et ajuster les autres inconnues en conséquence. C'est exactement le « cas 3 » de la section précédente, celui de l'infinité de solutions.
+      </p>
+
+      <p>
+        Les coefficients d'une colonne libre, après réduction, ne sont pas du bruit : ils expriment <em>la dépendance</em> des inconnues à pivot par rapport à la variable libre. Si la ligne d'un certain pivot affiche un $0.625$ dans une colonne libre, cela veut dire que l'inconnue à pivot vaut « le second membre, moins $0.625$ fois la variable libre ». On y reviendra dans la fiche sur le rang, parce que c'est en comptant les colonnes <em>avec</em> pivot et celles <em>sans</em> qu'on accède à la mesure de la liberté du système.
+      </p>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <ol>
+        <li><strong>La cible est la RREF.</strong> Pivots égaux à $1$, escalier descendant, zéros au-dessus et en-dessous de chaque pivot, lignes nulles en bas. C'est la forme la plus propre qu'on puisse atteindre avec les trois opérations élémentaires sur les lignes.</li>
+        <li><strong>Trois opérations, et trois seulement.</strong> Échanger deux lignes, multiplier une ligne par un scalaire non nul, ajouter à une ligne un multiple d'une autre. Toutes les trois sont réversibles, donc l'ensemble des solutions est préservé.</li>
+        <li><strong>La formule clé pour éliminer.</strong> Le coefficient $k$ qui annule un terme en utilisant un pivot vaut « ce qu'on veut tuer, divisé par le pivot ». Quand le pivot a été normalisé à $1$, la division disparaît et $k$ est simplement la valeur à annuler.</li>
+        <li><strong>Deux indices, deux rôles.</strong> La colonne courante avance à chaque tour, mais la ligne pivot ne s'incrémente que si un pivot a vraiment été posé. Cette dissociation gère les colonnes libres et permet à l'escalier de sauter des marches sans casser.</li>
+        <li><strong>Un moteur, plusieurs usages.</strong> Cette même procédure de réduction servira à calculer le déterminant, l'inverse et le rang d'une matrice dans les sections qui suivent. Comprendre Gauss une fois, c'est préparer le terrain pour tout le reste du chapitre.</li>
+      </ol>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="01-systemes.html">
+          <span class="nav-label">Précédent</span>
+          <span class="nav-title">← §1 — Systèmes linéaires</span>
+        </a>
+        <a class="next" href="03-determinant.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">§3 — Déterminant →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

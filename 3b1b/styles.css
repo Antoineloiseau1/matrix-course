@@ -1,0 +1,151 @@
+/* Cours 3blue1brown — feuille de style dérivée du moule pop-math
+ * Référence: ../styles.css (cours principal). On charge la même base et
+ * on ajoute juste deux trois bricoles propres à ce companion-notebook.
+ */
+
+@import url("../styles.css");
+
+/* === Badge episode === */
+.ep-badge {
+  display: inline-block;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-weight: 600;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 0.18em 0.55em;
+  border-radius: 10px;
+  vertical-align: middle;
+}
+
+/* === Lien vers la video === */
+.video-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 12.5px;
+  background: var(--accent-soft);
+  color: var(--accent-deep);
+  border: 1px solid var(--accent);
+  padding: 0.3rem 0.7rem;
+  border-radius: 14px;
+  text-decoration: none;
+  margin: 0.3rem 0 0;
+}
+
+.video-link::before { content: "▶"; font-size: 9px; }
+
+.video-link:hover { background: var(--accent); color: var(--bg); }
+
+/* === Index : liste compacte 16 episodes === */
+.episode-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.8rem;
+  margin: 1.5rem 0 3rem;
+}
+
+.episode-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1rem 1.2rem;
+  text-decoration: none;
+  color: var(--ink);
+  transition: all 0.15s;
+}
+
+.episode-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(184, 67, 31, 0.07);
+}
+
+.episode-card .ep-num {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.episode-card h3 {
+  font-family: "Iowan Old Style", Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.episode-card .one-liner {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 11.5px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* TOC plus compact pour 16 entrees */
+.toc.compact ol li { padding: 0.08rem 0; font-size: 11.5px; }
+
+/* === Math display avec KaTeX === */
+/* On reprend la bordure prussian + le fond, mais on retire le monospace
+ * pour laisser KaTeX rendre proprement les formules. */
+.math {
+  font-family: "Iowan Old Style", Georgia, serif !important;
+  white-space: normal !important;
+  text-align: center;
+  font-size: 1rem !important;
+  line-height: 1.4 !important;
+}
+
+.math .katex-display { margin: 0; }
+.math .katex-display > .katex { font-size: 1.08em; }
+.math .katex { color: var(--ink); }
+
+/* Math inline dans le texte (\(...\)) */
+.katex { font-size: 1.02em; }
+
+/* === Figures SVG inline === */
+.figure {
+  margin: 2rem auto;
+  padding: 1rem 1rem 0.7rem;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.figure svg {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  display: block;
+}
+
+.figure-caption {
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 12.5px;
+  color: var(--muted);
+  text-align: center;
+  margin: 0.6rem 0 0;
+  line-height: 1.5;
+}
+
+.figure-caption code {
+  font-size: 11.5px;
+  background: var(--bg-soft);
+}

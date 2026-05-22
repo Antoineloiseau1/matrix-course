@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Les systèmes linéaires — Chapitre 4 §1</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html" class="current">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 4 · §1</div>
+      <h1>Les systèmes linéaires</h1>
+      <p class="lede">
+        Au chapitre précédent, on a compris qu'une matrice n'est rien d'autre qu'une <em>recette pour déformer l'espace</em>. On part d'un vecteur, on lui applique la matrice, on obtient un vecteur déformé. Mais cette histoire a un côté pile et un côté face. Et si, justement, on prenait le problème à l'envers ?
+      </p>
+
+      <p>
+        Imagine. On t'annonce qu'après déformation, un certain point est arrivé ici, à la position que voici. Quel était son emplacement <em>avant</em> déformation ? Ou, formulé autrement : sachant la règle qui transforme l'espace, et sachant l'image finale, retrouve l'antécédent. C'est exactement la même question que celle qu'un détective se pose face à une scène de crime : il ne voit que le résultat, il doit remonter au point de départ. Tout le chapitre 4 est consacré à ce problème inverse, et le premier outil pour le poser proprement, c'est ce qu'on appelle un <strong>système d'équations linéaires</strong>.
+      </p>
+
+      <h2>Un système, c'est plusieurs vérités qui doivent tenir en même temps</h2>
+
+      <p>
+        Une <strong>équation linéaire</strong> est une égalité où les inconnues n'apparaissent qu'au premier degré — pas de carrés, pas de racines, pas d'inconnues qui se multiplient entre elles. Juste des coefficients qui multiplient des inconnues, et qu'on additionne. Pris isolément, ce genre d'équation a en général beaucoup trop de solutions pour être intéressant. Une seule équation à deux inconnues, par exemple, a une infinité de couples qui la vérifient.
+      </p>
+
+      <p>
+        Un <strong>système</strong>, c'est ce qui se passe quand on impose <em>plusieurs</em> équations à la fois, et qu'on cherche les valeurs d'inconnues qui les satisfont <em>toutes simultanément</em>. Voici une scène typique à deux inconnues :
+      </p>
+
+      $$\begin{aligned}
+2x + 3y &= 8 \\
+-7x + 4y &= 2
+\end{aligned}$$
+
+      <p>
+        Lis attentivement. Il y a un piège classique dans lequel on tombe les premières fois : on pourrait croire que les $x$ de la première ligne et ceux de la seconde sont des choses différentes, deux paires d'inconnues indépendantes. Ce n'est pas le cas. C'est <em>le même couple</em> $(x, y)$ qui doit faire tenir les deux égalités en même temps. Un couple qui rend la première ligne vraie mais qui rate la seconde n'est pas une solution. Le système exige un consensus.
+      </p>
+
+      <p>
+        C'est ce mot, <em>simultanément</em>, qui fait toute la difficulté et toute la richesse du sujet. On cherche un point unique de l'espace des inconnues qui satisfait toutes les contraintes à la fois.
+      </p>
+
+      <h2>Chaque équation est une forme géométrique</h2>
+
+      <p>
+        Voici le pas qui débloque toute l'intuition. Une équation linéaire ne se contente pas d'être une égalité algébrique : elle <em>dessine</em> quelque chose. Plus précisément, l'ensemble des points qui la satisfont forme un objet géométrique très régulier.
+      </p>
+
+      <ul>
+        <li>À deux inconnues, l'ensemble des solutions d'une équation est une <strong>droite</strong> dans le plan.</li>
+        <li>À trois inconnues, c'est un <strong>plan</strong> dans l'espace.</li>
+        <li>À $n$ inconnues, c'est ce qu'on appelle un <strong>hyperplan</strong> dans $\mathbb{R}^n$ — une copie aplatie de dimension $n - 1$ à l'intérieur d'un espace de dimension $n$. Le mot fait peur, mais l'idée est juste la généralisation directe de la droite et du plan : un sous-espace plat, qui a une dimension de moins que celui qui l'héberge.</li>
+      </ul>
+
+      <p>
+        Quand on rassemble plusieurs équations dans un système, chacune dessine son propre objet. La question algébrique « quels $x$, $y$, … vérifient toutes ces équations en même temps ? » devient alors une question géométrique d'une clarté étonnante : <em>quels points appartiennent à tous ces objets à la fois ?</em>
+      </p>
+
+      <p class="pull-quote">
+        <strong>Résoudre un système, c'est trouver l'intersection.</strong> Pas plus, pas moins.
+      </p>
+
+      <p>
+        Voici l'image qu'il faut graver. Deux droites dans le plan se promènent indépendamment, chacune incarnant une équation. La solution du système est le point — s'il existe — où elles se touchent.
+      </p>
+
+      <svg class="illu" viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c4s1-axis" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1c1a15"/>
+          </marker>
+        </defs>
+        <!-- Axes -->
+        <line x1="40" y1="170" x2="430" y2="170" stroke="#1c1a15" stroke-width="1.4" marker-end="url(#arrow-c4s1-axis)"/>
+        <line x1="170" y1="280" x2="170" y2="30" stroke="#1c1a15" stroke-width="1.4" marker-end="url(#arrow-c4s1-axis)"/>
+        <text x="170" y="22" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1c1a15" font-style="italic" text-anchor="middle">y</text>
+        <text x="425" y="190" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1c1a15" font-style="italic">x</text>
+        <!-- Droite 1 : 2x + 3y = 8 ⇒ y = (8 - 2x)/3. Passe par (1, 2) et (4, 0). Calé pour passer par intersection. -->
+        <line x1="40" y1="60" x2="430" y2="234" stroke="#b8431f" stroke-width="2.2"/>
+        <text x="370" y="222" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f" font-style="italic">2x + 3y = 8</text>
+        <!-- Droite 2 : -7x + 4y = 2 (passe par (-2/7, 0.5) et (2, 4)) -->
+        <line x1="60" y1="270" x2="430" y2="70" stroke="#1e5a7a" stroke-width="2.2"/>
+        <text x="350" y="80" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" font-style="italic">−7x + 4y = 2</text>
+        <!-- Point d'intersection (à peu près au centre) -->
+        <circle cx="245" cy="146" r="5.5" fill="#6e2716" stroke="#fff" stroke-width="1.5"/>
+        <text x="258" y="142" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#6e2716" font-style="italic">solution</text>
+        <text x="258" y="160" font-family="Inter, sans-serif" font-size="11" fill="#8b8474">point d'intersection</text>
+      </svg>
+      <p class="illu-caption">Chaque équation dessine une droite ; la solution du système est leur point d'intersection.</p>
+
+      <p>
+        Cette image porte un nom : la <strong>row picture</strong>, par opposition à la column picture qu'on évoquera dans un instant. « Row » parce qu'on lit chaque <em>ligne</em> du système séparément et qu'on l'interprète comme une forme géométrique. C'est la vision la plus naturelle pour comprendre <em>ce qu'est</em> une solution.
+      </p>
+
+      <h2>Trois scénarios, et trois seulement</h2>
+
+      <p>
+        Quand on cherche l'intersection de plusieurs droites, ou de plusieurs hyperplans, il n'y a pas une infinité de configurations possibles. Géométriquement, il n'y a que trois cas. Et chacun a une signification limpide.
+      </p>
+
+      <p>
+        <strong>Cas 1 — Solution unique.</strong> Les droites se croisent en un seul point. Les plans se rencontrent en un seul point. C'est le cas qu'on espère, le cas « générique » au sens où il se produit pour presque n'importe quel choix de coefficients tirés au hasard. Le système a alors une réponse, et une seule. On dit que la matrice des coefficients est <em>inversible</em> — un mot qui fait référence à la possibilité de remonter le temps, de retrouver l'antécédent. On le définira proprement plus loin, mais l'intuition est déjà là : si on peut « inverser » la transformation, on peut déduire le point de départ à partir du point d'arrivée.
+      </p>
+
+      <p>
+        <strong>Cas 2 — Aucune solution.</strong> Les droites sont parallèles et distinctes. Elles ne se touchent jamais. Imagine deux égalités incompatibles, qui exigent en même temps qu'une certaine somme vaille 1 et qu'elle vaille 5. Aucun couple $(x, y)$ ne peut accomplir l'impossible. Le système est dit <em>inconsistant</em>. Géométriquement, c'est ce qui arrive quand les contraintes se contredisent : on a demandé l'impossible.
+      </p>
+
+      <p>
+        <strong>Cas 3 — Une infinité de solutions.</strong> Les droites sont confondues, superposées, identiques. Tous les points de la droite vérifient les deux équations à la fois. Algébriquement, c'est ce qui se passe quand une équation n'apporte aucune information nouvelle, parce qu'elle est juste une copie déguisée — disons un multiple — d'une autre. La deuxième contrainte est <em>redondante</em>. Du coup, il reste un degré de liberté non déterminé, et la solution n'est plus un point mais toute une droite (ou tout un plan, en dimensions supérieures).
+      </p>
+
+      <p>
+        Ces trois cas se distinguent par quelque chose qu'on appellera bientôt le <strong>rang</strong> du système — une mesure du nombre d'équations « vraiment indépendantes » qu'on a sous la main. Une définition propre viendra plus tard ; pour l'instant, retiens juste que le rang compte combien de contraintes apportent vraiment de l'information, par opposition à celles qui ne sont que des échos d'autres équations.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">L'autre image, en passant : la column picture</span>
+        <p>
+          Il existe une seconde manière, complémentaire, de regarder un système. Au lieu de lire $Ax = b$ ligne par ligne et de dessiner des droites, on lit la matrice $A$ par <em>colonnes</em>. La question devient alors : « quelle combinaison linéaire des colonnes de $A$ permet de produire le vecteur $b$ ? » C'est la <strong>column picture</strong>, défendue magnifiquement par Grant Sanderson dans la série 3blue1brown. Elle est plus naturelle quand on pense en termes de transformations : $b$ est l'arrivée, les colonnes sont les destinations des vecteurs de base, et $x$ sont les coefficients qui les mélangent pour atterrir sur $b$. Les deux visions disent la même chose ; selon le problème, l'une éclaire la voie plus que l'autre.
+        </p>
+      </aside>
+
+      <h2>Comment on encode un système : la matrice augmentée</h2>
+
+      <p>
+        Si on doit résoudre un système à la main, on se rend vite compte qu'on passe beaucoup d'énergie à recopier des $x$, des $y$, des signes $=$, des signes $+$. Ces symboles, ligne après ligne, sont du décor : ils ne changent jamais. Ce qui change, ce sont les coefficients et les termes constants. C'est exactement le genre de constat qui appelle une notation compacte.
+      </p>
+
+      <p>
+        On range donc les coefficients dans une matrice — une ligne par équation, une colonne par inconnue — et on accroche les termes constants en dernière colonne, séparés par une barre verticale pour rappeler qu'ils ne sont pas du même genre :
+      </p>
+
+      <div class="math">Systeme :                       Matrice augmentee :
+
+  2x + 3y = 8                     |  2   3  |  8 |
+ −7x + 4y = 2                     | −7   4  |  2 |</div>
+
+      <p>
+        Cette barre verticale est une convention de lecture, rien de plus : elle sépare visuellement les coefficients (la matrice $A$) du vecteur des seconds membres (le vecteur $b$). Tout le travail à venir va consister à manipuler cette matrice augmentée de façon disciplinée jusqu'à ce qu'elle révèle la solution.
+      </p>
+
+      <p>
+        L'avantage est évident : on n'écrit plus que des nombres. L'avantage plus discret est qu'on a transformé un objet syntaxique (des équations avec des inconnues qui se baladent) en un objet purement numérique (un tableau rectangulaire), ce qui ouvre la porte aux algorithmes mécaniques. Une machine sait manipuler des tableaux.
+      </p>
+
+      <h2>Trois gestes qui ne changent rien aux solutions</h2>
+
+      <p>
+        Il reste à expliquer <em>quelles</em> manipulations on a le droit de faire sur ces lignes sans trahir le système. La règle d'or, c'est qu'on a le droit de modifier la matrice, à condition que l'ensemble des solutions reste exactement le même. Et il se trouve qu'il y a trois opérations, et trois seulement, qui satisfont cette condition. On les appelle les <strong>opérations élémentaires sur les lignes</strong>.
+      </p>
+
+      <p>
+        <strong>1. Échanger deux lignes.</strong> Si on permute les équations dans l'ordre, on n'a évidemment rien changé : un système est un ensemble de contraintes simultanées, et l'ordre dans lequel on les liste n'a aucune importance. C'est l'opération la plus innocente des trois. On l'utilisera surtout pour ranger les choses dans un ordre commode.
+      </p>
+
+      <p>
+        <strong>2. Multiplier une ligne par un scalaire non nul.</strong> Si la contrainte « $2x + 3y = 8$ » est vraie, alors « $4x + 6y = 16$ » est vraie aussi : c'est la même équation doublée des deux côtés. Et réciproquement, si on connaissait la version doublée, on retrouverait l'originale en divisant par 2. C'est cette <em>réversibilité</em> qui garantit qu'aucune solution n'est perdue ni inventée. La condition « non nul » est cruciale : multiplier par zéro détruirait l'équation au lieu de la transformer, et l'opération ne serait plus réversible.
+      </p>
+
+      <p>
+        <strong>3. Ajouter à une ligne un multiple d'une autre ligne.</strong> Si $L_1$ et $L_2$ sont deux équations vraies, alors $L_2 + k \cdot L_1$ est aussi vraie. On a juste combiné deux vérités pour en former une troisième. Et là encore, on peut revenir en arrière en soustrayant $k \cdot L_1$. La réversibilité est préservée, donc l'ensemble des solutions aussi.
+      </p>
+
+      <p>
+        Le mot-clé, dans ces trois cas, c'est <strong>réversibilité</strong>. Chacune de ces trois opérations a une opération inverse, évidente et explicite. Et puisqu'on peut toujours revenir en arrière, on ne peut ni perdre une solution en route, ni en faire apparaître une fausse. Les manipulations sont innocentes, dans le sens fort du terme.
+      </p>
+
+      <p>
+        Cette propriété est la clef de voûte de tout ce qui suit. Sans elle, manipuler la matrice augmentée n'aurait aucun sens : on transformerait un système en un autre système, qui ne représente plus rien. Avec elle, on a le droit de tirer, tordre, simplifier la matrice autant qu'on veut, dans l'espoir qu'au bout du chemin elle prenne une forme tellement lisible que la solution saute aux yeux.
+      </p>
+
+      <hr class="ornament" />
+
+      <h2>Vers la suite</h2>
+
+      <p>
+        Voilà le décor posé. On a un problème — trouver l'intersection d'objets géométriques —, une notation compacte — la matrice augmentée —, et trois gestes légitimes — les opérations élémentaires sur les lignes. Il reste à transformer ces ingrédients en algorithme : une recette systématique qui, pour n'importe quel système, arrive à la solution en un nombre fini d'étapes. Cette recette s'appelle l'<strong>élimination de Gauss</strong>, et c'est l'objet de la section suivante.
+      </p>
+
+      <p>
+        Ce qui va être joli, c'est que cette procédure ne sert pas qu'à résoudre des systèmes. Le même moteur — appliquer mécaniquement les trois opérations dans un ordre bien choisi jusqu'à obtenir une matrice canoniquement simple — va aussi nous donner le <strong>déterminant</strong> (un nombre qui mesure combien la transformation contracte ou dilate les volumes, et qui vaut zéro exactement quand la matrice n'est pas inversible), l'<strong>inverse</strong> d'une matrice (la transformation qui annule la transformation initiale) et le <strong>rang</strong> (cette mesure du nombre d'équations vraiment indépendantes qu'on a mentionnée tout à l'heure). Quatre objets, un seul algorithme. C'est cette économie qui fait la beauté du chapitre 4.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="../ch3/03-trace-transpose.html">
+          <span class="nav-label">Précédent</span>
+          <span class="nav-title">← Chapitre 3 §3 — Trace, transposée, spéciales</span>
+        </a>
+        <a class="next" href="02-gauss.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">§2 — Algorithme de Gauss →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

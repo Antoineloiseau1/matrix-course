@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algèbre et géométrie de C — Chapitre 6 §2</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+
+  <style>
+    .plane {
+      display: block;
+      margin: 2rem auto;
+      max-width: 100%;
+    }
+    .plane-caption {
+      font-family: "Inter", system-ui, sans-serif;
+      font-size: 12.5px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: -1rem;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html" class="current">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 6 · §2</div>
+      <h1>Algèbre et géométrie de C</h1>
+      <p class="lede">
+        Au chapitre précédent, on a postulé l'existence de $i$ avec sa règle $i^2 = -1$, et l'on a constaté qu'un complexe se laisse toujours écrire sous la forme $a + bi$. Ici on fait deux choses : on apprend mécaniquement à additionner, multiplier, diviser ces objets ; et l'on découvre que chaque opération algébrique correspond à un geste géométrique dans le plan. C'est ce double regard — algèbre et géométrie d'un même objet — qui donne aux complexes leur puissance.
+      </p>
+
+      <p>
+        Commençons par la fin. La grande révélation de cette section, celle qui donne envie d'avoir inventé les complexes, tient en une phrase : <em>multiplier deux complexes, c'est multiplier leurs longueurs et additionner leurs angles</em>. Une multiplication algébrique avec son distribution-et-on-applique-$i^2 = -1$ fastidieuse est, vue d'en haut, l'opération géométrique la plus simple qu'on puisse imaginer : tourner et redimensionner. On va y arriver, mais en passant par les briques algébriques d'abord.
+      </p>
+
+      <h2>L'addition : trivialement vectorielle</h2>
+
+      <p>
+        Soient deux complexes $z = a + bi$ et $w = c + di$. Leur somme s'obtient en additionnant séparément les parties réelles et les parties imaginaires :
+      </p>
+
+      $$z + w = (a + c) + (b + d)i$$
+
+      <p>
+        Pas de surprise, pas de règle spéciale : on additionne juste les deux parties. C'est exactement ce que tu sais faire avec des vecteurs 2D depuis le chapitre 1. Et ce n'est pas une coïncidence : un complexe est <em>algébriquement</em> indissociable d'un vecteur de $\mathbb{R}^2$ quand il s'agit d'additionner.
+      </p>
+
+      <p>
+        Géométriquement, c'est la <strong>règle du parallélogramme</strong> : on dessine $z$ comme une flèche partant de l'origine, on accroche la flèche $w$ à l'extrémité de $z$, et l'on tombe sur $z + w$. La même image que pour deux vecteurs.
+      </p>
+
+      <h2>La multiplication : la distribution avec un twist</h2>
+
+      <p>
+        Si l'addition est triviale, la multiplication a une subtilité : la règle $i^2 = -1$ vient se glisser au milieu d'une distribution classique. Calculons $(a + bi)(c + di)$ comme on développerait $(a + b)(c + d)$ au collège :
+      </p>
+
+      $$
+      \begin{aligned}
+      (a + bi)(c + di) &= ac + adi + bci + bdi^2 \\
+                        &= ac + adi + bci - bd \quad \text{(car } i^2 = -1 \text{)} \\
+                        &= (ac - bd) + (ad + bc)i
+      \end{aligned}
+      $$
+
+      <p>
+        La formule finale donne la nouvelle partie réelle ($ac - bd$, qui inclut donc la contribution du terme imaginaire pur) et la nouvelle partie imaginaire ($ad + bc$). On la vérifiera mille fois, mais ce qui compte n'est pas la formule fermée — c'est la <em>méthode</em> : distribution comme avec des polynômes, puis substitution de chaque $i^2$ par $-1$.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangente</span>
+        <p>
+          Si tu trouves la formule de la multiplication peu inspirante, c'est normal — vue du côté algébrique, elle est juste mécanique. Sa <em>beauté</em> ne se révèle qu'en géométrie. On y arrivera dans quelques paragraphes. Pour l'instant, sache juste que cette formule encode quelque chose d'extraordinairement simple, qu'on va finir par mettre à nu.
+        </p>
+      </aside>
+
+      <h2>Le conjugué : une astuce qui devient une notion</h2>
+
+      <p>
+        Avant d'attaquer la division, on a besoin d'un objet auxiliaire : le <strong>conjugué</strong> d'un complexe. Définition :
+      </p>
+
+      <p>
+        Pour $z = a + bi$, le conjugué est noté $\bar{z}$ (lire "z barre") et vaut :
+      </p>
+
+      $$\bar{z} = a - bi$$
+
+      <p>
+        On change juste le signe de la partie imaginaire. Le complexe $z = 3 + 2i$ a pour conjugué $\bar{z} = 3 - 2i$. Le complexe $z = -1 + 4i$ a pour conjugué $\bar{z} = -1 - 4i$. Un réel pur $z = 5$ a pour conjugué lui-même ($\bar{z} = 5$), puisque sa partie imaginaire est nulle.
+      </p>
+
+      <p>
+        Ce qui rend le conjugué intéressant, c'est ce qui se passe quand on multiplie $z$ par $\bar{z}$. Faisons-le :
+      </p>
+
+      $$
+      \begin{aligned}
+      z \times \bar{z} &= (a + bi)(a - bi) \\
+                       &= a^2 - abi + abi - b^2 i^2 \\
+                       &= a^2 - b^2 \times (-1) \\
+                       &= a^2 + b^2
+      \end{aligned}
+      $$
+
+      <p class="pull-quote">
+        <strong>Le produit d'un complexe par son conjugué est toujours un réel positif.</strong>
+        Et pas n'importe quel réel : c'est exactement la somme des carrés des parties réelle et imaginaire.
+      </p>
+
+      <p>
+        Cette propriété, $z \times \bar{z} = a^2 + b^2$, va jouer deux rôles fondamentaux. D'abord, elle permet de définir le <em>module</em> d'un complexe (on y arrive dans deux paragraphes). Ensuite, elle nous donne l'astuce pour diviser.
+      </p>
+
+      <h2>La division : rationaliser le dénominateur</h2>
+
+      <p>
+        On voudrait calculer quelque chose comme $(1 + 2i) / (3 + i)$ et le mettre sous la forme canonique $a + bi$. Problème : le quotient a un $i$ au dénominateur, ce qui n'est pas la forme voulue. Il faut s'en débarrasser.
+      </p>
+
+      <p>
+        Tu as déjà vu cette mécanique au lycée, sous le nom de <em>rationalisation</em>. Pour transformer $1 / (\sqrt{3} + 1)$ en quelque chose sans racine au dénominateur, on multiplie haut et bas par $\sqrt{3} - 1$. Au dénominateur, l'identité $(a + b)(a - b) = a^2 - b^2$ fait sauter la racine. Au numérateur, on développe normalement.
+      </p>
+
+      <p>
+        Pour les complexes, le principe est identique : on multiplie haut et bas par le <strong>conjugué du dénominateur</strong>. Au dénominateur, $(c + di)(c - di) = c^2 + d^2$, un réel pur. Au numérateur, une multiplication complexe classique. Résultat : un complexe divisé par un réel, ce qu'on sait faire (on divise chaque partie).
+      </p>
+
+      <p>
+        Exemple complet : $(1 + 2i) / (3 + i)$.
+      </p>
+
+      $$
+      \begin{aligned}
+      \frac{1 + 2i}{3 + i} &= \frac{(1 + 2i)(3 - i)}{(3 + i)(3 - i)} \\[0.4em]
+                            &= \frac{3 - i + 6i - 2i^2}{3^2 + 1^2} \\[0.4em]
+                            &= \frac{(3 + 2) + (6 - 1)i}{10} \\[0.4em]
+                            &= \frac{5 + 5i}{10} \\[0.4em]
+                            &= 0.5 + 0.5i
+      \end{aligned}
+      $$
+
+      <p>
+        En formule générale, pour $z = a + bi$ et $w = c + di$ (avec $w \neq 0$) :
+      </p>
+
+      $$\frac{z}{w} = \frac{a + bi}{c + di} = \frac{(ac + bd) + (bc - ad)i}{c^2 + d^2}$$
+
+      <p>
+        En Rust, dans <code>impl Div for Complex</code>, c'est cette formule fermée qu'on appliquera. Mais comme pour la multiplication, le mécanisme — multiplier par le conjugué, simplifier — est plus utile à retenir que la formule.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>Le plan complexe</h2>
+
+      <p>
+        On peut maintenant passer à la vue géométrique. Tout repose sur une observation que tu as déjà faite : un complexe $z = a + bi$ est <em>défini par deux réels</em>. Or, dans le cours, tu as déjà travaillé avec un objet qui est exactement défini par deux réels : un vecteur de $\mathbb{R}^2$, ou un point du plan. Donc on peut représenter chaque complexe comme un point d'un plan 2D, en convenant que :
+      </p>
+
+      <ul>
+        <li>L'<strong>axe horizontal</strong> porte la partie réelle $a$.</li>
+        <li>L'<strong>axe vertical</strong> porte la partie imaginaire $b$.</li>
+      </ul>
+
+      <p>
+        Cette représentation s'appelle le <strong>plan complexe</strong>, ou plan d'Argand, du nom du mathématicien suisse Jean-Robert Argand qui l'a popularisée en 1806. Elle ne change rien aux complexes — c'est juste une convention de dessin — mais elle rend visible des choses qui restaient invisibles en algèbre.
+      </p>
+
+      <svg class="plane" viewBox="0 0 460 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Axes -->
+        <line x1="40"  y1="170" x2="430" y2="170" stroke="#1c1a15" stroke-width="1.4"/>
+        <line x1="230" y1="20"  x2="230" y2="300" stroke="#1c1a15" stroke-width="1.4"/>
+        <polygon points="430,170 420,165 420,175" fill="#1c1a15"/>
+        <polygon points="230,20 225,30 235,30" fill="#1c1a15"/>
+        <text x="425" y="190" font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#1c1a15">réel (a)</text>
+        <text x="240" y="25"  font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#1c1a15">imaginaire (b)</text>
+
+        <!-- Graduations -->
+        <line x1="290" y1="167" x2="290" y2="173" stroke="#1c1a15" stroke-width="1"/>
+        <text x="290" y="188" text-anchor="middle" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">1</text>
+        <line x1="170" y1="167" x2="170" y2="173" stroke="#1c1a15" stroke-width="1"/>
+        <text x="170" y="188" text-anchor="middle" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">−1</text>
+
+        <line x1="227" y1="110" x2="233" y2="110" stroke="#1c1a15" stroke-width="1"/>
+        <text x="220" y="114" text-anchor="end" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">1</text>
+        <line x1="227" y1="230" x2="233" y2="230" stroke="#1c1a15" stroke-width="1"/>
+        <text x="220" y="234" text-anchor="end" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">−1</text>
+
+        <!-- Origine -->
+        <circle cx="230" cy="170" r="2.5" fill="#1c1a15"/>
+        <text x="218" y="185" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">0</text>
+
+        <!-- Points remarquables -->
+        <circle cx="290" cy="170" r="5" fill="#b8431f"/>
+        <text x="296" y="166" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">1</text>
+
+        <circle cx="230" cy="110" r="5" fill="#b8431f"/>
+        <text x="238" y="106" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">i</text>
+
+        <circle cx="170" cy="170" r="5" fill="#b8431f"/>
+        <text x="146" y="166" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">−1</text>
+
+        <circle cx="230" cy="230" r="5" fill="#b8431f"/>
+        <text x="240" y="237" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">−i</text>
+
+        <!-- z = 2 + i.5 -->
+        <line x1="230" y1="170" x2="350" y2="120" stroke="#1e5a7a" stroke-width="1.4" stroke-dasharray="0"/>
+        <circle cx="350" cy="120" r="5" fill="#1e5a7a"/>
+        <text x="358" y="116" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a">z = 2 + 0.83i</text>
+
+        <!-- z conjugue -->
+        <line x1="230" y1="170" x2="350" y2="220" stroke="#8b8474" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <circle cx="350" cy="220" r="5" fill="#8b8474"/>
+        <text x="358" y="225" font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#8b8474">z̄ = 2 − 0.83i</text>
+      </svg>
+      <p class="plane-caption">Le plan complexe avec quelques points repérés. Noter que les réels purs sont sur l'axe horizontal, et les imaginaires purs (multiples de $i$) sur l'axe vertical. Le conjugué est le reflet par rapport à l'axe horizontal.</p>
+
+      <p>
+        Observations clé :
+      </p>
+
+      <ul>
+        <li>$0 = 0 + 0i$ est à l'origine du plan.</li>
+        <li>Les nombres réels sont sur l'axe horizontal (partie imaginaire nulle) : $1$, $-1$, $\pi$, $-2.7$, tous alignés sur l'axe $a$.</li>
+        <li>Les imaginaires purs (multiples réels de $i$, comme $i$, $-i$, $3i$, $-0.5i$) sont sur l'axe vertical.</li>
+        <li>Le conjugué $\bar{z}$ est le <strong>symétrique de $z$ par rapport à l'axe horizontal</strong>. Visuellement, c'est un reflet.</li>
+      </ul>
+
+      <p>
+        L'ensemble $\mathbb{C}$ est donc géométriquement un plan, alors que $\mathbb{R}$ est une droite. C'est pour cela qu'on parle parfois de "plan complexe" : passer aux complexes, c'est ajouter une dimension à la droite réelle.
+      </p>
+
+      <h2>Module et argument : les coordonnées polaires</h2>
+
+      <p>
+        Jusqu'à présent, on a repéré chaque complexe par ses deux coordonnées cartésiennes : la partie réelle $a$ et la partie imaginaire $b$. Mais il y a une autre manière — équivalente — de repérer un point dans un plan : par sa <em>distance à l'origine</em> et l'<em>angle</em> que fait le segment qui le relie à l'origine. Ce sont les <strong>coordonnées polaires</strong>.
+      </p>
+
+      <p>
+        Pour un complexe, ces deux quantités portent des noms :
+      </p>
+
+      <ul>
+        <li>Le <strong>module</strong> $|z|$ : la distance de $z$ à l'origine du plan.</li>
+        <li>L'<strong>argument</strong> $\arg(z)$ : l'angle entre l'axe horizontal (les réels positifs) et le segment de l'origine vers $z$, compté positif dans le sens anti-horaire.</li>
+      </ul>
+
+      <svg class="plane" viewBox="0 0 460 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Axes -->
+        <line x1="40"  y1="200" x2="430" y2="200" stroke="#1c1a15" stroke-width="1.4"/>
+        <line x1="80"  y1="20"  x2="80"  y2="260" stroke="#1c1a15" stroke-width="1.4"/>
+        <polygon points="430,200 420,195 420,205" fill="#1c1a15"/>
+        <polygon points="80,20 75,30 85,30" fill="#1c1a15"/>
+
+        <!-- z = a + bi -->
+        <circle cx="300" cy="80" r="5" fill="#b8431f"/>
+        <text x="308" y="76" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#b8431f">z = a + bi</text>
+
+        <!-- Trait vers z (module) -->
+        <line x1="80" y1="200" x2="300" y2="80" stroke="#b8431f" stroke-width="1.6"/>
+        <text x="170" y="125" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#b8431f">|z|</text>
+
+        <!-- Triangle rectangle : a, b -->
+        <line x1="300" y1="200" x2="300" y2="80"  stroke="#8b8474" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <line x1="80"  y1="200" x2="300" y2="200" stroke="#8b8474" stroke-width="1.2"/>
+        <text x="190" y="218" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#1c1a15">a</text>
+        <text x="310" y="148" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#1c1a15">b</text>
+
+        <!-- Arc d'angle -->
+        <path d="M 130 200 A 50 50 0 0 0 110 165" fill="none" stroke="#1e5a7a" stroke-width="1.4"/>
+        <text x="125" y="180" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#1e5a7a">θ</text>
+
+        <!-- Origine -->
+        <circle cx="80" cy="200" r="2.5" fill="#1c1a15"/>
+        <text x="68" y="218" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15">0</text>
+
+        <!-- Labels -->
+        <text x="425" y="220" font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#1c1a15">réel</text>
+        <text x="60"  y="25"  font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#1c1a15">imaginaire</text>
+      </svg>
+      <p class="plane-caption">Coordonnées cartésiennes $(a, b)$ et polaires $(|z|, \theta)$ d'un même complexe. Le triangle rectangle donne immédiatement le module par Pythagore.</p>
+
+      <p>
+        Avec le théorème de Pythagore sur ce triangle rectangle, le module est :
+      </p>
+
+      $$|z| = \sqrt{a^2 + b^2}$$
+
+      <p>
+        Et l'argument se lit comme un angle de triangle rectangle :
+      </p>
+
+      $$\arg(z) = \text{atan2}(b, a)$$
+
+      <p>
+        On utilise <code>atan2</code> et non <code>atan(b/a)</code> parce que <code>atan</code> seul ne sait pas distinguer le quadrant où se trouve $z$ ; <code>atan2</code>, oui. L'argument est typiquement exprimé en radians, dans l'intervalle $(-\pi, \pi]$ par convention (sens anti-horaire positif).
+      </p>
+
+      <p>
+        Tu remarqueras que la formule du module, $\sqrt{a^2 + b^2}$, est exactement la <strong>norme euclidienne</strong> du vecteur 2D $[a, b]$ qu'on a vue au chapitre 2. Ce n'est pas un hasard : le module est, mot pour mot, la norme du complexe vu comme vecteur de $\mathbb{R}^2$.
+      </p>
+
+      <p>
+        Et la propriété découverte tout à l'heure, $z \times \bar{z} = a^2 + b^2$, donne immédiatement :
+      </p>
+
+      $$|z|^2 = z \times \bar{z}$$
+
+      <p>
+        Cette équation est un petit bijou : elle relie une notion géométrique (la longueur d'un segment) à une notion algébrique (un produit), via le conjugué. On va s'en servir directement dans l'implémentation Rust : pour calculer $|z|$, on fera <code>(re² + im²).sqrt()</code>.
+      </p>
+
+      <h2>La grande révélation : multiplication = rotation + scaling</h2>
+
+      <p>
+        On arrive à la phrase qui justifie l'existence des complexes. Si tu retiens une seule chose de tout ce chapitre, retiens celle-là :
+      </p>
+
+      <p class="pull-quote">
+        <strong>Quand on multiplie deux complexes, leurs modules se multiplient, et leurs arguments s'additionnent.</strong>
+      </p>
+
+      <p>
+        En formules :
+      </p>
+
+      $$|z \times w| = |z| \times |w| \qquad \arg(z \times w) = \arg(z) + \arg(w)$$
+
+      <p>
+        Tu peux le vérifier algébriquement en utilisant la formule trigonométrique de l'addition des angles, mais l'énoncé parle de lui-même. Multiplier par un complexe $w$, c'est faire deux choses au point $z$ :
+      </p>
+
+      <ol>
+        <li>Le <strong>scaler</strong> (rapprocher ou éloigner de l'origine) du facteur $|w|$.</li>
+        <li>Le <strong>faire tourner</strong> autour de l'origine d'un angle $\arg(w)$.</li>
+      </ol>
+
+      <p>
+        En une phrase : <strong>une multiplication complexe est une similitude</strong> (rotation + homothétie) centrée sur l'origine. C'est tout. La formule fastidieuse $(ac - bd) + (ad + bc)i$ encode exactement cette opération géométrique simple.
+      </p>
+
+      <h2>Multiplier par $i$ : le cas paradigmatique</h2>
+
+      <p>
+        Le complexe $i$ a deux propriétés simples :
+      </p>
+
+      <ul>
+        <li>Son module : $|i| = \sqrt{0^2 + 1^2} = 1$. Pas de scaling.</li>
+        <li>Son argument : $\arg(i) = \pi/2$ (soit 90°). Une rotation d'un quart de tour.</li>
+      </ul>
+
+      <p>
+        Donc multiplier par $i$, c'est tourner d'un quart de tour anti-horaire autour de l'origine, sans changer la distance. Le cycle des puissances de $i$ — $1, i, -1, -i, 1, \ldots$ — qu'on a vu au chapitre précédent prend tout son sens :
+      </p>
+
+      <svg class="plane" viewBox="0 0 460 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Axes -->
+        <line x1="50"  y1="140" x2="410" y2="140" stroke="#1c1a15" stroke-width="1"/>
+        <line x1="230" y1="20"  x2="230" y2="260" stroke="#1c1a15" stroke-width="1"/>
+
+        <!-- Cercle unite -->
+        <circle cx="230" cy="140" r="78" fill="none" stroke="#ddd6c2" stroke-width="1" stroke-dasharray="3 3"/>
+
+        <!-- i^0 = 1 -->
+        <circle cx="308" cy="140" r="5" fill="#b8431f"/>
+        <text x="316" y="136" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">1 = i⁰</text>
+
+        <!-- i^1 = i -->
+        <circle cx="230" cy="62" r="5" fill="#b8431f"/>
+        <text x="240" y="56" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">i = i¹</text>
+
+        <!-- i^2 = -1 -->
+        <circle cx="152" cy="140" r="5" fill="#b8431f"/>
+        <text x="125" y="136" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f" text-anchor="end">−1 = i²</text>
+
+        <!-- i^3 = -i -->
+        <circle cx="230" cy="218" r="5" fill="#b8431f"/>
+        <text x="240" y="228" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#b8431f">−i = i³</text>
+
+        <!-- Fleches de rotation -->
+        <path d="M 300 132 A 75 75 0 0 0 238 66"  fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow2)"/>
+        <path d="M 222 66  A 75 75 0 0 0 160 132" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow2)"/>
+        <path d="M 160 148 A 75 75 0 0 0 222 214" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow2)"/>
+        <path d="M 238 214 A 75 75 0 0 0 300 148" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow2)"/>
+
+        <!-- Annotations 90 deg -->
+        <text x="285" y="92" font-family="Iowan Old Style, Georgia, serif" font-size="11" font-style="italic" fill="#1e5a7a">×i</text>
+        <text x="170" y="92" font-family="Iowan Old Style, Georgia, serif" font-size="11" font-style="italic" fill="#1e5a7a">×i</text>
+        <text x="170" y="200" font-family="Iowan Old Style, Georgia, serif" font-size="11" font-style="italic" fill="#1e5a7a">×i</text>
+        <text x="285" y="200" font-family="Iowan Old Style, Georgia, serif" font-size="11" font-style="italic" fill="#1e5a7a">×i</text>
+
+        <defs>
+          <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#1e5a7a"/>
+          </marker>
+        </defs>
+      </svg>
+      <p class="plane-caption">Chaque multiplication par $i$ effectue un quart de tour anti-horaire. Quatre rotations referment le cycle, ce qui explique algébriquement $i^4 = 1$.</p>
+
+      <p>
+        Cette équivalence "multiplier par $i$ = rotation de 90°" est la raison fondamentale pour laquelle les complexes sont indispensables en infographie 2D et en traitement du signal. Au lieu de trimballer une matrice de rotation 2x2, on utilise un seul complexe de module 1 : <strong>tourner un point devient une multiplication</strong>, et <strong>composer deux rotations devient le produit de deux complexes</strong>. Beaucoup plus léger qu'une multiplication matricielle.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangente</span>
+        <p>
+          Cette équivalence permet une jolie formule, attribuée à Euler : si $z$ est un complexe de module 1 (donc situé sur le cercle de rayon 1 autour de l'origine), alors $z = \cos\theta + i\sin\theta$, où $\theta = \arg(z)$. On peut même l'écrire $z = e^{i\theta}$ — la célèbre formule d'Euler, qui relie l'exponentielle, la trigonométrie et les complexes en une seule expression. On laisse cela pour les approfondissements ; pour le code, il suffit de savoir que les complexes de module 1 forment un cercle dans le plan, et que leur multiplication compose les rotations.
+        </p>
+      </aside>
+
+      <h2>L'isomorphisme avec les matrices 2x2</h2>
+
+      <p>
+        Une dernière pépite avant de clôturer ce chapitre. Le sujet de l'exercice 09 (transpose) glissait une remarque énigmatique : un complexe $z = a + bi$ est "isomorphe" à la matrice 2x2 suivante :
+      </p>
+
+      $$
+      M(z) = \begin{pmatrix} a & -b \\ b & a \end{pmatrix}
+      $$
+
+      <p>
+        On comprend maintenant pourquoi. Cette matrice est exactement la <strong>matrice de rotation-scaling</strong> qui implémente, sur $\mathbb{R}^2$, l'opération "multiplier par $z$". Si tu appliques cette matrice au vecteur $[x, y]$ représentant un complexe $w = x + yi$, tu obtiens le vecteur $[x', y']$ représentant exactement le complexe $z \times w$.
+      </p>
+
+      <p>
+        Vérification pour $z = i$ : on a $a = 0, b = 1$, donc :
+      </p>
+
+      $$
+      M(i) = \begin{pmatrix} 0 & -1 \\ 1 & 0 \end{pmatrix}
+      $$
+
+      <p>
+        C'est la matrice de rotation de 90° anti-horaire, exactement comme attendu. Appliquée à $[1, 0]$ (le vecteur représentant $1$), elle donne $[0, 1]$ — soit le vecteur représentant $i$. Cohérent.
+      </p>
+
+      <p>
+        En d'autres termes : les complexes sont une représentation compacte des matrices 2x2 de la forme <code>[[a, -b], [b, a]]</code>. Tout ce qu'on peut faire avec ces matrices, on peut le faire avec les complexes, et avec une notation plus légère.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>La suite</h2>
+
+      <p>
+        Tu as maintenant en main tout ce qu'il faut pour comprendre ce qui va se passer quand on remplace $\mathbb{R}$ par $\mathbb{C}$ comme corps des scalaires dans nos vecteurs et matrices. Au prochain chapitre, on va revisiter chacune des opérations qu'on a codées depuis l'exercice 00 (somme vectorielle, dot product, norme, multiplication matricielle, Gauss, déterminant, inverse) et l'on va se demander, une par une : qu'est-ce qui reste pareil, et qu'est-ce qui change subtilement, quand on instancie le générique $K$ avec $\mathbb{C}$ à la place de $\mathbb{R}$ ?
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="01-pourquoi-complexes.html">
+          <span class="nav-label">← §1</span>
+          <span class="nav-title">Pourquoi les complexes</span>
+        </a>
+        <a class="next" href="03-K-egal-C.html">
+          <span class="nav-label">§3 →</span>
+          <span class="nav-title">K = C dans nos structures</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

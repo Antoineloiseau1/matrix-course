@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strang L02 — Elimination avec matrices</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}]});"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../../3b1b/strang/ch02-elimination.html" class="current">02 · Élimination</a></li>
+          <li><a href="../../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">MIT 18.06 · Lecture 02</div>
+      <h1>Elimination avec matrices</h1>
+      <a class="video-link" href="https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/resources/lecture-2-elimination-with-matrices/" target="_blank" rel="noopener">Voir la lecture originale (MIT OCW)</a>
+
+      <p class="lede">
+        On passe du « comment voir » au « comment calculer ». L'elimination de Gauss est l'algorithme fondamental qui resout $Ax = b$ — Strang ne se contente pas de l'executer, il montre que <em>chaque etape est elle-meme une matrice</em>. C'est cette idee qui ouvre la porte aux factorisations qui dominent toute la suite du cours.
+      </p>
+
+      <p>
+        Le systeme que Strang choisit pour cette lecture est simple, calibre pour que tout marche au premier essai :
+      </p>
+
+      <div class="math">
+        $$\begin{aligned} x + 2y + z &= 2 \\ 3x + 8y + z &= 12 \\ \phantom{0x +\,} 4y + z &= 2 \end{aligned}$$
+      </div>
+
+      <p>
+        On va le resoudre, oui. Mais ce qui compte, c'est <em>la maniere</em> de le resoudre. Strang transforme un calcul de lycee en revelation algebrique : chaque ligne soustraite, chaque permutation, peut s'ecrire comme une <strong>matrice elementaire</strong> multipliee a gauche du systeme. A la fin, on n'aura pas seulement la solution, on aura une <em>factorisation</em> de la matrice de depart.
+      </p>
+
+      <h2>L'idee de l'elimination</h2>
+
+      <p>
+        L'objectif est simple : transformer le systeme en un autre qui a exactement les memes solutions, mais qui se resout sans effort — un systeme <strong>triangulaire</strong>. Dans une matrice triangulaire superieure $U$, la premiere equation contient $x$, $y$, $z$ ; la deuxieme ne contient plus $x$ ; la troisieme ne contient plus que $z$. On lit alors $z$ directement, puis on remonte pour obtenir $y$, puis $x$. C'est la <strong>substitution arriere</strong> (back-substitution).
+      </p>
+
+      <p>
+        Pour fabriquer ce systeme triangulaire, on choisit un <strong>pivot</strong> a chaque etape — un coefficient non nul situe sur la diagonale — et on s'en sert pour <em>annuler</em> les coefficients en dessous. C'est tout. L'art tient en deux gestes : choisir un pivot, soustraire un multiple bien choisi de la ligne pivot des lignes en dessous.
+      </p>
+
+      <h2>Etape 1 : annuler la colonne 1 sous le premier pivot</h2>
+
+      <p>
+        On ecrit la matrice des coefficients sans les inconnues, juste les nombres. C'est la matrice $A$ :
+      </p>
+
+      <div class="math">
+        $$A = \begin{bmatrix} 1 & 2 & 1 \\ 3 & 8 & 1 \\ 0 & 4 & 1 \end{bmatrix}$$
+      </div>
+
+      <p>
+        Le premier pivot est le $1$ en haut a gauche. On veut annuler le $3$ en dessous, dans la ligne 2. La recette : <strong>soustraire $3$ fois la ligne 1 a la ligne 2</strong>. Pourquoi $3$ ? Parce que c'est exactement le quotient $3 / 1 = 3$ qui fera apparaitre un zero. La ligne 3 a deja un zero dans la premiere colonne, on n'y touche pas.
+      </p>
+
+      <div class="math">
+        $$\begin{bmatrix} 1 & 2 & 1 \\ 3 & 8 & 1 \\ 0 & 4 & 1 \end{bmatrix} \;\longrightarrow\; \begin{bmatrix} 1 & 2 & 1 \\ 0 & 2 & -2 \\ 0 & 4 & 1 \end{bmatrix}$$
+      </div>
+
+      <figure class="figure">
+        <svg viewBox="0 0 360 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Etape 1 de l'elimination - annulation du 3 sous le pivot">
+          <defs>
+            <marker id="arrEl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#b8431f"/>
+            </marker>
+          </defs>
+          <g font-family="JetBrains Mono, monospace" font-size="15" fill="#1c1a15">
+            <text x="60" y="60">1   2   1</text>
+            <text x="60" y="90">3   8   1</text>
+            <text x="60" y="120">0   4   1</text>
+            <text x="40" y="60">[</text>
+            <text x="40" y="90">[</text>
+            <text x="40" y="120">[</text>
+            <text x="160" y="60">]</text>
+            <text x="160" y="90">]</text>
+            <text x="160" y="120">]</text>
+          </g>
+          <g font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="13" fill="#6e2716">
+            <text x="190" y="92">L₂ ← L₂ − 3·L₁</text>
+          </g>
+          <line x1="190" y1="100" x2="240" y2="100" stroke="#b8431f" stroke-width="1.5" marker-end="url(#arrEl)"/>
+          <g font-family="JetBrains Mono, monospace" font-size="15" fill="#1c1a15">
+            <text x="270" y="60">1   2   1</text>
+            <text x="270" y="90" fill="#b8431f">0   2  −2</text>
+            <text x="270" y="120">0   4   1</text>
+            <text x="250" y="60">[</text>
+            <text x="250" y="90">[</text>
+            <text x="250" y="120">[</text>
+            <text x="370" y="60">]</text>
+            <text x="370" y="90">]</text>
+            <text x="370" y="120">]</text>
+          </g>
+          <circle cx="68" cy="56" r="11" fill="none" stroke="#b07a1a" stroke-width="2"/>
+          <text x="68" y="180" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#b07a1a">pivot 1</text>
+          <text x="68" y="195" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#b07a1a">(pos. 1,1)</text>
+        </svg>
+        <figcaption class="figure-caption">On entoure le pivot, on soustrait trois fois la ligne 1 a la ligne 2. Le $3$ devient $0$, et la colonne 1 est nettoyee sous le pivot.</figcaption>
+      </figure>
+
+      <h2>Etape 2 : annuler la colonne 2 sous le deuxieme pivot</h2>
+
+      <p>
+        Maintenant on regarde la diagonale au-dessous du premier pivot. La nouvelle valeur en position $(2,2)$ est $2$ : c'est notre <strong>deuxieme pivot</strong>. On veut annuler le $4$ qui se trouve en $(3,2)$. La recette ne change pas : <strong>soustraire $2$ fois la ligne 2 a la ligne 3</strong>, car $4 / 2 = 2$.
+      </p>
+
+      <div class="math">
+        $$\begin{bmatrix} 1 & 2 & 1 \\ 0 & 2 & -2 \\ 0 & 4 & 1 \end{bmatrix} \;\longrightarrow\; \begin{bmatrix} 1 & 2 & 1 \\ 0 & 2 & -2 \\ 0 & 0 & 5 \end{bmatrix} = U$$
+      </div>
+
+      <p>
+        On a notre <strong>matrice triangulaire superieure</strong> $U$. Les trois pivots sont $1$, $2$, $5$. Aucun n'est nul — c'est un bon signe : la matrice $A$ n'est <em>pas</em> singuliere, et le systeme admet une unique solution. Strang note au passage que <strong>le produit des pivots est le determinant</strong> de $A$ (au signe pres si on a fait des permutations). Ici $1 \cdot 2 \cdot 5 = 10$. C'est en bonus, et on y reviendra plus tard.
+      </p>
+
+      <h2>Substitution arriere : on remonte</h2>
+
+      <p>
+        Pour resoudre, on n'a pas seulement modifie $A$. On a aussi applique les memes operations sur le vecteur de droite $b = (2, 12, 2)$. On le tracke en colonne supplementaire — la <strong>matrice augmentee</strong> $[A \mid b]$ :
+      </p>
+
+      <div class="math">
+        $$\left[\begin{array}{ccc|c} 1 & 2 & 1 & 2 \\ 3 & 8 & 1 & 12 \\ 0 & 4 & 1 & 2 \end{array}\right] \;\longrightarrow\; \left[\begin{array}{ccc|c} 1 & 2 & 1 & 2 \\ 0 & 2 & -2 & 6 \\ 0 & 0 & 5 & -10 \end{array}\right]$$
+      </div>
+
+      <p>
+        La derniere ligne dit $5z = -10$, donc $z = -2$. Remontons : la deuxieme ligne dit $2y - 2z = 6$, donc $2y = 6 + 2(-2) = 2$, donc $y = 1$. La premiere : $x + 2y + z = 2$, donc $x = 2 - 2 - (-2) = 2$. Solution : $(x, y, z) = (2, 1, -2)$.
+      </p>
+
+      <h2>Le moment-matrice : chaque etape est une multiplication</h2>
+
+      <p>
+        Voici le moment ou la lecture passe d'une recette de calcul a une idee algebrique. Strang demande : <strong>peut-on ecrire la transformation « soustraire 3 fois la ligne 1 a la ligne 2 » comme une matrice qu'on multiplie a gauche ?</strong> Reponse : oui. C'est la <strong>matrice elementaire</strong> $E_{21}$ — le $E$ pour <em>elementary</em>, l'indice $21$ pour « j'agis sur la ligne 2 en utilisant la ligne 1 ».
+      </p>
+
+      <div class="math">
+        $$E_{21} = \begin{bmatrix} 1 & 0 & 0 \\ -3 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}$$
+      </div>
+
+      <p>
+        Lisons cette matrice. Ligne 1 = $(1, 0, 0)$ : elle dit « la nouvelle ligne 1 est l'ancienne ligne 1 inchangee ». Ligne 3 = $(0, 0, 1)$ : meme chose, ligne 3 inchangee. Ligne 2 = $(-3, 1, 0)$ : elle dit « la nouvelle ligne 2 est $-3$ fois l'ancienne ligne 1 plus $1$ fois l'ancienne ligne 2 ». Exactement l'operation qu'on voulait.
+      </p>
+
+      <p>
+        Verifions : $E_{21} A$ doit donner la matrice apres etape 1.
+      </p>
+
+      <div class="math">
+        $$E_{21} A = \begin{bmatrix} 1 & 0 & 0 \\ -3 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 1 & 2 & 1 \\ 3 & 8 & 1 \\ 0 & 4 & 1 \end{bmatrix} = \begin{bmatrix} 1 & 2 & 1 \\ 0 & 2 & -2 \\ 0 & 4 & 1 \end{bmatrix}$$
+      </div>
+
+      <p>
+        De la meme facon, la seconde etape (soustraire $2$ fois la ligne 2 a la ligne 3) s'ecrit avec :
+      </p>
+
+      <div class="math">
+        $$E_{32} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & -2 & 1 \end{bmatrix}$$
+      </div>
+
+      <p>
+        Et l'enchainement complet de l'elimination devient une seule equation matricielle :
+      </p>
+
+      <div class="math">
+        $$E_{32} \, E_{21} \, A = U$$
+      </div>
+
+      <p class="pull-quote">
+        <strong>L'elimination, ce n'est pas une procedure ad hoc — c'est une multiplication par une suite de matrices.</strong> Si on peut faire ca par multiplication, on peut <em>annuler</em> cette multiplication par une autre matrice. Ce qui nous menera, dans deux lectures, a $A = LU$ et a la matrice inverse.
+      </p>
+
+      <h2>Multiplier a gauche agit sur les lignes</h2>
+
+      <p>
+        Strang glisse ici un theme qu'il repetera tout le semestre. Quand on ecrit $EA$, la matrice $E$ agit a <em>gauche</em> de $A$, et l'effet est sur les <strong>lignes</strong> de $A$. La ligne $i$ du produit $EA$ est une combinaison lineaire des lignes de $A$, avec les coefficients donnes par la ligne $i$ de $E$.
+      </p>
+
+      <p>
+        C'est l'image-miroir de la lecture du chapitre 1, ou $Ax$ etait une combinaison des <em>colonnes</em> de $A$ ponderee par les composantes de $x$. Resumons :
+      </p>
+
+      <ul>
+        <li>Matrice fois vecteur a droite, $Ax$ : combinaison des <strong>colonnes</strong> de $A$.</li>
+        <li>Vecteur ligne fois matrice a gauche, $x^\top A$ : combinaison des <strong>lignes</strong> de $A$.</li>
+        <li>Matrice fois matrice a gauche, $EA$ : chaque ligne du resultat est une combinaison des lignes de $A$.</li>
+        <li>Matrice fois matrice a droite, $AB$ : chaque colonne du resultat est une combinaison des colonnes de $A$.</li>
+      </ul>
+
+      <p>
+        Ce mantra — <em>gauche agit sur lignes, droite agit sur colonnes</em> — est la cle pour suivre n'importe quelle factorisation par la suite.
+      </p>
+
+      <h2>Quand le pivot est zero</h2>
+
+      <p>
+        L'algorithme suppose que chaque pivot est non nul. Que se passe-t-il s'il l'est ? Strang distingue deux cas tres differents.
+      </p>
+
+      <p>
+        <strong>Cas 1 : on peut sauver l'elimination par un echange de lignes.</strong> Si le pivot prevu est $0$ mais qu'une ligne en dessous a un coefficient non nul a la meme position, on echange les deux lignes et on reprend. Cet echange s'ecrit lui aussi comme une matrice — une <strong>matrice de permutation</strong> $P$ — egale a la matrice identite avec deux lignes echangees :
+      </p>
+
+      <div class="math">
+        $$P_{23} = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 0 & 1 \\ 0 & 1 & 0 \end{bmatrix}$$
+      </div>
+
+      <figure class="figure">
+        <svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Effet d'une matrice de permutation P_23 sur les lignes d'une matrice">
+          <defs>
+            <marker id="arrPermut" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#b8431f"/>
+            </marker>
+          </defs>
+          <g font-family="JetBrains Mono, monospace" font-size="14" fill="#1c1a15">
+            <text x="40" y="50">a   b   c</text>
+            <text x="40" y="80">d   e   f</text>
+            <text x="40" y="110">g   h   i</text>
+            <text x="20" y="50">[</text>
+            <text x="20" y="80">[</text>
+            <text x="20" y="110">[</text>
+            <text x="138" y="50">]</text>
+            <text x="138" y="80">]</text>
+            <text x="138" y="110">]</text>
+          </g>
+          <g font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="13" fill="#6e2716">
+            <text x="165" y="82">P₂₃ · A</text>
+          </g>
+          <line x1="165" y1="90" x2="220" y2="90" stroke="#b8431f" stroke-width="1.5" marker-end="url(#arrPermut)"/>
+          <g font-family="JetBrains Mono, monospace" font-size="14" fill="#1c1a15">
+            <text x="250" y="50">a   b   c</text>
+            <text x="250" y="80" fill="#b8431f">g   h   i</text>
+            <text x="250" y="110" fill="#b8431f">d   e   f</text>
+            <text x="230" y="50">[</text>
+            <text x="230" y="80">[</text>
+            <text x="230" y="110">[</text>
+            <text x="348" y="50">]</text>
+            <text x="348" y="80">]</text>
+            <text x="348" y="110">]</text>
+          </g>
+          <text x="180" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#8b8474">Lignes 2 et 3 echangees.</text>
+        </svg>
+        <figcaption class="figure-caption">Une matrice de permutation appliquee a gauche permute les lignes selon le meme motif que ses propres lignes.</figcaption>
+      </figure>
+
+      <p>
+        <strong>Cas 2 : aucun echange ne sauve la situation.</strong> Si toute une colonne sous le pivot prevu est nulle, on ne peut rien faire — la matrice est <strong>singuliere</strong>. L'elimination s'arrete, et c'est le signe que $A$ n'a pas d'inverse, que ses colonnes sont lineairement dependantes, et que le systeme $Ax = b$ n'a pas (ou n'a pas une seule) solution selon le $b$. C'est l'autre versant du diagnostic.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Vers $A = LU$ — un avant-gout</span>
+        <p>
+          On a vu que $E_{32} E_{21} A = U$. Si l'on note $E = E_{32} E_{21}$, alors $EA = U$. Or les matrices d'elimination sont toutes inversibles (annuler une soustraction, c'est l'ajouter), donc $A = E^{-1} U$. La matrice $E^{-1}$ se trouve etre <strong>triangulaire inferieure</strong> avec des $1$ sur la diagonale et, en dessous, les multiplicateurs qu'on a utilises (avec leur signe inverse). On la note $L$. D'ou la factorisation $A = LU$, qui sera l'un des grands resultats de la troisieme lecture. C'est un cadeau gratuit que l'elimination nous a donne sans le crier.
+        </p>
+      </aside>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        L'elimination de Gauss reduit $A$ a une matrice triangulaire superieure $U$ par une suite d'operations elementaires : choix d'un pivot, soustraction de multiples de la ligne pivot des lignes en dessous, et echange eventuel de lignes. Chaque pivot doit etre non nul ; sinon on permute, et sinon $A$ est singuliere.
+      </p>
+
+      <p>
+        Le pas conceptuel decisif : chaque operation est elle-meme une matrice $E$ multipliee a gauche. La sequence complete d'elimination s'ecrit $E_{32} E_{21} A = U$. Multiplier a gauche, c'est agir sur les lignes ; multiplier a droite, c'est agir sur les colonnes — un mantra qu'on emporte pour toute la suite.
+      </p>
+
+      <p>
+        Une fois que chaque etape est une matrice, on peut les <em>composer</em>, les <em>inverser</em>, les <em>factoriser</em>. C'est le pas qui transforme l'elimination en algebre, et qui ouvre la voie a $A = LU$, a Gauss-Jordan, et a tout ce qui suit.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="ch01-geometry.html">
+          <span class="nav-label">Precedent</span>
+          <span class="nav-title">← L01 — Geometrie des equations</span>
+        </a>
+        <a class="next" href="ch03-multiplication.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">L03 — Multiplication, inverse →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

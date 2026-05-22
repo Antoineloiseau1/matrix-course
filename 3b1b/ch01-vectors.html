@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ep 01 — Vecteurs, qu'est-ce que c'est ?</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\(', right: '\)', display: false},
+        {left: '\[', right: '\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html" class="current">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Essence of Linear Algebra · Episode 01</div>
+      <h1>Vecteurs, qu'est-ce que c'est ?</h1>
+      <a class="video-link" href="https://www.youtube.com/watch?v=fNk_zzaMoSs" target="_blank" rel="noopener">Voir la video originale (3blue1brown)</a>
+
+      <p class="lede">
+        Premier episode, premiere idee fondatrice : un vecteur, ce n'est pas une chose, c'est <em>trois choses qui sont la meme chose</em>. La force du chapitre tient dans cette equivalence ; sans elle, on confond geometrie et calcul. Avec elle, on les fait dialoguer.
+      </p>
+
+      <p>
+        3blue1brown commence sa serie en remarquant que le mot « vecteur » evoque trois images differentes selon a qui on parle. Pour un <strong>physicien</strong>, c'est une fleche dans l'espace, caracterisee par une longueur et une direction. Pour un <strong>informaticien</strong>, c'est une liste ordonnee de nombres — par exemple <code>[3, 4]</code> ou <code>[255, 128, 0]</code>. Pour un <strong>mathematicien</strong>, c'est plus abstrait : tout objet sur lequel on sait faire deux operations, l'addition et la multiplication par un nombre.
+      </p>
+
+      <p>
+        Le geste fondateur de l'algebre lineaire est de <strong>faire dialoguer ces trois visions</strong>. La fleche donne l'intuition, la liste rend le calcul mecanisable, l'abstraction garantit que tout ce qu'on apprend sur les fleches se generalise a d'autres objets (des fonctions, des polynomes…).
+      </p>
+
+      <h2>La fleche depuis l'origine</h2>
+
+      <p>
+        Dans cet episode, Grant choisit de privilegier la vue geometrique. Un vecteur 2D, c'est une fleche dans le plan. <em>Mais</em> — et c'est la convention de toute la suite — on la dessine toujours <strong>partant de l'origine</strong>. Si on bouge une fleche identique ailleurs dans le plan, ce n'est pas un autre vecteur, c'est le meme. L'ancrage a l'origine est ce qui permet de mettre chaque vecteur en correspondance avec un point unique du plan : la pointe de la fleche.
+      </p>
+
+      <p>
+        La premiere coordonnee dit combien on avance horizontalement, la deuxieme dit combien on monte verticalement. Le vecteur <code>[3, 4]</code> est la fleche qui pointe vers le point <code>(3, 4)</code>.
+      </p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vecteur 3 4 sur grille">
+          <defs>
+            <marker id="arrowTerra" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#b8431f"/>
+            </marker>
+          </defs>
+          <g stroke="#ddd6c2" stroke-width="0.6">
+            <line x1="40" y1="40" x2="40" y2="240"/>
+            <line x1="80" y1="40" x2="80" y2="240"/>
+            <line x1="120" y1="40" x2="120" y2="240"/>
+            <line x1="160" y1="40" x2="160" y2="240"/>
+            <line x1="200" y1="40" x2="200" y2="240"/>
+            <line x1="240" y1="40" x2="240" y2="240"/>
+            <line x1="40" y1="40" x2="240" y2="40"/>
+            <line x1="40" y1="80" x2="240" y2="80"/>
+            <line x1="40" y1="120" x2="240" y2="120"/>
+            <line x1="40" y1="160" x2="240" y2="160"/>
+            <line x1="40" y1="200" x2="240" y2="200"/>
+            <line x1="40" y1="240" x2="240" y2="240"/>
+          </g>
+          <g stroke="#4d473d" stroke-width="1.4">
+            <line x1="40" y1="240" x2="252" y2="240"/>
+            <line x1="40" y1="240" x2="40" y2="28"/>
+          </g>
+          <g font-family="Inter, sans-serif" font-size="10" fill="#8b8474">
+            <text x="40" y="258" text-anchor="middle">0</text>
+            <text x="80" y="258" text-anchor="middle">1</text>
+            <text x="120" y="258" text-anchor="middle">2</text>
+            <text x="160" y="258" text-anchor="middle">3</text>
+            <text x="200" y="258" text-anchor="middle">4</text>
+            <text x="240" y="258" text-anchor="middle">5</text>
+            <text x="32" y="244" text-anchor="end">0</text>
+            <text x="32" y="204" text-anchor="end">1</text>
+            <text x="32" y="164" text-anchor="end">2</text>
+            <text x="32" y="124" text-anchor="end">3</text>
+            <text x="32" y="84" text-anchor="end">4</text>
+            <text x="32" y="44" text-anchor="end">5</text>
+          </g>
+          <g stroke="#1e5a7a" stroke-width="1" stroke-dasharray="3 3" opacity="0.55">
+            <line x1="40" y1="240" x2="160" y2="240"/>
+            <line x1="160" y1="240" x2="160" y2="80"/>
+          </g>
+          <line x1="40" y1="240" x2="160" y2="80" stroke="#b8431f" stroke-width="2.6" marker-end="url(#arrowTerra)"/>
+          <circle cx="160" cy="80" r="3" fill="#6e2716"/>
+          <text x="170" y="76" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="14" fill="#6e2716">(3, 4)</text>
+          <text x="252" y="244" font-family="Inter, sans-serif" font-size="10" fill="#8b8474">x</text>
+          <text x="38" y="22" font-family="Inter, sans-serif" font-size="10" fill="#8b8474" text-anchor="end">y</text>
+        </svg>
+        <figcaption class="figure-caption">Le vecteur <code>[3, 4]</code> dans le plan : trois unites a droite, quatre unites vers le haut, depuis l'origine.</figcaption>
+      </figure>
+
+      <p>
+        En 3D, on ajoute une troisieme coordonnee, une troisieme direction (la profondeur). Le principe reste le meme : une coordonnee par axe, et l'axe sait par convention dans quelle direction « avancer ».
+      </p>
+
+      <h2>Addition : enchainer les deplacements</h2>
+
+      <p>
+        L'addition de deux vecteurs a une signification geometrique magnifique. Si on voit chaque vecteur comme un <em>deplacement</em>, alors leur somme, c'est <strong>le deplacement total quand on les enchaine</strong>. On glisse le second vecteur pour qu'il commence ou le premier termine, et le vecteur somme va de l'origine jusqu'au bout. C'est la fameuse regle « bout-a-bout ».
+      </p>
+
+      <p>
+        Numeriquement, ca se traduit par une formule scandaleusement simple : on additionne composante par composante.
+      </p>
+
+      <div class="math">$$\begin{bmatrix} 3 \\ 4 \end{bmatrix} + \begin{bmatrix} 1 \\ 2 \end{bmatrix} = \begin{bmatrix} 4 \\ 6 \end{bmatrix}$$</div>
+
+      <figure class="figure">
+        <svg viewBox="0 0 290 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Addition de deux vecteurs par la regle bout-a-bout">
+          <defs>
+            <marker id="arrU" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#b8431f"/>
+            </marker>
+            <marker id="arrV" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#1e5a7a"/>
+            </marker>
+            <marker id="arrSum" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#b07a1a"/>
+            </marker>
+          </defs>
+          <g stroke="#ddd6c2" stroke-width="0.6">
+            <line x1="40" y1="48" x2="40" y2="240"/>
+            <line x1="72" y1="48" x2="72" y2="240"/>
+            <line x1="104" y1="48" x2="104" y2="240"/>
+            <line x1="136" y1="48" x2="136" y2="240"/>
+            <line x1="168" y1="48" x2="168" y2="240"/>
+            <line x1="200" y1="48" x2="200" y2="240"/>
+            <line x1="232" y1="48" x2="232" y2="240"/>
+            <line x1="40" y1="48" x2="232" y2="48"/>
+            <line x1="40" y1="80" x2="232" y2="80"/>
+            <line x1="40" y1="112" x2="232" y2="112"/>
+            <line x1="40" y1="144" x2="232" y2="144"/>
+            <line x1="40" y1="176" x2="232" y2="176"/>
+            <line x1="40" y1="208" x2="232" y2="208"/>
+            <line x1="40" y1="240" x2="232" y2="240"/>
+          </g>
+          <g stroke="#4d473d" stroke-width="1.3">
+            <line x1="40" y1="240" x2="248" y2="240"/>
+            <line x1="40" y1="240" x2="40" y2="36"/>
+          </g>
+          <g font-family="Inter, sans-serif" font-size="9.5" fill="#8b8474">
+            <text x="40" y="256" text-anchor="middle">0</text>
+            <text x="72" y="256" text-anchor="middle">1</text>
+            <text x="104" y="256" text-anchor="middle">2</text>
+            <text x="136" y="256" text-anchor="middle">3</text>
+            <text x="168" y="256" text-anchor="middle">4</text>
+            <text x="200" y="256" text-anchor="middle">5</text>
+            <text x="232" y="256" text-anchor="middle">6</text>
+            <text x="32" y="244" text-anchor="end">0</text>
+            <text x="32" y="212" text-anchor="end">1</text>
+            <text x="32" y="180" text-anchor="end">2</text>
+            <text x="32" y="148" text-anchor="end">3</text>
+            <text x="32" y="116" text-anchor="end">4</text>
+            <text x="32" y="84" text-anchor="end">5</text>
+            <text x="32" y="52" text-anchor="end">6</text>
+          </g>
+          <line x1="40" y1="240" x2="168" y2="48" stroke="#b07a1a" stroke-width="3" opacity="0.85" marker-end="url(#arrSum)"/>
+          <line x1="40" y1="240" x2="136" y2="112" stroke="#b8431f" stroke-width="2.4" marker-end="url(#arrU)"/>
+          <line x1="136" y1="112" x2="168" y2="48" stroke="#1e5a7a" stroke-width="2.4" marker-end="url(#arrV)"/>
+          <circle cx="168" cy="48" r="3" fill="#6e2716"/>
+          <text x="78" y="180" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="14" fill="#b8431f">u = (3, 4)</text>
+          <text x="158" y="100" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="13" fill="#1e5a7a">v = (1, 2)</text>
+          <text x="92" y="124" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="14" fill="#7d5610">u + v = (4, 6)</text>
+        </svg>
+        <figcaption class="figure-caption">La regle « bout-a-bout » : on pose le second vecteur a la pointe du premier, et la somme va de l'origine jusqu'a la pointe finale.</figcaption>
+      </figure>
+
+      <p>
+        Pourquoi cette correspondance ? Parce que les coordonnees mesurent un deplacement le long de chaque axe, et que les deplacements <em>se cumulent</em> independamment sur chaque axe. La case 1 du resultat est la somme des deplacements horizontaux ; la case 2 est la somme des deplacements verticaux. Geometrie et calcul disent la meme chose.
+      </p>
+
+      <h2>Scaling : etirer, ecraser, retourner</h2>
+
+      <p>
+        La seconde operation est la multiplication d'un vecteur par un nombre — qu'on appelle un <em>scalaire</em>. Le mot dit ce qu'il fait : il <em>scale</em> le vecteur, change sa longueur.
+      </p>
+
+      <div class="math">$$2 \cdot \begin{bmatrix} 3 \\ 4 \end{bmatrix} = \begin{bmatrix} 6 \\ 8 \end{bmatrix}$$</div>
+
+      <p>
+        Geometriquement, multiplier par 2 etire la fleche au double de sa longueur. Multiplier par <code>1/3</code> la raccourcit. Multiplier par <code>-1</code> la retourne dans le sens oppose, sans changer sa direction d'axe. <strong>On ne fait pas tourner la fleche</strong> — on l'allonge, on la raccourcit, on l'inverse.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Toute l'algebre lineaire est construite sur ces deux operations : additionner des vecteurs, et les multiplier par un nombre.</strong> Tout le reste — combinaisons lineaires, transformations, matrices, determinants — n'est qu'un developpement organise de ces deux gestes.
+      </p>
+
+      <h2>Pourquoi les trois vues sont la meme chose</h2>
+
+      <p>
+        Reprenons. La fleche <code>[3, 4]</code> existe geometriquement comme une fleche dans le plan ; numeriquement comme une liste de deux nombres ; algebriquement comme un objet sur lequel on sait additionner et scaler. Et les operations geometriques (poser bout-a-bout, etirer) <em>correspondent exactement</em> aux operations numeriques (additionner case par case, multiplier chaque case).
+      </p>
+
+      <p>
+        C'est ce pont qui donne sa puissance au domaine : quand un calcul matriciel devient opaque, on se demande ce qu'il veut dire geometriquement, et la lumiere revient. Quand une intuition visuelle reste floue, on descend aux coordonnees et on calcule. Aucun des deux mondes n'est privilegie ; ils sont des langues differentes pour la meme histoire.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">L'angle mathematicien : pourquoi l'abstraction paie plus tard</span>
+        <p>
+          Grant glisse vite sur la vue mathematicien, mais elle prendra toute son importance a l'episode 16. L'idee qu'un vecteur est « tout objet qu'on peut additionner et scaler » signifie qu'on peut traiter une fonction <code>f(x)</code>, un polynome <code>3x^2 + 5x - 1</code>, ou meme une solution d'equation differentielle comme un vecteur. Du coup, toute machinerie qui marche sur les fleches (transformations lineaires, valeurs propres, projections…) marche tel quel sur ces objets. Cette economie d'effort est la raison pour laquelle les mathematiciens insistent sur l'abstraction.
+        </p>
+      </aside>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Un vecteur a trois descriptions equivalentes : fleche depuis l'origine, liste ordonnee de coordonnees, objet algebrique qu'on peut additionner et scaler. Le passage d'une vue a l'autre est le superpouvoir de l'algebre lineaire.
+      </p>
+
+      <p>
+        Deux operations fondamentales suffisent : l'addition (bout-a-bout geometrique, composante par composante numerique) et le scaling (etirer/retourner geometrique, multiplier chaque composante numerique). Toute la suite construit sur ces deux gestes.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="index.html">
+          <span class="nav-label">Precedent</span>
+          <span class="nav-title">← Sommaire</span>
+        </a>
+        <a class="next" href="ch02-span.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">Ep 02 — Combinaisons, span →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

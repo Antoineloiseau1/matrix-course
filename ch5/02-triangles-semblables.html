@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La formule de la perspective : triangles semblables — Chapitre 5 · §2</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+  <style>
+    .diagram {
+      display: block;
+      margin: 1.8rem auto;
+      max-width: 100%;
+      height: auto;
+    }
+    .diagram-caption {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: #6b6b6b;
+      text-align: center;
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html" class="current">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 5 · §2</div>
+      <h1>La formule de la perspective</h1>
+      <p class="lede">
+        On va dériver la formule qui réalise la projection perspective. Elle tient en une ligne et se trouve avec deux triangles semblables. Pas de calcul vectoriel, pas de matrice, juste de la géométrie de classe de cinquième. Le décor est plus important que les chiffres.
+      </p>
+
+      <p>
+        Pour éviter de manipuler simultanément trois coordonnées, on commence par <em>trancher dans l'axe vertical</em> : on regarde la scène d'en haut, en ignorant $y$. Tout ce qu'on apprend de la sorte sera vrai pour $x$, et par exacte symétrie aussi pour $y$. C'est un raccourci classique en infographie : on résout en 2D, puis on duplique.
+      </p>
+
+      <h2>Le décor</h2>
+
+      <p>
+        On installe quatre choses : l'œil de la caméra, l'écran, un point du monde, et le rayon lumineux qui les relie. L'œil est à l'origine du repère. L'écran est une vitre plate, perpendiculaire à la direction du regard, placée à une distance $d$ devant l'œil. Le point $P$ a une certaine position $(x, z)$ dans le monde : $x$ est son écart latéral par rapport à l'axe du regard, $z$ est sa distance à l'œil dans la direction de la profondeur.
+      </p>
+
+      <p>
+        Le rayon part de l'œil, traverse l'écran, et arrive sur $P$. La projection de $P$ sur l'écran, qu'on note $x'$, c'est <strong>le point où le rayon traverse la vitre</strong>. C'est tout. Trouver la formule de la perspective, c'est trouver la valeur de $x'$ en fonction de $x$, $z$ et $d$.
+      </p>
+
+      <div class="sketch">
+        <svg class="diagram" viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- z-axis (horizontal, line of sight) -->
+          <line x1="40" y1="180" x2="595" y2="180" stroke="#9a9a9a" stroke-width="1" stroke-dasharray="4,4"/>
+          <polygon points="595,180 585,175 585,185" fill="#9a9a9a"/>
+          <text x="600" y="184" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#6b6b6b" font-style="italic" text-anchor="start">z</text>
+
+          <!-- screen plane -->
+          <line x1="220" y1="40" x2="220" y2="285" stroke="#1e5a7a" stroke-width="2.5"/>
+          <text x="220" y="305" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" text-anchor="middle">ecran (vitre)</text>
+
+          <!-- ray from eye to P -->
+          <line x1="40" y1="180" x2="540" y2="70" stroke="#b8431f" stroke-width="2"/>
+
+          <!-- vertical drop from P to z-axis -->
+          <line x1="540" y1="70" x2="540" y2="180" stroke="#b8431f" stroke-width="1" stroke-dasharray="3,3"/>
+
+          <!-- vertical drop from x' to z-axis -->
+          <line x1="220" y1="145.6" x2="220" y2="180" stroke="#b8431f" stroke-width="1" stroke-dasharray="3,3"/>
+
+          <!-- distance d marker (eye to screen) -->
+          <line x1="40" y1="218" x2="220" y2="218" stroke="#3a3a3a" stroke-width="0.7"/>
+          <line x1="40" y1="213" x2="40" y2="223" stroke="#3a3a3a" stroke-width="1"/>
+          <line x1="220" y1="213" x2="220" y2="223" stroke="#3a3a3a" stroke-width="1"/>
+          <text x="130" y="237" font-family="Iowan Old Style, Georgia, serif" font-size="14" text-anchor="middle" fill="#3a3a3a"><tspan font-style="italic">d</tspan></text>
+
+          <!-- distance z marker (eye to P-foot) -->
+          <line x1="40" y1="258" x2="540" y2="258" stroke="#3a3a3a" stroke-width="0.7"/>
+          <line x1="40" y1="253" x2="40" y2="263" stroke="#3a3a3a" stroke-width="1"/>
+          <line x1="540" y1="253" x2="540" y2="263" stroke="#3a3a3a" stroke-width="1"/>
+          <text x="290" y="277" font-family="Iowan Old Style, Georgia, serif" font-size="14" text-anchor="middle" fill="#3a3a3a"><tspan font-style="italic">z</tspan></text>
+
+          <!-- x label (P's lateral offset) -->
+          <text x="555" y="130" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#b8431f">x</text>
+
+          <!-- x' label (intersection's lateral offset) -->
+          <text x="232" y="162" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#b8431f">x'</text>
+
+          <!-- intersection point on screen -->
+          <circle cx="220" cy="145.6" r="4.5" fill="#b8431f"/>
+
+          <!-- point P -->
+          <circle cx="540" cy="70" r="5" fill="#b8431f"/>
+          <text x="552" y="65" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#b8431f">P</text>
+
+          <!-- eye -->
+          <circle cx="40" cy="180" r="7" fill="#1e5a7a"/>
+          <text x="20" y="170" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" text-anchor="end">œil</text>
+        </svg>
+        <p class="diagram-caption">Vue de dessus de la scène. Le rayon (en terracotta) part de l'œil et atteint <span style="font-style:italic">P</span>. Il traverse l'écran à la position <span style="font-style:italic">x'</span>. Toute la question est : comment exprimer <span style="font-style:italic">x'</span> en fonction de <span style="font-style:italic">x</span>, <span style="font-style:italic">z</span> et <span style="font-style:italic">d</span> ?</p>
+      </div>
+
+      <h2>Deux triangles, semblables</h2>
+
+      <p>
+        Repère maintenant deux triangles rectangles dans cette image. Un grand, un petit, qui partagent le même angle à l'œil — donc <strong>semblables</strong>.
+      </p>
+
+      <p>
+        Le <strong>grand triangle</strong> a pour sommets : l'œil, le point $P$, et le pied de $P$ sur l'axe optique. Ses côtés sont $z$ (horizontal, profondeur) et $x$ (vertical, écart latéral).
+      </p>
+
+      <p>
+        Le <strong>petit triangle</strong> a pour sommets : l'œil, le point d'intersection $x'$ sur l'écran, et le pied de cette intersection sur l'axe optique. Ses côtés sont $d$ (horizontal, distance à l'écran) et $x'$ (vertical, position sur la vitre).
+      </p>
+
+      <div class="sketch">
+        <svg class="diagram" viewBox="0 0 620 320" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- big triangle filled (light) -->
+          <polygon points="40,180 540,180 540,70" fill="#1e5a7a" fill-opacity="0.08" stroke="#1e5a7a" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+          <!-- small triangle filled (darker) -->
+          <polygon points="40,180 220,180 220,145.6" fill="#b8431f" fill-opacity="0.22" stroke="#b8431f" stroke-width="1.5"/>
+
+          <!-- the ray itself (shared hypotenuse) -->
+          <line x1="40" y1="180" x2="540" y2="70" stroke="#3a3a3a" stroke-width="1.2"/>
+
+          <!-- screen line (subtle, kept for reference) -->
+          <line x1="220" y1="40" x2="220" y2="285" stroke="#1e5a7a" stroke-width="1.5" opacity="0.5"/>
+
+          <!-- z axis -->
+          <line x1="40" y1="180" x2="595" y2="180" stroke="#9a9a9a" stroke-width="0.7"/>
+
+          <!-- side labels for big triangle -->
+          <text x="290" y="200" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#1e5a7a" text-anchor="middle">z</text>
+          <text x="558" y="130" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#1e5a7a">x</text>
+
+          <!-- side labels for small triangle -->
+          <text x="130" y="200" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#b8431f" text-anchor="middle">d</text>
+          <text x="232" y="170" font-family="Iowan Old Style, Georgia, serif" font-size="14" font-style="italic" fill="#b8431f">x'</text>
+
+          <!-- common vertex highlight (eye) -->
+          <circle cx="40" cy="180" r="5" fill="#3a3a3a"/>
+          <text x="22" y="170" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#3a3a3a" text-anchor="end">œil</text>
+
+          <!-- intersection -->
+          <circle cx="220" cy="145.6" r="4" fill="#b8431f"/>
+
+          <!-- P -->
+          <circle cx="540" cy="70" r="5" fill="#1e5a7a"/>
+          <text x="552" y="65" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a">P</text>
+        </svg>
+        <p class="diagram-caption">Le petit triangle (terracotta) est emboîté dans le grand (bleu prussien). Ils partagent le sommet à l'œil et l'angle qui s'y trouve. Tous deux ont un côté vertical et un côté horizontal. Ils sont donc semblables.</p>
+      </div>
+
+      <p>
+        Deux triangles semblables imposent une règle stricte : <strong>les rapports entre leurs côtés correspondants sont égaux</strong>. C'est le théorème de Thalès tel qu'on l'apprend au collège. Ici :
+      </p>
+
+      $$\frac{x'}{d} = \frac{x}{z}$$
+
+      <p>
+        Le rapport "côté vertical sur côté horizontal" est le même dans le petit et dans le grand triangle. C'est tout.
+      </p>
+
+      <h2>On isole <em>x'</em></h2>
+
+      <p>
+        On multiplie les deux côtés par $d$ et on obtient la formule du point projeté :
+      </p>
+
+      $$x' = \frac{x \cdot d}{z}$$
+
+      <p>
+        Et puisque $y$ joue exactement le même rôle que $x$ dans une vue de côté (on aurait pu trancher dans l'axe $x$ au lieu de $y$, et le raisonnement aurait été identique), on obtient gratuitement :
+      </p>
+
+      $$y' = \frac{y \cdot d}{z}$$
+
+      <h2>Simplification : on normalise la distance à l'écran</h2>
+
+      <p>
+        La distance $d$ est une constante qu'on choisit. C'est le réglage du "zoom" de la caméra : plus $d$ est grand, plus le rendu est zoomé (pour atteindre le bord de l'écran, il faut un $x'$ plus grand, donc un $x$ plus grand, donc un objet plus latéral dans le monde). On peut tout aussi bien <strong>choisir $d = 1$</strong> et intégrer le zoom plus tard dans la formule, au moment de gérer le champ de vision (fov). Avec cette convention, la formule de la perspective se réduit à sa forme la plus épurée :
+      </p>
+
+      $$\begin{aligned} x' &= x / z \\ y' &= y / z \end{aligned}$$
+
+      <p class="pull-quote">
+        <strong>Pour projeter un point en perspective, on divise ses coordonnées horizontales et verticales par sa profondeur. Le reste de toute cette série de pages n'est qu'une mécanique pour faire avaler cette division à une multiplication matricielle.</strong>
+      </p>
+
+      <h2>Vérification rapide</h2>
+
+      <p>
+        On teste sur trois cas pour s'assurer que la formule correspond bien à l'intuition de l'étape 1.
+      </p>
+
+      <ul>
+        <li><strong>Un point près de l'œil</strong> ($z = 1$) qui est latéralement à $x = 2$. On obtient $x' = 2/1 = 2$ : le point est très écarté du centre de l'écran. Cohérent : un objet près remplit le champ de vision.</li>
+        <li><strong>Le même point, mais placé dix fois plus loin</strong> ($z = 10$, $x = 2$). On obtient $x' = 2/10 = 0{,}2$ : le point est ramené tout près du centre. Cohérent : un objet lointain occupe peu de place dans l'image.</li>
+        <li><strong>Un point à l'infini</strong> ($z \to \infty$). $x'$ tend vers zéro. Tous les points lointains finissent par s'accumuler au centre de l'image, formant ce qu'on appelle le <strong>point de fuite</strong> — exactement ce qu'on observe quand on regarde des rails qui partent à l'horizon.</li>
+      </ul>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangente</span>
+        <p>
+          La formule $x' = x/z$ est la version mathématique de la <em>perspective linéaire</em> qu'a redécouverte Filippo Brunelleschi vers 1415 à Florence — pas en posant des équations, mais en plaçant un miroir et un tableau percé d'un trou face au baptistère de la cathédrale. Les peintres de la Renaissance (Alberti, Piero della Francesca, puis Albrecht Dürer) ont formalisé la chose en mode pratique : poser une grille devant la scène et calquer les rayons. Six siècles plus tard, on fait exactement la même chose, sauf que la "grille" est l'écran de pixels et que les rayons sont des divisions par $z$ dans un fragment shader.
+        </p>
+      </aside>
+
+      <hr class="ornament">
+
+      <h2>Le piège qui se referme</h2>
+
+      <p>
+        On tient notre formule. Elle est belle, elle est simple, elle ne contient qu'une division. Et c'est précisément là, dans cette innocente petite barre de fraction, que va se nicher le problème qui occupe toute la suite de cette série.
+      </p>
+
+      <p>
+        Toute la pipeline 3D moderne — la <em>raison d'être</em> de l'algèbre linéaire dans les jeux vidéo — repose sur le fait qu'on peut composer toutes les transformations (déplacement de l'objet, mouvement de la caméra, projection) en une <strong>seule multiplication matricielle</strong>. C'est cette composition qui rend tout efficace, et qui permet au GPU de calculer un million de sommets en parallèle sans transpirer.
+      </p>
+
+      <p>
+        Or une multiplication matricielle, c'est par définition une combinaison d'additions et de multiplications par des constantes. Aucune division par une variable. Or notre formule, $x' = x / z$, contient une division <em>par une variable</em> — $z$ change pour chaque point du monde. Mathématiquement, cette opération <strong>n'est pas linéaire</strong>. Elle n'a aucun droit d'apparaître dans une multiplication matricielle.
+      </p>
+
+      <p>
+        C'est là une tension fondamentale : la perspective humaine est non linéaire, mais on veut absolument l'encoder dans un cadre rigoureusement linéaire. La prochaine étape va planter le décor de ce problème, et celle d'après révélera l'astuce — diabolique de simplicité — que les graphiciens ont inventée pour le contourner.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="01-le-probleme.html">
+          <span class="nav-label">← Étape 01</span>
+          <span class="nav-title">Le problème</span>
+        </a>
+        <a class="next" href="03-non-lineaire.html">
+          <span class="nav-label">Étape 03 →</span>
+          <span class="nav-title">La division n'est pas linéaire</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cosinus et angle entre deux vecteurs — Chapitre 2 §3</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html" class="current">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 2 · §3</div>
+      <h1>Cosinus et angle entre deux vecteurs</h1>
+      <p class="lede">
+        Le produit scalaire mélange dans un même nombre trois ingrédients : les longueurs des deux vecteurs et l'angle qu'ils forment. Si on veut isoler <em>uniquement</em> l'angle — savoir à quel point deux directions se ressemblent, sans se laisser distraire par leur taille — il faut neutraliser les longueurs. Le cosinus de l'angle est exactement le quotient qui fait ce travail. C'est une mesure de similarité pure, indifférente aux échelles, et c'est l'outil que l'industrie utilise pour comparer à peu près tout ce qui se laisse représenter comme un vecteur.
+      </p>
+
+      <p>
+        Imagine deux flèches qui partent du même point. On veut un nombre qui réponde à une seule question, simple et délicate : <em>à quel point pointent-elles dans la même direction ?</em> Pas leur taille, pas leur position, pas leur somme : seulement leur alignement. Et tant qu'à faire, on aimerait que ce nombre soit le même si on remplaçait une flèche par une autre, dix fois plus longue mais pointant pareil — parce que la direction, elle, n'aurait pas changé. Le cosinus est précisément ce nombre.
+      </p>
+
+      <h2>Isoler l'angle dans la formule du produit scalaire</h2>
+
+      <p>
+        La fiche précédente sur le produit scalaire a établi une égalité clé entre deux lectures du même objet : la lecture algébrique (somme de produits de composantes) et la lecture géométrique (longueurs et angle). On reprend la forme géométrique telle qu'elle a été démontrée :
+      </p>
+
+      $$u \cdot v = \|u\| \times \|v\| \times \cos(\theta)$$
+
+      <p>
+        On note $\|u\|$ et $\|v\|$ les longueurs (les <em>normes</em>) des deux vecteurs, et $\theta$ l'angle non orienté entre eux — un nombre compris entre 0 et 180 degrés, ou de manière équivalente entre 0 et $\pi$ radians. La formule dit que le produit scalaire fabrique son nombre en combinant trois grandeurs : la taille de la première flèche, la taille de la seconde, et le cosinus de l'angle qu'elles forment.
+      </p>
+
+      <p>
+        Ces trois grandeurs sont indépendantes. Si on connaît deux d'entre elles et le produit scalaire, on peut déduire la troisième par simple algèbre. C'est exactement ce qu'on va faire : connaissant $u \cdot v$, $\|u\|$ et $\|v\|$, on isole $\cos(\theta)$ en divisant des deux côtés par le produit des longueurs :
+      </p>
+
+      $$\cos(\theta) = \frac{u \cdot v}{\|u\| \cdot \|v\|}$$
+
+      <p>
+        Voilà la formule centrale de cette section. Elle se lit comme une recette de cuisine : prends le produit scalaire des deux vecteurs, divise par le produit de leurs longueurs, et tu obtiens le cosinus de l'angle entre eux. Trois opérations qu'on sait déjà faire, recombinées en un seul geste.
+      </p>
+
+      <p>
+        Et pourquoi ne pas extraire l'angle $\theta$ lui-même, au lieu de son cosinus ? Parce que c'est rarement utile. La fonction qui passe du cosinus à l'angle — l'<em>arccosinus</em> — est coûteuse à calculer et déstabilise la précision près des bornes. Pour la grande majorité des usages (mesurer une similarité, détecter une orthogonalité, ordonner des candidats par proximité), le cosinus est suffisant. Il porte exactement la même information que l'angle, encodée dans un intervalle borné et bien comporté.
+      </p>
+
+      <h2>Ce que mesure le cosinus</h2>
+
+      <p>
+        Le cosinus de l'angle entre deux vecteurs vit toujours dans l'intervalle $[-1, 1]$. Ce n'est pas un choix arbitraire : c'est une conséquence directe de sa définition trigonométrique. Cette bornitude est une excellente nouvelle, parce qu'elle rend les valeurs immédiatement interprétables. Voici la lecture canonique :
+      </p>
+
+      $$\begin{aligned}
+\cos(\theta) = +1 &\Rightarrow \text{angle} = 0°,\ \text{même direction, parfaitement alignés} \\
+\cos(\theta) > 0 &\Rightarrow \text{angle aigu, directions globalement compatibles} \\
+\cos(\theta) = 0 &\Rightarrow \text{angle} = 90°,\ \text{perpendiculaires} \\
+\cos(\theta) < 0 &\Rightarrow \text{angle obtus, directions globalement opposées} \\
+\cos(\theta) = -1 &\Rightarrow \text{angle} = 180°,\ \text{opposés, parfaitement antialignés}
+\end{aligned}$$
+
+      <p>
+        Les trois valeurs entières sont les repères à retenir. $+1$, c'est l'accord total : les deux flèches montrent rigoureusement dans la même direction, l'une est un agrandissement ou une réduction de l'autre. $0$, c'est l'indifférence géométrique : les deux flèches se croisent à angle droit, l'une est entièrement dans l'angle mort de l'autre. $-1$, c'est l'opposition frontale : les flèches sont alignées mais regardent dans des sens contraires. Entre ces trois repères, la valeur du cosinus varie continûment et mesure le degré intermédiaire.
+      </p>
+
+      <p>
+        Le point qui rend l'outil si puissant est ceci : <strong>le cosinus est insensible aux longueurs</strong>. La division par $\|u\| \cdot \|v\|$ est exactement là pour cela. Si on remplace $u$ par un vecteur deux fois plus long mais pointant pareil, son produit scalaire avec $v$ double, mais sa norme double aussi, et au final le quotient reste le même. Plus généralement, multiplier l'un des vecteurs par n'importe quel scalaire <em>strictement positif</em> ne change pas la valeur du cosinus. La grandeur ne compte plus, seule l'orientation pèse.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Le cosinus est une mesure de similarité directionnelle, insensible aux longueurs.</strong>
+      </p>
+
+      <p>
+        Cette propriété a un nom : on dit que le cosinus est <em>invariant par mise à l'échelle positive</em>. C'est elle qui le rend si différent — et souvent supérieur — à la distance entre deux vecteurs. La distance ressent les longueurs, le cosinus les ignore. Selon ce qu'on cherche à mesurer, l'une ou l'autre sera plus appropriée, mais quand la question est « ces deux choses se ressemblent-elles dans leurs proportions ? », le cosinus est l'outil naturel.
+      </p>
+
+      <h2>Trois pièges classiques</h2>
+
+      <p>
+        Le cosinus a une réputation de simplicité qui cache quelques chausse-trappes. Trois en particulier reviennent assez souvent pour mériter qu'on s'arrête dessus.
+      </p>
+
+      <p>
+        <strong>Piège 1 : croire que $\cos = 0$ signifie « vecteurs alignés ».</strong> C'est exactement l'inverse. Quand le cosinus vaut zéro, l'angle entre les vecteurs est de 90 degrés : ils sont <em>perpendiculaires</em>, donc aussi mal alignés que possible sans pour autant s'opposer. Le piège vient de la confusion entre « zéro » et « rien à signaler ». Ici, le zéro signifie précisément « aucune similarité directionnelle ». À l'inverse, c'est $\cos = 1$ qui correspond à l'alignement parfait. Le mnémonique à graver : plus l'angle est petit, plus le cosinus est proche de un. Le cosinus de zéro degré vaut un, le cosinus de 90 degrés vaut zéro. Cette échelle est inversée par rapport à l'intuition naïve du « zéro = neutre ».
+      </p>
+
+      <p>
+        <strong>Piège 2 : croire qu'un vecteur nul fait un angle bien défini avec un autre vecteur.</strong> Il n'en fait pas. Le vecteur nul est le vecteur dont toutes les composantes valent zéro ; géométriquement, il ne pointe nulle part — c'est un point à l'origine, pas une flèche. La question « quel angle fait-il avec une autre flèche ? » n'a tout simplement pas de réponse, parce qu'il faudrait pouvoir comparer deux directions, or l'une des deux n'existe pas. Cette indétermination se reflétera dans la formule elle-même dans une seconde.
+      </p>
+
+      <p>
+        <strong>Piège 3 : croire que deux vecteurs « proportionnels » ont un cosinus de zéro.</strong> Encore un contre-sens fréquent. Deux vecteurs proportionnels — c'est-à-dire l'un multiple scalaire de l'autre — pointent rigoureusement dans la même direction (si le facteur est positif) ou dans des directions exactement opposées (si le facteur est négatif). Leur cosinus vaut donc <strong>+1 ou -1, jamais zéro</strong>. Le zéro est réservé aux paires de vecteurs <em>orthogonales</em>, qui sont au contraire le contraire de la proportionnalité. Pour fixer les idées : être proportionnel, c'est se ressembler exactement (ou exactement s'opposer) ; être orthogonal, c'est n'avoir aucune ressemblance.
+      </p>
+
+      <p>
+        Ces trois pièges ont une parenté : ils proviennent tous d'une intuition mal calibrée sur le sens du zéro et du un dans le contexte du cosinus. La règle de base, qu'il vaut la peine de surapprendre : <em>le maximum de similarité donne un, l'absence de similarité donne zéro, l'opposition donne moins un</em>.
+      </p>
+
+      <h2>Le cas dégénéré du vecteur nul</h2>
+
+      <p>
+        Revenons sur le vecteur nul, parce qu'il mérite plus qu'une note en passant. Regarde à nouveau la formule :
+      </p>
+
+      $$\cos(\theta) = \frac{u \cdot v}{\|u\| \cdot \|v\|}$$
+
+      <p>
+        Si l'un des deux vecteurs est nul, sa norme vaut zéro. Le dénominateur devient zéro. La division est indéfinie. Ce n'est pas un accident de calcul qu'on pourrait corriger en posant une convention — c'est le reflet algébrique d'une réalité géométrique : l'angle entre un point et une flèche n'a pas de sens. La formule refuse poliment de répondre à une question qui n'a pas lieu d'être posée.
+      </p>
+
+      <p>
+        En pratique, selon les outils, ce cas dégénéré se manifeste de plusieurs façons. Une division flottante par zéro peut produire une valeur spéciale (<code>NaN</code>, pour <em>not a number</em>) qui se propage dans les calculs suivants en les contaminant. Un autre programme peut prévenir le problème en vérifiant les normes avant de diviser et en levant une erreur. Les deux stratégies se défendent ; ce qu'il faut comprendre, c'est qu'<em>il n'y a pas de bonne réponse à inventer</em>. Le cosinus n'est pas défini, et toute valeur conventionnelle (zéro, un, n'importe quoi) serait un mensonge.
+      </p>
+
+      <p>
+        On retient donc une règle simple : le cosinus n'a de sens qu'entre deux vecteurs <strong>non nuls</strong>. Avant d'appliquer la formule, il faut s'être assuré que c'est le cas. C'est une précondition, au même titre qu'on n'additionne pas deux vecteurs de dimensions différentes.
+      </p>
+
+      <h2>Applications : de l'orthogonalité à la similarité cosinus</h2>
+
+      <p>
+        Le cosinus est partout dans les domaines qui manipulent des vecteurs. Deux usages dominent.
+      </p>
+
+      <p>
+        <strong>Premier usage : tester l'orthogonalité.</strong> Deux vecteurs sont perpendiculaires si et seulement si leur cosinus est nul. Et comme le cosinus est $u \cdot v$ divisé par un dénominateur strictement positif (quand les vecteurs sont non nuls), il s'annule exactement quand le numérateur s'annule. Conclusion : pour détecter une orthogonalité, on n'a même pas besoin de calculer le cosinus ; il suffit de regarder si le produit scalaire est nul. C'est plus rapide, plus stable numériquement, et ça évite de gérer le cas dégénéré. Le cosinus est conceptuellement la bonne mesure, mais le produit scalaire seul suffit pour le test binaire « est-ce orthogonal ? ».
+      </p>
+
+      <p>
+        <strong>Deuxième usage : la similarité cosinus.</strong> C'est probablement la mesure de similarité la plus utilisée en apprentissage automatique et en recherche d'information. Le principe : on représente chaque objet qu'on veut comparer — un mot, un texte, un utilisateur, une image — par un vecteur de grande dimension (un <em>embedding</em>, pour reprendre le mot consacré), généralement appris par un modèle statistique. Pour mesurer à quel point deux objets se ressemblent, on calcule le cosinus de l'angle entre leurs embeddings.
+      </p>
+
+      <p>
+        Pourquoi le cosinus plutôt que la distance ? Précisément à cause de son invariance par mise à l'échelle. Dans les représentations vectorielles de textes par exemple, la norme du vecteur tend à refléter la longueur du texte plutôt que son sujet. Un article long et un message court sur le même thème auront des embeddings de tailles très différentes, mais des orientations similaires. Mesurer leur similarité par la distance euclidienne, c'est mélanger le sujet et la taille ; la mesurer par le cosinus, c'est se concentrer sur le sujet seul. C'est ce qui rend le cosinus si robuste comme outil de recherche : il compare des <em>signatures</em> de contenu, indifférent aux volumes.
+      </p>
+
+      <p>
+        On retrouve la même logique dans les systèmes de recommandation (comparer des profils d'utilisateurs codés en vecteurs de goûts), dans la recherche d'images par similarité (comparer des descripteurs visuels), dans le traitement de la parole (comparer des empreintes acoustiques). Le motif est toujours le même : on a transformé des objets en vecteurs, on veut savoir lesquels se ressemblent, et la ressemblance pertinente est directionnelle. Le cosinus est l'outil naturel.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Tangente · La corrélation de Pearson est un cosinus</span>
+        <p>
+          Il y a une formule célèbre en statistiques qui calcule à quel point deux séries de mesures « évoluent ensemble » — la <em>corrélation de Pearson</em>. Elle a la propriété remarquable d'être toujours comprise entre $-1$ et $+1$, avec $+1$ pour une dépendance linéaire parfaite, $0$ pour une indépendance, $-1$ pour une dépendance linéaire inverse. Ces bornes ne sont pas décidées à la main : <strong>la corrélation de Pearson <em>est</em> un cosinus</strong>. Plus précisément, c'est le cosinus de l'angle entre les deux séries vues comme des vecteurs, après les avoir centrées autour de leur moyenne. La même formule, le même intervalle, exactement la même interprétation : un alignement directionnel, débarrassé des longueurs. Quand un statisticien parle de coefficient de corrélation et qu'un ingénieur en apprentissage parle de similarité cosinus, ils manipulent le même objet sous deux noms. C'est un bel exemple de la façon dont l'algèbre linéaire sous-tend silencieusement des champs qui prétendent ne pas s'en servir.
+        </p>
+      </aside>
+
+      <hr class="ornament" />
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Le cosinus de l'angle entre deux vecteurs est un quotient simple, mais qui rend trois services qu'aucune autre formule ne rendrait aussi proprement.
+      </p>
+
+      <ol>
+        <li><strong>Définition</strong> : $\cos(\theta) = (u \cdot v) / (\|u\| \cdot \|v\|)$. C'est le produit scalaire normalisé par les longueurs — l'angle isolé, débarrassé des grandeurs.</li>
+        <li><strong>Lecture</strong> : valeur dans $[-1, 1]$. $+1$ = même direction, $0$ = perpendiculaires, $-1$ = directions opposées. Plus l'angle est petit, plus le cosinus est proche de un — c'est la règle inverse de l'intuition naïve du zéro.</li>
+        <li><strong>Cas dégénéré</strong> : non défini si l'un des vecteurs est nul. Le vecteur nul n'a pas de direction, donc pas d'angle.</li>
+        <li><strong>Usage central</strong> : la similarité cosinus, omniprésente dans tout ce qui compare des représentations vectorielles — embeddings de textes, profils d'utilisateurs, descripteurs d'images. Sa force vient de son indifférence aux longueurs : elle compare des orientations, pas des tailles.</li>
+      </ol>
+
+      <p>
+        On a maintenant deux outils complémentaires pour parler de la relation entre deux vecteurs : le produit scalaire, qui mélange angle et longueurs en une seule mesure signée, et le cosinus, qui isole l'angle seul. Tous deux dépendent de la notion de longueur, déjà rencontrée dans la fiche sur les normes. Il reste une dernière opération dans ce chapitre, propre à la dimension trois, qui ne s'intéresse plus à l'alignement entre deux vecteurs mais à la surface qu'ils encadrent et à la direction perpendiculaire au plan qu'ils définissent : c'est le produit vectoriel.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="02-normes.html">
+          <span class="nav-label">Précédent</span>
+          <span class="nav-title">← §2 — Normes</span>
+        </a>
+        <a class="next" href="04-cross-product.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">§4 — Produit vectoriel →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le produit vectoriel — Chapitre 2 §4</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html" class="current">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 2 · §4</div>
+      <h1>Le produit vectoriel</h1>
+      <p class="lede">
+        Voici une opération pas comme les autres. Elle ne vit qu'en trois dimensions, refuse catégoriquement d'exister ailleurs, et au lieu de mélanger deux vecteurs en un seul nombre — comme le faisait le produit scalaire — elle mélange deux vecteurs en un troisième vecteur, calibré pour pointer perpendiculairement aux deux premiers. C'est l'outil signature de la géométrie 3D, et son existence même est une coïncidence dimensionnelle qu'on va apprendre à regarder droit dans les yeux.
+      </p>
+
+      <p>
+        Imagine deux flèches qui partent du même point dans l'espace. Elles ne sont pas alignées, donc elles définissent un plan — celui qu'on obtiendrait en faisant glisser une feuille de papier pour qu'elle les contienne toutes les deux. À partir de ces deux flèches, on aimerait fabriquer une troisième flèche qui sort de cette feuille, perpendiculaire au plan, et dont la longueur encode la <em>surface</em> du parallélogramme que les deux premières dessinent. C'est exactement ce que produit le <strong>produit vectoriel</strong>, qu'on note $u \times v$.
+      </p>
+
+      <h2>Le cahier des charges géométrique</h2>
+
+      <p>
+        Avant la formule, le contrat. Pour deux vecteurs $u$ et $v$ de l'espace 3D, le produit vectoriel $u \times v$ est un vecteur — appelons-le $w$ — qui doit satisfaire trois conditions, posées à l'avance et imposées par le sens géométrique qu'on veut donner à l'objet.
+      </p>
+
+      <ol>
+        <li><strong>Perpendiculaire à $u$</strong> : $w \cdot u = 0$. Le vecteur produit fait un angle droit avec le premier opérande.</li>
+        <li><strong>Perpendiculaire à $v$</strong> : $w \cdot v = 0$. Et aussi avec le second. Autrement dit, $w$ sort du plan dessiné par $u$ et $v$.</li>
+        <li><strong>Longueur = aire du parallélogramme</strong> : $\|w\| = \|u\| \cdot \|v\| \cdot \sin(\theta)$, où $\theta$ est l'angle non orienté entre $u$ et $v$. La norme de $w$ mesure la surface comprise entre les deux flèches.</li>
+      </ol>
+
+      <svg class="illu" viewBox="0 0 460 300" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c2s4-u" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+          <marker id="arrow-c2s4-v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1e5a7a"/>
+          </marker>
+          <marker id="arrow-c2s4-w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#6e2716"/>
+          </marker>
+        </defs>
+        <!-- Parallélogramme (plan u,v) -->
+        <polygon points="120,230 320,230 380,170 180,170" fill="#fde8da" fill-opacity="0.55" stroke="#b8431f" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <!-- u -->
+        <line x1="120" y1="230" x2="320" y2="230" stroke="#b8431f" stroke-width="2.6" marker-end="url(#arrow-c2s4-u)"/>
+        <text x="335" y="234" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#b8431f" font-style="italic">u</text>
+        <!-- v partant aussi de l'origine, dans le plan -->
+        <line x1="120" y1="230" x2="180" y2="170" stroke="#1e5a7a" stroke-width="2.6" marker-end="url(#arrow-c2s4-v)"/>
+        <text x="155" y="190" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#1e5a7a" font-style="italic">v</text>
+        <!-- u × v perpendiculaire vers le haut -->
+        <line x1="120" y1="230" x2="120" y2="50" stroke="#6e2716" stroke-width="2.8" marker-end="url(#arrow-c2s4-w)"/>
+        <text x="100" y="80" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#6e2716" font-style="italic" text-anchor="end">u × v</text>
+        <!-- Petit angle droit -->
+        <polyline points="120,222 128,222 128,230" fill="none" stroke="#8b8474" stroke-width="1"/>
+        <!-- Origin -->
+        <circle cx="120" cy="230" r="3.5" fill="#1c1a15"/>
+        <!-- Caption inside -->
+        <text x="230" y="282" font-family="Inter, sans-serif" font-size="12" fill="#8b8474" text-anchor="middle">‖u × v‖ = aire du parallélogramme</text>
+      </svg>
+
+      <p>
+        Une fois ces trois conditions posées, il reste une ambiguïté. Un plan a deux faces : il y a deux directions perpendiculaires, exactement opposées, qui satisfont à la fois la perpendicularité et la longueur demandée. Pour trancher entre les deux, il faut une convention. On y vient dans un instant, mais d'abord prenons la mesure d'une étrangeté : tout cela ne marche qu'en dimension trois.
+      </p>
+
+      <h2>Pourquoi seulement en 3D</h2>
+
+      <p>
+        Cette restriction n'est pas un caprice. Elle vient de ce qu'on essaie d'encoder. Quand on a deux vecteurs, le parallélogramme qu'ils forment porte deux informations distinctes : une <em>aire</em> (une grandeur) et une <em>orientation</em> (la façon dont il est posé dans l'espace). Selon la dimension de l'espace ambiant, ces deux informations demandent un nombre différent de coordonnées pour être représentées fidèlement.
+      </p>
+
+      <table style="border-collapse: collapse; width: 100%; max-width: 620px; margin: 1.5rem auto; font-family: 'Iowan Old Style', Georgia, serif; font-size: 0.94rem; background: var(--bg-soft); border-left: 3px solid var(--accent-2); border-radius: 0 4px 4px 0;">
+        <thead>
+          <tr style="background: rgba(184, 67, 31, 0.08);">
+            <th style="padding: 0.55rem 0.9rem; text-align: left; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--ink); font-family: 'Inter', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Dimension</th>
+            <th style="padding: 0.55rem 0.9rem; text-align: left; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--ink); font-family: 'Inter', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Ce qu'il faut encoder</th>
+            <th style="padding: 0.55rem 0.9rem; text-align: left; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--ink); font-family: 'Inter', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Objet naturel</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--accent);">2D</td>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-soft);">aire + signe (un seul plan possible)</td>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-soft);">1 scalaire</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--accent);">3D</td>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-soft);">aire + direction perpendiculaire</td>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-soft);">1 vecteur (3D)</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.5rem 0.9rem; font-weight: 600; color: var(--accent);">4D et +</td>
+            <td style="padding: 0.5rem 0.9rem; color: var(--ink-soft);">aire + plan de directions perpendiculaires</td>
+            <td style="padding: 0.5rem 0.9rem; color: var(--ink-soft);">objet plus riche</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        En <strong>2D</strong>, le parallélogramme est forcément dans l'unique plan disponible. Aucune liberté sur l'orientation : seule l'aire (éventuellement signée pour distinguer le sens de rotation) a besoin d'être encodée. Un nombre suffit. C'est le déterminant 2x2 — on le retrouvera plus loin dans le cours.
+      </p>
+
+      <p>
+        En <strong>3D</strong>, l'espace est assez grand pour que le parallélogramme puisse être incliné dans toutes les directions imaginables. Il faut pouvoir spécifier <em>laquelle</em>. La manière économique d'encoder à la fois l'orientation et l'aire, c'est de donner un vecteur perpendiculaire au plan : sa direction code l'orientation, sa longueur code l'aire. Trois coordonnées, trois informations, parfait équilibre.
+      </p>
+
+      <p>
+        En <strong>4D et au-delà</strong>, le mécanisme se brise. Dans un espace à quatre dimensions, il n'y a plus une unique direction perpendiculaire à un plan : il y a tout un plan de directions perpendiculaires. Un seul vecteur ne sait pas porter cette information. Il faudrait un objet plus complexe — et on perd la simplicité opérationnelle qui faisait le charme du produit vectoriel. C'est pourquoi on dit que le produit vectoriel est une <em>coïncidence dimensionnelle</em> : il existe parce que, en 3D et seulement en 3D, la géométrie d'un plan et celle d'une droite sont en miroir parfait.
+      </p>
+
+      <h2>La règle de la main droite</h2>
+
+      <p>
+        Revenons à l'ambiguïté laissée en suspens. Le cahier des charges (perpendicularité + longueur fixée) admet deux solutions, symétriques l'une de l'autre par rapport au plan engendré par $u$ et $v$. Lequel des deux sens choisit-on ? La convention universelle s'appelle la <strong>règle de la main droite</strong>, et c'est une recette gestuelle qu'il vaut la peine de faire physiquement, au moins une fois.
+      </p>
+
+      <p>
+        Tends ta main droite. Pointe l'<em>index</em> dans la direction de $u$. Pointe le <em>majeur</em> dans la direction de $v$ (en pliant un peu le doigt si besoin, pour qu'il soit perpendiculaire à l'index). Relève le <em>pouce</em>. La direction qu'il indique, c'est celle de $u \times v$.
+      </p>
+
+      <svg class="illu" viewBox="0 0 440 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c2s4-hand-u" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+          <marker id="arrow-c2s4-hand-v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1e5a7a"/>
+          </marker>
+          <marker id="arrow-c2s4-hand-w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#6e2716"/>
+          </marker>
+        </defs>
+        <!-- Pouce (vers le haut) = u × v -->
+        <line x1="180" y1="180" x2="180" y2="40" stroke="#6e2716" stroke-width="2.8" marker-end="url(#arrow-c2s4-hand-w)"/>
+        <text x="195" y="50" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#6e2716" font-style="italic">pouce  ← u × v</text>
+        <!-- Index horizontal vers la droite = u -->
+        <line x1="180" y1="180" x2="380" y2="180" stroke="#b8431f" stroke-width="2.8" marker-end="url(#arrow-c2s4-hand-u)"/>
+        <text x="320" y="200" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#b8431f" font-style="italic">index (u)</text>
+        <!-- Majeur en bas-gauche en perspective = v -->
+        <line x1="180" y1="180" x2="80" y2="250" stroke="#1e5a7a" stroke-width="2.8" marker-end="url(#arrow-c2s4-hand-v)"/>
+        <text x="100" y="270" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" font-style="italic">majeur (v)</text>
+        <!-- Petits angles droits -->
+        <polyline points="180,52 192,52 192,40" fill="none" stroke="#8b8474" stroke-width="1"/>
+        <polyline points="180,172 188,172 188,180" fill="none" stroke="#8b8474" stroke-width="1"/>
+        <circle cx="180" cy="180" r="3.5" fill="#1c1a15"/>
+      </svg>
+      <p class="illu-caption">La règle de la main droite : index (u), majeur (v), pouce (u × v).</p>
+
+      <p>
+        Cette convention n'a rien de magique, et n'a rien de plus profond qu'un choix de signe : on aurait pu prendre l'autre, le monde aurait fonctionné aussi bien. Les choses se compliqueraient seulement si on mélangeait sans le dire deux conventions opposées — d'où l'importance d'en fixer une et de s'y tenir. La main droite est la norme dans à peu près tous les contextes (mathématiques, physique, infographie OpenGL, ingénierie), ce qui en fait un standard de fait.
+      </p>
+
+      <p>
+        Conséquence immédiate : si on inverse l'ordre des opérandes — c'est-à-dire si on calcule $v \times u$ au lieu de $u \times v$ — il faut, pour appliquer la même règle gestuelle, tourner sa main, et le pouce pointe alors exactement dans la direction opposée. L'ordre dans lequel on prend les deux vecteurs change le <em>signe</em> du résultat.
+      </p>
+
+      <p class="pull-quote">
+        <strong>$u \times v = -(v \times u)$. Le produit vectoriel est anticommutatif.</strong>
+      </p>
+
+      <h2>La formule algébrique</h2>
+
+      <p>
+        Le cahier des charges géométrique se traduit en une formule de calcul très régulier — une fois qu'on a vu son squelette, on ne l'oublie plus. Pour $u = (u_x, u_y, u_z)$ et $v = (v_x, v_y, v_z)$, les trois composantes du produit vectoriel sont :
+      </p>
+
+      $$u \times v = \begin{pmatrix} u_y v_z - u_z v_y \\ u_z v_x - u_x v_z \\ u_x v_y - u_y v_x \end{pmatrix}$$
+
+      <p>
+        Chacune des trois composantes est une <em>différence</em> de deux produits. L'organisation des indices suit un motif qu'on appelle le <strong>pattern cyclique</strong>, et qui sert de mnémotechnique. Imagine les trois indices $x, y, z$ rangés sur un cercle, qu'on parcourt toujours dans le même sens : $x \to y \to z \to x \to y \to z \to \dots$. Pour chaque composante du résultat, on saute la lettre correspondante et on utilise les deux suivantes dans l'ordre du cycle.
+      </p>
+
+      <div class="math">composante x :  saute x  →  prendre (y, z)  →  u_y v_z - u_z v_y
+composante y :  saute y  →  prendre (z, x)  →  u_z v_x - u_x v_z
+composante z :  saute z  →  prendre (x, y)  →  u_x v_y - u_y v_x</div>
+
+      <p>
+        La règle se mémorise vite : pour la composante manquante, prends les deux autres dans l'ordre cyclique, et fais la différence $u_{\text{première}} v_{\text{seconde}} - u_{\text{seconde}} v_{\text{première}}$. C'est répétitif à dessein, parce que cette régularité est ce qui garantit que le vecteur obtenu satisfait bien le cahier des charges géométrique — la perpendicularité et la longueur attendue tombent toutes les deux de cette gymnastique d'indices.
+      </p>
+
+      <h2>La norme est l'aire du parallélogramme</h2>
+
+      <p>
+        Reprenons la troisième clause du cahier des charges. La longueur du vecteur produit <em>est</em> l'aire du parallélogramme dessiné par $u$ et $v$. Cette égalité n'est pas une coïncidence ni une convention : elle tombe d'une demi-preuve géométrique très élémentaire qu'on peut faire en deux phrases.
+      </p>
+
+      <p>
+        L'aire d'un parallélogramme se calcule comme <em>base x hauteur</em>. Choisissons $u$ comme base : sa longueur est $\|u\|$. Reste à déterminer la hauteur, c'est-à-dire la distance perpendiculaire entre l'extrémité de $v$ et la droite qui porte $u$. Cette distance, c'est la <em>composante de $v$ perpendiculaire à $u$</em>, et la trigonométrie de base la donne immédiatement : $\|v\| \cdot \sin(\theta)$, où $\theta$ est l'angle entre les deux vecteurs.
+      </p>
+
+      <svg class="illu" viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c2s4-par-u" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+          <marker id="arrow-c2s4-par-v" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#1e5a7a"/>
+          </marker>
+        </defs>
+        <!-- Parallélogramme rempli léger -->
+        <polygon points="60,220 320,220 410,80 150,80" fill="#fde8da" fill-opacity="0.55" stroke="#b8431f" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <!-- Base u -->
+        <line x1="60" y1="220" x2="320" y2="220" stroke="#b8431f" stroke-width="2.6" marker-end="url(#arrow-c2s4-par-u)"/>
+        <text x="190" y="245" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#b8431f" font-style="italic" text-anchor="middle">u (base = ‖u‖)</text>
+        <!-- v -->
+        <line x1="60" y1="220" x2="150" y2="80" stroke="#1e5a7a" stroke-width="2.6" marker-end="url(#arrow-c2s4-par-v)"/>
+        <text x="80" y="135" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" font-style="italic">v</text>
+        <!-- Hauteur (perpendiculaire du tip de v vers la base) -->
+        <line x1="150" y1="80" x2="150" y2="220" stroke="#8b8474" stroke-width="1.4" stroke-dasharray="4 4"/>
+        <!-- Angle droit -->
+        <polyline points="142,220 142,212 150,212" fill="none" stroke="#8b8474" stroke-width="1.1"/>
+        <text x="160" y="155" font-family="Inter, sans-serif" font-size="12" fill="#1c1a15">hauteur = ‖v‖ × sin(θ)</text>
+        <!-- Angle θ -->
+        <path d="M 90 220 A 30 30 0 0 1 80 200" fill="none" stroke="#1e5a7a" stroke-width="1.2"/>
+        <text x="95" y="205" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" font-style="italic">θ</text>
+        <!-- Origine -->
+        <circle cx="60" cy="220" r="3.5" fill="#1c1a15"/>
+        <text x="48" y="240" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1c1a15" text-anchor="end">O</text>
+      </svg>
+      <p class="illu-caption">L'aire d'un parallélogramme = base × hauteur = ‖u‖ × ‖v‖ × sin(θ).</p>
+
+      $$\text{aire} = \text{base} \times \text{hauteur} = \|u\| \times \|v\| \times \sin(\theta)$$
+
+      <p>
+        Donc l'aire vaut $\|u\| \cdot \|v\| \cdot \sin(\theta)$, et c'est exactement la longueur qu'on a imposée au vecteur produit. La norme du produit vectoriel <em>est</em> la surface comprise entre les deux flèches.
+      </p>
+
+      <p>
+        Ça donne une lecture qualitative très simple : quand les deux vecteurs sont presque alignés, leur parallélogramme est aplati, l'aire est minuscule, et le produit vectoriel est court. Quand ils sont presque perpendiculaires, le parallélogramme est ample, l'aire est maximale, et le produit vectoriel est long. Quand ils sont exactement colinéaires, l'aire est nulle, et le produit vectoriel est le vecteur nul — l'opération dégénère proprement sans rien casser.
+      </p>
+
+      <h2>La symétrie avec le produit scalaire</h2>
+
+      <p>
+        Si la section précédente a laissé une impression de jumelage, ce n'est pas un hasard. Le produit scalaire et le produit vectoriel sont les deux faces d'un même triangle rectangle. Mises côte à côte, leurs deux formules se répondent terme à terme :
+      </p>
+
+      $$\begin{aligned}
+u \cdot v &= \|u\| \times \|v\| \times \cos(\theta) \quad \leftarrow \text{la part PARALLÈLE} \\
+\|u \times v\| &= \|u\| \times \|v\| \times \sin(\theta) \quad \leftarrow \text{la part PERPENDICULAIRE}
+\end{aligned}$$
+
+      <p>
+        Le <em>cosinus</em> mesure ce qui est aligné entre les deux vecteurs : il est maximal quand ils pointent dans la même direction et nul quand ils sont perpendiculaires. Le <em>sinus</em> mesure l'inverse : il est nul quand ils sont alignés et maximal quand ils sont à angle droit. Les deux opérations partagent strictement les mêmes ingrédients — les deux longueurs $\|u\|$ et $\|v\|$, et l'angle $\theta$ — mais l'une extrait la composante d'alignement, l'autre la composante d'écart. Elles sont complémentaires comme la base et la hauteur d'un même triangle.
+      </p>
+
+      <p>
+        Cette symétrie a une conséquence pratique : ensemble, le produit scalaire et le produit vectoriel saisissent tout ce qu'il y a à dire sur la géométrie élémentaire d'une paire de vecteurs. L'un dit à quel point ils tirent dans le même sens, l'autre dit à quel point ils s'écartent. Connaître les deux, c'est connaître la configuration complète.
+      </p>
+
+      <h2>Propriétés algébriques essentielles</h2>
+
+      <p>
+        Le produit vectoriel se comporte comme une multiplication, sauf sur deux points où il refuse de se conformer. Voici les règles qu'on utilise au quotidien.
+      </p>
+
+      <ul>
+        <li><strong>Anticommutativité</strong> : $u \times v = -(v \times u)$. Inverser l'ordre inverse le signe. C'est la conséquence directe de la règle de la main droite.</li>
+        <li><strong>Produit avec soi-même nul</strong> : $u \times u = 0$. Un vecteur est parfaitement aligné avec lui-même, le parallélogramme est aplati en un segment, l'aire est nulle.</li>
+        <li><strong>Distributivité par rapport à l'addition</strong> : $u \times (v + w) = (u \times v) + (u \times w)$. Comme la multiplication ordinaire — on peut développer.</li>
+        <li><strong>Compatibilité avec le scaling</strong> : si $k$ est un nombre, alors $(k \cdot u) \times v = k \cdot (u \times v) = u \times (k \cdot v)$. Le scalaire traverse librement.</li>
+        <li><strong>Test de colinéarité</strong> : $u \times v = 0$ si et seulement si $u$ et $v$ sont colinéaires (ou si l'un est nul). Pratique pour détecter qu'une paire de vecteurs dessine une droite plutôt qu'un plan.</li>
+        <li><strong>Non-associatif</strong> : en général, $u \times (v \times w) \neq (u \times v) \times w$. C'est une différence de fond avec la multiplication ordinaire : on ne peut pas se contenter de poser des parenthèses au hasard, l'ordre des groupements compte.</li>
+      </ul>
+
+      <p>
+        Cette dernière propriété — la non-associativité — est ce qui empêche le produit vectoriel d'être une « vraie » multiplication au sens algébrique du terme. On peut s'y faire, mais c'est un piège classique : on ne peut pas réordonner librement les opérations comme on le ferait pour des produits de nombres.
+      </p>
+
+      <h2>Applications</h2>
+
+      <p>
+        Le produit vectoriel est l'outil quotidien dans tous les domaines qui parlent de géométrie 3D. Deux familles d'usage dominent.
+      </p>
+
+      <p>
+        <strong>Infographie et synthèse d'images.</strong> Quand on veut dessiner une surface 3D, on a besoin de connaître, pour chaque facette, sa <em>normale</em> — le vecteur perpendiculaire qui sort de la surface. La normale sert à calculer l'éclairage (à quel point la facette est orientée vers la lumière ?) et à décider quelles facettes sont visibles (le <em>back-face culling</em> consiste à ne pas dessiner les facettes qui tournent le dos à la caméra). Étant donnés deux côtés d'un triangle vu comme des vecteurs, leur produit vectoriel est exactement cette normale, avec en bonus une longueur égale au double de l'aire du triangle.
+      </p>
+
+      <p>
+        <strong>Physique.</strong> Tout phénomène qui implique une rotation ou un effet de levier utilise le produit vectoriel. Le moment d'une force — le <em>torque</em>, qui mesure à quel point une force fait tourner un objet autour d'un point — est le produit vectoriel du bras de levier par la force. Le moment cinétique d'une masse en rotation est le produit vectoriel de sa position par sa quantité de mouvement. La force de Lorentz qui agit sur une charge électrique en mouvement dans un champ magnétique est, encore, un produit vectoriel. Chaque fois qu'il y a une rotation et une direction d'axe à définir, le produit vectoriel est l'outil naturel : il prend deux ingrédients (un bras et une cause) et fabrique l'axe de rotation correctement orienté et calibré.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Tangente · Le produit vectoriel est un raccourci 3D</span>
+        <p>
+          Pour les curieux : il existe une opération plus fondamentale, qu'on appelle le <em>produit extérieur</em> (ou wedge product, noté $u \wedge v$). Cette opération prend deux vecteurs et fabrique, dans n'importe quelle dimension, un objet qui représente directement le parallélogramme orienté — on l'appelle un <em>bivecteur</em>. Le produit vectoriel 3D n'est qu'un cas particulier : c'est le bivecteur réinterprété comme un vecteur perpendiculaire, ce qui ne marche qu'en dimension trois. Le wedge product, lui, marche partout, et c'est lui que les physiciens et géomètres utilisent quand ils travaillent en dimensions supérieures. Le produit vectoriel n'est donc pas une opération mathématique de premier rang — c'est un raccourci très pratique, valide uniquement là où la géométrie le permet.
+        </p>
+      </aside>
+
+      <hr class="ornament" />
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Le produit vectoriel est une opération propre à la 3D, et il se laisse résumer en quelques idées à garder en tête.
+      </p>
+
+      <ol>
+        <li><strong>Définition géométrique</strong> : $u \times v$ est le vecteur perpendiculaire au plan de $u$ et $v$, de longueur égale à l'aire du parallélogramme qu'ils dessinent, et orienté par la règle de la main droite.</li>
+        <li><strong>Formule de calcul</strong> : trois composantes, chacune une différence de deux produits, suivant le pattern cyclique $x \to y \to z \to x$.</li>
+        <li><strong>Norme</strong> : $\|u \times v\| = \|u\| \cdot \|v\| \cdot \sin(\theta)$. Le complément parfait du produit scalaire, qui valait $\|u\| \cdot \|v\| \cdot \cos(\theta)$.</li>
+        <li><strong>Anticommutatif</strong> : $u \times v = -(v \times u)$. L'ordre des opérandes change le signe.</li>
+        <li><strong>Test de colinéarité</strong> : $u \times v = 0$ si et seulement si les deux vecteurs sont alignés.</li>
+        <li><strong>Spécifique à la 3D</strong> : en 2D un scalaire suffit, en 4D et au-delà l'objet naturel devient autre chose. Le produit vectoriel est une coïncidence dimensionnelle.</li>
+      </ol>
+
+      <p>
+        Avec le produit scalaire et le produit vectoriel, on possède maintenant les deux outils élémentaires pour parler de la géométrie d'une paire de vecteurs : l'alignement (cosinus) et l'écart (sinus, aire). Le chapitre suivant ouvre une nouvelle perspective : au lieu de mesurer la géométrie d'objets fixes, on va apprendre à <em>déformer l'espace lui-même</em>. C'est là qu'on rencontrera enfin les matrices, et qu'on découvrira qu'elles ne sont rien d'autre que la manière compacte d'encoder ces déformations.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="03-cosinus.html">
+          <span class="nav-label">Précédent</span>
+          <span class="nav-title">← §3 — Cosinus</span>
+        </a>
+        <a class="next" href="../ch3/01-transformation.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">§1 — Qu'est-ce qu'une transformation linéaire →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le problème : 3D dans un écran — Chapitre 5 · §1</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+  <style>
+    /* Petite illustration SVG en pleine largeur, neutre */
+    .illu {
+      display: block;
+      margin: 2rem auto;
+      max-width: 100%;
+    }
+    .illu-caption {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: #6b6b6b;
+      text-align: center;
+      margin-top: -1rem;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html" class="current">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 5 · §1</div>
+      <h1>Le problème : 3D dans un écran</h1>
+      <p class="lede">
+        On va construire, dans cette série, la matrice 4×4 qui transforme un monde 3D en une image sur un écran 2D. Mais avant le moindre chiffre, il faut comprendre <em>pourquoi</em> cette matrice doit exister, et pourquoi un simple "on jette la profondeur" ne marche pas. C'est l'enjeu de cette première étape.
+      </p>
+
+      <p>
+        Imagine que tu ouvres ton moteur 3D préféré. Tu y poses un cube, une théière, un personnage. Chaque sommet de chaque objet est trois nombres : $(x, y, z)$. Ces nombres décrivent une position dans un espace volumineux, où la profondeur existe pleinement. Maintenant regarde ton écran. C'est une grille de pixels, plate, en deux dimensions. Chaque pixel est repéré par deux nombres : $(u, v)$. Quelque part entre les deux mondes, il faut une fonction. Quelque chose qui prend un triplet 3D et rend un couple 2D.
+      </p>
+
+      <p>
+        Cette fonction n'est pas accessoire. C'est elle qui décide, pour chaque point du monde, où il va dessiner du pixel. C'est elle qui fait qu'un cube ressemble à un cube et pas à une bouillie. C'est elle qui fait que les jeux vidéo existent, que Blender existe, que ton GPS te montre des bâtiments en 3D. Et c'est cette fonction qu'on va, page après page, déplier jusqu'à obtenir la matrice de projection.
+      </p>
+
+      <h2>Une dimension de trop</h2>
+
+      <p>
+        Le constat de départ est arithmétique avant d'être géométrique : on a trois nombres en entrée, on en veut deux en sortie. Il en manque une. Ou plus exactement, il y en a une en trop. Comment se débarrasser de $z$ ?
+      </p>
+
+      <p>
+        La réponse la plus naïve imaginable est aussi la plus tentante : <em>on l'ignore</em>. On garde $x$ pour les abscisses du pixel, on garde $y$ pour les ordonnées, et on jette $z$ à la poubelle. Une seule ligne de code suffirait :
+      </p>
+
+      $$\begin{aligned} u &= x \\ v &= y \end{aligned}$$
+
+      <p>
+        Cette transformation existe pour de vrai. Elle a un nom : la <strong>projection orthographique</strong>. Et elle n'est pas une fausse-piste : c'est <em>la</em> bonne projection à utiliser dans tout un pan du graphisme technique, où la perspective serait au contraire nuisible.
+      </p>
+
+      <div class="gallery">
+
+        <div class="gallery-card">
+          <div class="label">Plan d'architecte</div>
+          <svg viewBox="0 0 130 80" width="130" height="80" style="margin: 0.3rem 0; display:block;" aria-hidden="true">
+            <rect x="6" y="6" width="118" height="68" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="2"/>
+            <line x1="55" y1="6" x2="55" y2="45" stroke="#3a3a3a" stroke-width="2"/>
+            <line x1="55" y1="45" x2="124" y2="45" stroke="#3a3a3a" stroke-width="2"/>
+            <line x1="90" y1="45" x2="90" y2="74" stroke="#3a3a3a" stroke-width="2"/>
+            <path d="M 55 28 A 12 12 0 0 1 67 40" fill="none" stroke="#b8431f" stroke-width="1"/>
+            <path d="M 70 45 A 10 10 0 0 1 80 55" fill="none" stroke="#b8431f" stroke-width="1"/>
+            <text x="28" y="28" font-size="7" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">salon</text>
+            <text x="90" y="28" font-size="7" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">cuisine</text>
+            <text x="72" y="63" font-size="7" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">chambre</text>
+            <text x="107" y="63" font-size="7" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">bain</text>
+          </svg>
+          <div style="color: var(--muted); font-size: 11px;">vue dessus, mesures exactes</div>
+        </div>
+
+        <div class="gallery-card">
+          <div class="label">Jeu isométrique</div>
+          <svg viewBox="0 0 130 80" width="130" height="80" style="margin: 0.3rem 0; display:block;" aria-hidden="true">
+            <polygon points="65,15 100,32 65,49 30,32" fill="#e2c590" stroke="#3a3a3a" stroke-width="1.3"/>
+            <polygon points="65,49 30,32 30,52 65,69" fill="#b8431f" stroke="#3a3a3a" stroke-width="1.3"/>
+            <polygon points="65,49 100,32 100,52 65,69" fill="#7a2a10" stroke="#3a3a3a" stroke-width="1.3"/>
+            <rect x="55" y="38" width="8" height="8" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="0.7"/>
+          </svg>
+          <div style="color: var(--muted); font-size: 11px;">tiles toutes identiques</div>
+        </div>
+
+        <div class="gallery-card">
+          <div class="label">Dessin technique</div>
+          <svg viewBox="0 0 130 80" width="130" height="80" style="margin: 0.3rem 0; display:block;" aria-hidden="true">
+            <rect x="35" y="8" width="40" height="20" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+            <text x="55" y="20" font-size="6" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">dessus</text>
+            <rect x="35" y="38" width="40" height="32" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+            <text x="55" y="56" font-size="6" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">face</text>
+            <rect x="85" y="38" width="22" height="32" fill="none" stroke="#3a3a3a" stroke-width="1.3"/>
+            <text x="96" y="56" font-size="6" font-family="Inter, sans-serif" text-anchor="middle" fill="#3a3a3a">cote</text>
+            <line x1="35" y1="32" x2="35" y2="38" stroke="#b8431f" stroke-width="0.5" stroke-dasharray="2,2"/>
+            <line x1="75" y1="32" x2="75" y2="38" stroke="#b8431f" stroke-width="0.5" stroke-dasharray="2,2"/>
+            <line x1="75" y1="54" x2="85" y2="54" stroke="#b8431f" stroke-width="0.5" stroke-dasharray="2,2"/>
+          </svg>
+          <div style="color: var(--muted); font-size: 11px;">trois vues, cotation précise</div>
+        </div>
+
+        <div class="gallery-card">
+          <div class="label">Notice de montage</div>
+          <svg viewBox="0 0 130 80" width="130" height="80" style="margin: 0.3rem 0; display:block;" aria-hidden="true">
+            <rect x="10" y="25" width="38" height="40" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="1.5"/>
+            <circle cx="19" cy="35" r="1.6" fill="#3a3a3a"/>
+            <circle cx="39" cy="35" r="1.6" fill="#3a3a3a"/>
+            <circle cx="19" cy="55" r="1.6" fill="#3a3a3a"/>
+            <circle cx="39" cy="55" r="1.6" fill="#3a3a3a"/>
+            <line x1="55" y1="45" x2="73" y2="45" stroke="#3a3a3a" stroke-width="1.3"/>
+            <polygon points="73,40 83,45 73,50" fill="#3a3a3a"/>
+            <rect x="90" y="36" width="32" height="20" fill="#fcfaf4" stroke="#3a3a3a" stroke-width="1.5"/>
+            <line x1="95" y1="36" x2="95" y2="18" stroke="#b8431f" stroke-width="1.3"/>
+            <line x1="92" y1="20" x2="98" y2="20" stroke="#b8431f" stroke-width="1.3"/>
+            <line x1="92" y1="22" x2="98" y2="22" stroke="#b8431f" stroke-width="1.3"/>
+          </svg>
+          <div style="color: var(--muted); font-size: 11px;">pièces à la bonne taille</div>
+        </div>
+
+      </div>
+
+      <p>
+        Le point commun de tous ces exemples, c'est que la profondeur n'apporte aucune information utile : on veut <em>mesurer, comparer, identifier</em>. La perspective déformerait les longueurs et tordrait les angles, ce qui compliquerait la lecture. La projection orthographique préserve les distances et les angles dans le plan, exactement ce dont ces métiers ont besoin.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangente</span>
+        <p>
+          La même règle explique pourquoi <em>Civilization</em>, <em>Diablo</em>, <em>Stardew Valley</em> ou <em>Habbo Hotel</em> sont en vue isométrique : le joueur doit voir clairement la grille du terrain, et chaque tile doit faire visuellement la même taille — sinon les unités du fond paraîtraient plus petites que celles du devant, ce qui serait gérable mais affreusement pénible à designer. Idem pour la fonction "vue dessus" de Google Maps, ou le mode <em>orthophoto</em> des SIG : impossible de lire les distances réelles sur une photo prise avec une vraie perspective, on remappe en orthographique.
+        </p>
+      </aside>
+
+      <p>
+        Mais dès qu'on quitte le terrain technique pour la simulation d'un regard humain, la projection orthographique nous trahit. Pour voir pourquoi, fais l'expérience mentale suivante. Tu places deux cubes identiques, exactement les mêmes dimensions, dans le monde. L'un a une profondeur $z = 5$, juste devant ta caméra. L'autre est très loin, à $z = 500$, presque à perte de vue. Tu appliques la projection orthographique. Résultat : sur ton écran, les deux cubes apparaissent <strong>strictement de la même taille</strong>. Pour la projection orthographique, la distance n'existe pas. Elle n'est pas codée, elle n'est pas représentée, elle n'a aucun effet visuel.
+      </p>
+
+      <svg class="illu" viewBox="0 0 600 220" xmlns="http://www.w3.org/2000/svg">
+        <!-- Panneau gauche : ortho -->
+        <text x="100" y="20" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" text-anchor="middle">projection orthographique</text>
+        <!-- Cube pres -->
+        <rect x="40" y="60" width="50" height="50" fill="none" stroke="#b8431f" stroke-width="2"/>
+        <text x="65" y="135" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle">z=5</text>
+        <!-- Cube loin -->
+        <rect x="120" y="60" width="50" height="50" fill="none" stroke="#b8431f" stroke-width="2"/>
+        <text x="145" y="135" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle">z=500</text>
+        <text x="100" y="170" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle" font-style="italic">memes tailles a l'ecran</text>
+
+        <!-- Separateur -->
+        <line x1="300" y1="40" x2="300" y2="180" stroke="#d8d2c2" stroke-width="1"/>
+
+        <!-- Panneau droite : perspective -->
+        <text x="450" y="20" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" text-anchor="middle">projection perspective</text>
+        <!-- Cube pres -->
+        <rect x="370" y="50" width="70" height="70" fill="none" stroke="#b8431f" stroke-width="2"/>
+        <text x="405" y="135" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle">z=5</text>
+        <!-- Cube loin -->
+        <rect x="490" y="80" width="20" height="20" fill="none" stroke="#b8431f" stroke-width="2"/>
+        <text x="500" y="135" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle">z=500</text>
+        <text x="450" y="170" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b" text-anchor="middle" font-style="italic">l'eloigne retrecit</text>
+      </svg>
+      <p class="illu-caption">À gauche : la profondeur disparaît. À droite : ce que veulent les yeux.</p>
+
+      <p>
+        Repose-toi cinq secondes sur cette image. C'est tout l'enjeu. Tu as devant toi la différence entre <em>une projection mathématique honnête mais inutilisable pour un rendu réaliste</em> et <em>la projection qui imite l'œil humain</em>.
+      </p>
+
+      <h2>Ce que veulent les yeux</h2>
+
+      <p>
+        Quand tu regardes deux objets de même taille réelle, l'un proche et l'autre lointain, ta rétine ne reçoit pas la même image des deux. Plus l'objet est loin, plus l'angle qu'il occupe dans ton champ de vision est petit, et plus son image sur ta rétine est petite. C'est ce phénomène-là, et lui seul, qu'on veut reproduire pour générer une image perceptible comme "3D" sur un écran plat.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Notre œil ne fait jamais de projection orthographique. Si on veut tromper l'œil avec un écran plat, il faut imiter ce qu'il fait : rétrécir avec la distance.</strong>
+      </p>
+
+      <p>
+        La projection qui réalise cela s'appelle <strong>projection perspective</strong>. Son comportement est facile à décrire en mots : la coordonnée $z$ du point doit influencer le résultat. Plus elle est grande, plus le point doit être ramené près du centre de l'écran. La grandeur en sortie doit dépendre de la profondeur, et pas seulement de $x$ et $y$.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangente</span>
+        <p>
+          La taille n'est qu'un des indices de profondeur que notre cerveau utilise. Il y en a d'autres : la stéréoscopie (deux yeux donnent deux images légèrement décalées), la parallaxe (les objets proches bougent plus vite que les lointains quand on bouge la tête), le focus, l'ombre, la perspective atmosphérique (les montagnes lointaines virent au bleu). Un écran plat ne peut reproduire ni la stéréoscopie (sauf casque VR), ni le focus, ni la parallaxe (sauf tracking de tête). Il lui reste la taille, l'ombre, et la perspective linéaire. La <em>taille en fonction de la distance</em> est la trompe-l'œil le moins cher et le plus efficace. C'est pour cela qu'elle a été inventée à la Renaissance, et pour cela qu'elle est au cœur de tous les rendus 3D modernes.
+        </p>
+      </aside>
+
+      <h2>Ce qu'on cherche, en termes précis</h2>
+
+      <p>
+        Reformulons le but de toute cette série de pages, maintenant qu'on a posé le décor.
+      </p>
+
+      <p>
+        On cherche une fonction qui prend en entrée un point 3D $(x, y, z)$ et qui rend en sortie un point 2D $(u, v)$, tel que :
+      </p>
+
+      <ul>
+        <li>Quand le point est proche de la caméra (petit $z$), il occupe une grande place à l'écran ;</li>
+        <li>Quand le point est lointain (grand $z$), il occupe une petite place ;</li>
+        <li>Les points strictement en face de la caméra tombent au centre de l'écran ;</li>
+        <li>Le résultat doit tenir dans le rectangle visible de l'écran (pas dans tout le plan réel infini).</li>
+      </ul>
+
+      <p>
+        Si tu y regardes bien, ces quatre exigences ressemblent furieusement à une description de ce qu'un appareil photo fait. Un objectif transforme un monde 3D infini en une image 2D bornée, et plus c'est loin, plus c'est petit dans le viseur. La projection perspective est la modélisation mathématique de ce phénomène physique.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>La suite</h2>
+
+      <p>
+        On a maintenant une cible claire : trouver la formule qui réalise la projection perspective. Dans l'étape suivante, on va l'obtenir géométriquement, en seulement deux triangles. La formule sera embarrassement simple — elle tient en une ligne — et elle nous laissera face à un nouveau problème qui constituera le sel de tout cet exercice : <em>cette formule n'est pas linéaire</em>. C'est cela qui va nous forcer à inventer (ou plutôt réinventer) les coordonnées homogènes et la matrice 4×4.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="index.html">
+          <span class="nav-label">← Sommaire</span>
+          <span class="nav-title">Chapitre 5</span>
+        </a>
+        <a class="next" href="02-triangles-semblables.html">
+          <span class="nav-label">Étape 02 →</span>
+          <span class="nav-title">Triangles semblables</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

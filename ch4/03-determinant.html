@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le déterminant — Chapitre 4 §3</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html" class="current">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 4 · §3</div>
+      <h1>Le déterminant</h1>
+      <p class="lede">
+        Il existe, attaché à toute matrice carrée, un seul petit nombre — un scalaire, rien de plus — qui en dit plus sur elle que toutes ses entrées prises individuellement. Il dit si la transformation étire ou rétrécit l'espace, et de combien. Il dit si elle préserve le sens d'orientation ou le retourne comme un miroir. Il dit, surtout, si on peut <em>l'inverser</em> ou si elle est définitivement irréversible. Ce nombre s'appelle le <strong>déterminant</strong>, et c'est sans doute la statistique la plus dense de toute l'algèbre linéaire.
+      </p>
+
+      <p>
+        On va aborder le déterminant comme on a abordé la matrice elle-même au chapitre 3 : par la géométrie d'abord, par la formule ensuite. Pris comme une recette de calcul, c'est un rituel obscur de diagonales et de signes. Pris comme une grandeur géométrique, il devient lumineux : juste le facteur d'étirement des volumes, accompagné d'un signe.
+      </p>
+
+      <h2>Le volume signé d'un parallélépipède</h2>
+
+      <p>
+        Repartons de l'image-clé du chapitre 3. Une matrice carrée de taille $n \times n$ est une transformation linéaire, et ses colonnes disent où vont les vecteurs de base : la première colonne est l'arrivée de $i$, la deuxième celle de $j$, et ainsi de suite. Avant transformation, ces vecteurs de base délimitaient un petit cube unité — un carré en 2D, un cube en 3D, un objet bien défini même en dimensions supérieures qu'on ne sait plus dessiner.
+      </p>
+
+      <p>
+        Après transformation, ce cube devient l'objet délimité par les colonnes de la matrice. En 2D, un parallélogramme. En 3D, un <strong>parallélépipède</strong> — c'est le nom technique d'une boîte dont les faces opposées sont parallèles, mais dont les coins ne sont pas forcément droits. En dimension $n$, on dit hyperparallélépipède, ou simplement parallélépipède par extension : la boîte généralisée délimitée par $n$ vecteurs.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Le déterminant, c'est le volume — signé — de cette boîte.</strong>
+      </p>
+
+      <p>
+        En 2D, c'est l'aire du parallélogramme formé par les deux colonnes. En 3D, c'est le volume du parallélépipède formé par les trois colonnes. En dimension supérieure, c'est l'hypervolume — un nombre qui généralise la notion d'aire et de volume aux espaces qu'on ne peut plus dessiner. Mais ce nombre est <em>signé</em>, et c'est cette subtilité qui le rend si parlant.
+      </p>
+
+      <h2>Le signe : préserve-t-on l'orientation ?</h2>
+
+      <p>
+        Que veut dire « volume signé » ? L'idée, c'est qu'un volume peut être positif ou négatif selon que la transformation conserve le <strong>sens</strong> de l'espace ou le retourne. L'<em>orientation</em>, c'est la manière dont les vecteurs de base sont disposés les uns par rapport aux autres. En 2D, c'est l'ordre dans lequel on tourne pour aller de $i$ à $j$ — sens trigonométrique direct (anti-horaire) ou sens horaire. En 3D, c'est la différence entre la règle de la main droite et celle de la main gauche. Trois cas, trois signaux clairs.
+      </p>
+
+      <p>
+        <strong>$\det(A) > 0$.</strong> La transformation déforme l'espace — l'étire, le tord, le tourne — mais elle <em>préserve</em> le sens. Une feuille de papier qu'on plie ou qu'on agrandit sans la retourner.
+      </p>
+
+      <p>
+        <strong>$\det(A) < 0$.</strong> La transformation <em>inverse</em> l'orientation. Elle contient un effet miroir. Le quadrillage est retourné comme une page lue à l'envers. Volume absolu identique, mais signe négatif.
+      </p>
+
+      <p>
+        <strong>$\det(A) = 0$.</strong> Le cas le plus important. Le volume est nul : la boîte a été <em>aplatie</em>. En 2D, le parallélogramme se dégrade en un segment de droite (aire nulle). En 3D, le parallélépipède s'aplatit sur un plan, voire se réduit à une droite ou à un point. La transformation a perdu de l'information, et on ne peut plus revenir en arrière.
+      </p>
+
+      <p class="pull-quote">
+        <strong>$\det(A) = 0 \Leftrightarrow A$ n'est pas inversible $\Leftrightarrow$ les colonnes sont linéairement dépendantes.</strong>
+      </p>
+
+      <p>
+        Cette triple équivalence est le cœur de tout le chapitre. Chacune des trois formulations dit la même chose dans un langage différent. Numériquement, le déterminant vaut zéro. Algébriquement, il n'existe pas de transformation réciproque qui annule celle-ci — pas d'inverse. Géométriquement, les colonnes ne sont pas vraiment libres les unes des autres : au moins une est combinaison des autres, ce qui signifie qu'elles n'arrivent pas à remplir toutes les dimensions disponibles. L'image de la transformation est plus petite que l'espace de départ.
+      </p>
+
+      <h2>Pourquoi ce n'est pas juste le produit de la diagonale</h2>
+
+      <p>
+        À ce stade, on pourrait se dire : « le déterminant mesure des volumes, soit, mais il y a sûrement une formule simple ». Une tentation naturelle, c'est de croire que ce volume se lit directement sur la diagonale principale. Après tout, la diagonale contient des coefficients qui ressemblent à des facteurs d'étirement.
+      </p>
+
+      <p>
+        L'intuition n'est pas tout à fait fausse. Pour une <strong>matrice triangulaire</strong> — c'est-à-dire une matrice où tous les coefficients en dessous (ou tous au-dessus) de la diagonale sont nuls — le déterminant est exactement le produit des coefficients diagonaux. Pour cette famille là, la diagonale dit tout. Mais la règle <em>ne se généralise pas</em> aux matrices ordinaires. Voici un contre-exemple minuscule qui suffit à casser l'illusion :
+      </p>
+
+      $$A = \begin{pmatrix} 1 & 100 \\ 2 & 1 \end{pmatrix}$$
+
+      <p>
+        La diagonale est $1$ et $1$ ; leur produit vaut $1$. Pourtant, en 2D, on connaît la formule directe : $\det(A) = 1 \times 1 - 100 \times 2 = -199$. Le déterminant réel est négatif, presque deux cents fois plus grand en valeur absolue que ce que la diagonale laissait deviner. Les coefficients hors-diagonale comptent énormément. Géométriquement, le coefficient $100$ tire la deuxième colonne loin de l'axe horizontal, ce qui aplatit et inverse le parallélogramme. La diagonale, prise isolément, ne voit rien de cette déformation. Conclusion : si on veut un calcul honnête du déterminant, il faut d'abord <em>transformer</em> la matrice en une forme où la règle « produit diagonal » devient légitime — c'est-à-dire en une forme triangulaire. C'est tout l'intérêt de la connexion avec l'algorithme de Gauss.
+      </p>
+
+      <h2>Trois opérations, trois effets distincts sur le déterminant</h2>
+
+      <p>
+        On a vu à la section précédente que trois opérations élémentaires sur les lignes — échange, mise à l'échelle, combinaison — suffisent à simplifier n'importe quelle matrice. Chacune a un effet bien précis sur le déterminant, et chaque effet a une interprétation géométrique limpide.
+      </p>
+
+      <p>
+        <strong>Combinaison : ajouter à une ligne un multiple d'une autre ligne.</strong> Géométriquement, c'est un <em>cisaillement</em> (shear) : on penche un côté du parallélogramme parallèlement à un autre côté. Imagine une carte à jouer qu'on incline sur la table sans rien tasser ni étirer. Même base, même hauteur, même aire. Le déterminant n'est <em>pas changé</em>. C'est l'opération la plus bénigne des trois, et celle qui permet de créer des zéros dans la matrice sans toucher au déterminant.
+      </p>
+
+      <p>
+        <strong>Échange : permuter deux lignes.</strong> Échanger deux vecteurs de la base revient à faire un miroir : on inverse l'orientation. Le volume absolu reste pareil, mais le signe bascule. Le déterminant est multiplié par $-1$ — une fois, deux fois, trois fois, chaque échange retourne le signe.
+      </p>
+
+      <p>
+        <strong>Mise à l'échelle : multiplier une ligne par un scalaire $k$.</strong> Étirer un seul côté du parallélogramme d'un facteur $k$ multiplie son aire — donc le déterminant — par exactement $k$.
+      </p>
+
+      <p>
+        En tableau, qui sera la clé de l'algorithme :
+      </p>
+
+      <table style="border-collapse: collapse; width: 100%; max-width: 580px; margin: 1.5rem auto; font-family: 'Iowan Old Style', Georgia, serif; font-size: 0.94rem; background: var(--bg-soft); border-left: 3px solid var(--accent-2); border-radius: 0 4px 4px 0;">
+        <thead>
+          <tr style="background: rgba(184, 67, 31, 0.08);">
+            <th style="padding: 0.55rem 0.9rem; text-align: left; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--ink); font-family: 'Inter', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Opération</th>
+            <th style="padding: 0.55rem 0.9rem; text-align: left; border-bottom: 1px solid var(--rule); font-weight: 600; color: var(--ink); font-family: 'Inter', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em;">Effet sur det</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink);"><strong style="color: var(--accent);">combinaison</strong> &nbsp; L<sub>i</sub> ← L<sub>i</sub> + k · L<sub>j</sub></td>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-soft); font-style: italic;">inchangé</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink);"><strong style="color: var(--accent);">échange</strong> &nbsp; L<sub>i</sub> ↔ L<sub>j</sub></td>
+            <td style="padding: 0.5rem 0.9rem; border-bottom: 1px solid var(--rule); color: var(--ink-soft);">× (−1)</td>
+          </tr>
+          <tr>
+            <td style="padding: 0.5rem 0.9rem; color: var(--ink);"><strong style="color: var(--accent);">scaling</strong> &nbsp; L<sub>i</sub> ← k · L<sub>i</sub></td>
+            <td style="padding: 0.5rem 0.9rem; color: var(--ink-soft);">× k</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        L'observation cruciale est que la combinaison ne modifie <em>rien</em>. C'est ce qui va permettre, dans un instant, de calculer le déterminant presque gratuitement : essentiel du travail avec des combinaisons (gratuites), comptage des échanges (faciles à suivre), et on s'arrange pour se passer du scaling.
+      </p>
+
+      <h2>Pourquoi Sarrus ne survit pas au-delà de trois dimensions</h2>
+
+      <p>
+        Si tu as déjà croisé le déterminant à l'école, c'était probablement sous la forme de la <strong>règle de Sarrus</strong>, ce truc visuel pour les matrices $3 \times 3$ : somme des trois diagonales descendantes moins somme des trois diagonales montantes. C'est joli, c'est efficace, et c'est <em>spécifique à la dimension 3</em>. La règle ne se généralise pas en dimension 4 ni au-delà. C'est un piège classique : on tente d'étendre la recette « par diagonale » à une matrice $4 \times 4$, et on obtient un résultat faux.
+      </p>
+
+      <p>
+        Pourquoi ? Il existe une formule générale qui donne le déterminant d'une matrice quelconque, la formule de <strong>Leibniz</strong>. Elle exprime le déterminant comme une somme de termes, où chaque terme est un produit de coefficients pris un dans chaque ligne et un dans chaque colonne, multiplié par un signe $+$ ou $-$. Le nombre de termes est $n!$ (factorielle de $n$) : deux pour $n = 2$, six pour $n = 3$, vingt-quatre pour $n = 4$, environ trois millions et demi pour $n = 10$. La factorielle explose.
+      </p>
+
+      <p>
+        En dimension 3, les six termes se regroupent visuellement en trois diagonales positives et trois négatives, ce qui produit la règle de Sarrus. Mais ce regroupement est une coïncidence propre à $n = 3$. En dimension 4, les vingt-quatre termes ne se rangent pas en huit diagonales : ils suivent une structure combinatoire beaucoup plus riche, qu'aucun pictogramme simple ne capture. C'est pour ça qu'on a besoin d'un algorithme, pas d'une formule par dessin.
+      </p>
+
+      <h2>L'algorithme : Gauss, mais en notant les échanges</h2>
+
+      <p>
+        On a maintenant tout pour décrire la méthode. L'idée suit la section précédente : on réduit la matrice à une forme <strong>triangulaire</strong> en éliminant les coefficients sous la diagonale, en utilisant les opérations élémentaires. Une fois la matrice triangulaire, le déterminant est le produit des coefficients diagonaux. Le tour est presque joué.
+      </p>
+
+      <p>
+        Il y a juste un petit suivi à faire. Comme chaque <em>échange</em> de lignes multiplie le déterminant par $-1$, on tient un compteur, qu'on appelle $f$ (comme « facteur »). Il commence à $+1$. Chaque fois qu'on échange deux lignes pendant l'élimination, on le bascule en le multipliant par $-1$. À la fin :
+      </p>
+
+      $$\det(A) = f \times (\text{produit des coefficients sur la diagonale finale})$$
+
+      <p>
+        Simplification réconfortante. Les <em>combinaisons</em> de lignes ne touchent pas au déterminant, donc on peut faire toutes les éliminations qu'on veut, gratuitement. On n'a pas besoin de mettre les pivots à $1$ — cette étape de normalisation est une convention d'esthétique, sans incidence sur la mécanique du calcul. On peut donc <em>se passer</em> de la mise à l'échelle. L'algorithme du déterminant n'utilise que deux des trois opérations élémentaires : les combinaisons (gratuites) et les échanges (notés dans $f$). Plus simple, plus rapide.
+      </p>
+
+      <h2>Le cas où tout s'effondre</h2>
+
+      <p>
+        Au cours de l'élimination, il peut arriver qu'on se retrouve devant une colonne où tous les coefficients restants sont nuls — on cherche un pivot non nul et on n'en trouve aucun. C'est la trace concrète d'une dépendance linéaire : une colonne est combinaison des précédentes, donc elle n'apporte aucune information, donc la matrice écrase une dimension.
+      </p>
+
+      <p>
+        Quand ce cas se produit, on n'a même pas besoin de continuer le calcul : $\det(A) = 0$. Pas de pivot ⇒ matrice singulière ⇒ déterminant nul ⇒ aucune inverse. Tout se tient.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Que signifie det(A) = 0, exactement ?</span>
+        <p>
+          Cette question est tellement centrale qu'elle mérite un encart. La réponse a plusieurs étages.
+        </p>
+        <p>
+          <strong>Algébriquement</strong> : les colonnes de $A$ sont linéairement dépendantes — au moins l'une s'écrit comme combinaison des autres, et n'apporte aucune dimension supplémentaire.
+        </p>
+        <p>
+          <strong>Géométriquement</strong> : la transformation écrase au moins une dimension. Tout le plan se retrouve sur une droite (en 2D), tout l'espace sur un plan, une droite ou un point (en 3D). La boîte unité est aplatie, son volume tombe à zéro.
+        </p>
+        <p>
+          <strong>Sur le plan de la réversibilité</strong> : la transformation n'est pas inversible. On ne peut pas revenir en arrière, parce que de l'information a été perdue. Plusieurs points de départ distincts arrivent au même point d'arrivée — connaître l'arrivée ne permet plus de retrouver le départ. Il n'y a pas de matrice $A^{-1}$.
+        </p>
+        <p>
+          En une phrase : <em>$\det(A) = 0$ est l'échec total de la matrice à remplir son rôle de transformation réversible</em>.
+        </p>
+      </aside>
+
+      <h2>Un exemple chiffré du début à la fin</h2>
+
+      <p>
+        Mettons la procédure à l'épreuve sur une matrice $2 \times 2$ simple :
+      </p>
+
+      $$A = \begin{pmatrix} 2 & 4 \\ 1 & 5 \end{pmatrix}$$
+
+      <p>
+        On peut déjà calculer la vérité par la formule directe en dimension 2 : $\det(A) = 2 \times 5 - 4 \times 1 = 6$. L'algorithme doit retrouver ce nombre.
+      </p>
+
+      <p>
+        On commence par la première colonne. Le coefficient en haut à gauche, $2$, est non nul : c'est notre pivot. Pas besoin d'échanger, donc $f$ reste à $+1$. On veut un zéro sous le pivot, donc on remplace la deuxième ligne par elle-même moins $1/2$ fois la première :
+      </p>
+
+      $$L_2 \leftarrow L_2 - \tfrac{1}{2} \cdot L_1, \qquad \begin{pmatrix} 2 & 4 \\ 1 & 5 \end{pmatrix} \to \begin{pmatrix} 2 & 4 \\ 0 & 3 \end{pmatrix}$$
+
+      <p>
+        Cette opération est une combinaison ⇒ le déterminant n'a pas bougé. La matrice est maintenant triangulaire (un zéro sous le pivot, plus rien à éliminer). Produit des coefficients diagonaux : $2 \times 3 = 6$. On multiplie par $f = +1$. Résultat : $\det(A) = 6$. Ça colle avec le calcul direct.
+      </p>
+
+      <p>
+        En coulisses, l'algorithme a évité la mise à l'échelle (pas besoin), évité les échanges (le pivot était déjà là), et s'est contenté d'une combinaison gratuite pour produire le zéro. Sur une matrice plus grande, le scénario est le même, répété colonne après colonne, avec éventuellement quelques échanges en chemin pour amener un pivot non nul à la bonne place.
+      </p>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Le déterminant d'une matrice carrée est un seul nombre, mais ce nombre contient énormément d'information. Géométriquement, il mesure le volume signé de la boîte dans laquelle la transformation envoie le cube unité. Son signe dit si l'orientation est préservée ou inversée. Sa nullité est l'échec total : la matrice écrase au moins une dimension, ses colonnes sont dépendantes, et il n'existe aucune transformation réciproque.
+      </p>
+
+      <p>
+        Pour le <em>calculer</em>, la diagonale ne suffit pas — sauf pour les matrices triangulaires. La règle de Sarrus, propre à la dimension 3, ne se généralise pas plus loin. L'algorithme universel passe par l'élimination de Gauss : on rend la matrice triangulaire en utilisant des combinaisons de lignes (gratuites) et des échanges (notés dans un facteur de signe $f$), puis on lit le déterminant comme $f$ fois le produit des coefficients sur la diagonale finale. Si une colonne reste sans pivot non nul, on s'arrête net : la matrice est singulière, $\det(A) = 0$.
+      </p>
+
+      <p>
+        Garde en tête la triple équivalence — déterminant nul, non-inversibilité, dépendance linéaire des colonnes. C'est elle qui justifie la prochaine section, où on va construire concrètement l'inverse d'une matrice et parler du <em>rang</em>, c'est-à-dire la « vraie » dimension de l'espace image après transformation.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="02-gauss.html">
+          <span class="nav-label">Précédent</span>
+          <span class="nav-title">← §2 — Algorithme de Gauss</span>
+        </a>
+        <a class="next" href="04-inverse-rang.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">§4 — Inverse et rang →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

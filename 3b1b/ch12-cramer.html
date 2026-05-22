@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ep 12 — Regle de Cramer</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\(', right: '\)', display: false},
+        {left: '\[', right: '\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html" class="current">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Essence of Linear Algebra · Episode 12</div>
+      <h1>Regle de Cramer, expliquee geometriquement</h1>
+      <a class="video-link" href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Voir la video originale (3blue1brown)</a>
+
+      <p class="lede">
+        La regle de Cramer est une formule explicite pour resoudre <code>A·x = b</code>. Elle n'est pas la facon la plus rapide de le faire (Gauss l'est, en general), mais elle expose une beaute geometrique sous-jacente : <em>chaque coordonnee de la solution est un ratio d'aires (ou de volumes) signes</em>.
+      </p>
+
+      <p>
+        On part du probleme : <code>A·x = b</code>, avec <code>A</code> inversible (donc <code>det(A) ≠ 0</code>). On cherche <code>x</code>, dont on note les coordonnees <code>x₁, x₂</code> en 2D ou <code>x₁, x₂, x₃</code> en 3D.
+      </p>
+
+      <h2>L'astuce geometrique : aires signees</h2>
+
+      <p>
+        En 2D, fixe une matrice <code>A</code> et un vecteur inconnu <code>x = [x₁, x₂]</code>. Considere le parallelogramme forme par <code>i&#770;</code> et <code>x</code> — c'est-a-dire entre les colonnes <code>[1, 0]</code> et <code>[x₁, x₂]</code> de la matrice <code>[[1, x₁], [0, x₂]]</code>. Son aire vaut <code>x₂</code> (c'est juste le determinant : <code>1·x₂ - 0·x₁ = x₂</code>).
+      </p>
+
+      <p>
+        Geometrie magique : <strong><code>x₂</code> est l'aire signee du parallelogramme forme par <code>i&#770;</code> et <code>x</code></strong>. De meme, <code>x₁</code> est l'aire signee du parallelogramme forme par <code>x</code> et <code>j&#770;</code>.
+      </p>
+
+      <p>
+        Plus generalement, <code>xᵢ</code> est l'aire signee du parallelogramme dont les cotes sont <code>x</code> et les vecteurs de base, en gardant <code>x</code> a la place de la i-eme colonne de l'identite.
+      </p>
+
+      <h2>Appliquer A multiplie les aires par det(A)</h2>
+
+      <p>
+        Maintenant, appliquons la transformation <code>A</code>. Le vecteur <code>x</code> devient <code>A·x = b</code>. Le vecteur <code>i&#770;</code> devient <code>A·i&#770;</code>, qui est la premiere colonne de <code>A</code> (cf. ep 3). Le vecteur <code>j&#770;</code> devient la seconde colonne de <code>A</code>.
+      </p>
+
+      <p>
+        Le parallelogramme « <code>i&#770;</code> et <code>x</code> » devient un nouveau parallelogramme « premiere colonne de <code>A</code> et <code>b</code> », et son aire est multipliee par <code>det(A)</code>.
+      </p>
+
+      <p>
+        L'aire signee du parallelogramme transforme est donc <code>x₂ · det(A)</code>. Mais c'est aussi le determinant de la matrice qui a comme premieres colonnes la premiere colonne de <code>A</code> et <code>b</code> — c'est-a-dire <code>A</code> ou on a remplace sa <em>seconde</em> colonne par <code>b</code>. Appelons cette matrice <code>A₂</code>.
+      </p>
+
+      <div class="math">$$\begin{aligned} \det(A_2) &= x_2 \cdot \det(A) \\[4pt] \text{d'où} \quad x_2 &= \frac{\det(A_2)}{\det(A)} \end{aligned}$$</div>
+
+      <p>
+        Pareil pour <code>x₁</code> avec <code>A₁</code> (matrice <code>A</code> dont la premiere colonne est remplacee par <code>b</code>).
+      </p>
+
+      <h2>La regle generale</h2>
+
+      <p>
+        En generalisant a <code>n</code> dimensions : pour chaque coordonnee <code>xᵢ</code> de la solution,
+      </p>
+
+      <div class="math">$$x_i = \frac{\det(A_i)}{\det(A)}$$</div>
+
+      <p>
+        ou <code>Aᵢ</code> est <code>A</code> dans laquelle on a remplace la <em>i-eme colonne</em> par <code>b</code>.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Chaque coordonnee de la solution est un ratio de deux determinants — autrement dit un ratio de deux aires (ou volumes) signes.</strong> Le denominateur est l'aire totale, et le numerateur est l'aire « teintee » par la donnee <code>b</code>.
+      </p>
+
+      <h2>Pratique et limites</h2>
+
+      <p>
+        En pratique, la regle de Cramer est <em>tres</em> couteuse pour des systemes de taille moyenne ou grande : calculer un determinant <code>n × n</code> par cofacteurs coute O(n!), et meme par row-echelon, on ne battra pas l'elimination de Gauss qui resout directement le systeme en O(n³).
+      </p>
+
+      <p>
+        Mais Cramer reste utile :
+      </p>
+
+      <ul>
+        <li>Comme formule fermee dans certains theoremes (existence, regularite analytique en fonction des donnees).</li>
+        <li>Pour les systemes 2 × 2 ou 3 × 3 ou son cout est negligeable.</li>
+        <li>Comme exemple pedagogique de la richesse geometrique cachee dans une formule.</li>
+      </ul>
+
+      <aside class="tangent">
+        <span class="tangent-label">L'idee qui revient sans cesse</span>
+        <p>
+          A chaque coup, Grant utilise la meme strategie : trouver une <em>quantite invariante</em> sous transformation, et l'utiliser pour caracteriser l'objet. Ici, c'est l'aire signee. A l'episode 11, c'etait le volume signe. A l'episode 9, c'etait l'evaluation d'une fonction lineaire. Le determinant et le produit scalaire reviennent comme outils d'analyse, parce qu'ils mesurent exactement le genre de choses qui se transforment proprement.
+        </p>
+      </aside>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        La regle de Cramer dit que la <code>i</code>-eme coordonnee de la solution de <code>A·x = b</code> est <code>det(Aᵢ) / det(A)</code>, ou <code>Aᵢ</code> est <code>A</code> avec sa <code>i</code>-eme colonne remplacee par <code>b</code>.
+      </p>
+
+      <p>
+        Geometriquement : chaque coordonnee est un ratio d'aires (ou volumes) signes. L'aire au numerateur est celle ou la donnee <code>b</code> a remplace le vecteur de base correspondant.
+      </p>
+
+      <p>
+        En pratique on prefere l'elimination de Gauss, mais Cramer reste utile comme formule fermee et comme illustration de la beaute geometrique du systeme lineaire.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="ch11-cross-product-2.html">
+          <span class="nav-label">Precedent</span>
+          <span class="nav-title">← Ep 11 — Produit vectoriel II</span>
+        </a>
+        <a class="next" href="ch13-change-of-basis.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">Ep 13 — Changement de base →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

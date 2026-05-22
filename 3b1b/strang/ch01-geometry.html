@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strang L01 — La geometrie des equations lineaires</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}]});"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../../3b1b/strang/ch01-geometry.html" class="current">01 · Géométrie</a></li>
+          <li><a href="../../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">MIT 18.06 · Lecture 01</div>
+      <h1>La geometrie des equations lineaires</h1>
+      <a class="video-link" href="https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/resources/lecture-1-the-geometry-of-linear-equations/" target="_blank" rel="noopener">Voir la lecture originale (MIT OCW)</a>
+
+      <p class="lede">
+        Strang ouvre son cours avec une question d'apparence anodine — resoudre deux equations a deux inconnues — et la transforme en revelation. Le meme systeme se lit de deux manieres totalement differentes, et c'est la <em>seconde</em> qui ouvre l'algebre lineaire moderne.
+      </p>
+
+      <p>
+        Posons le systeme que Strang griffonne au tableau en ouverture, le plus simple possible :
+      </p>
+
+      <div class="math">
+        $$\begin{aligned} 2x - y &= 0 \\ -x + 2y &= 3 \end{aligned}$$
+      </div>
+
+      <p>
+        Deux equations, deux inconnues. On peut le resoudre a la main en trente secondes — la solution est $x = 1$, $y = 2$. Mais Strang n'a pas allume sa camera pour faire un exercice de troisieme. Il va nous montrer que ce systeme dit <em>trois choses differentes</em> selon la facon de le regarder, et que l'une de ces trois choses change durablement la maniere dont on pensera aux matrices.
+      </p>
+
+      <h2>Le row picture : intersection de droites</h2>
+
+      <p>
+        La premiere lecture est celle qu'on apprend a l'ecole. Chaque equation, prise isolement, decrit une droite dans le plan. La premiere, $2x - y = 0$, est la droite qui passe par l'origine avec pente $2$. La seconde, $-x + 2y = 3$, est la droite de pente $1/2$ qui passe par $(0, 3/2)$. <strong>Resoudre le systeme</strong>, dans cette lecture, c'est <strong>trouver le point ou les deux droites se croisent</strong>.
+      </p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 320 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Row picture - deux droites qui se croisent en (1,2)">
+          <defs>
+            <marker id="rpArr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#4d473d"/>
+            </marker>
+          </defs>
+          <g stroke="#ddd6c2" stroke-width="0.6">
+            <line x1="40" y1="40" x2="40" y2="240"/>
+            <line x1="80" y1="40" x2="80" y2="240"/>
+            <line x1="120" y1="40" x2="120" y2="240"/>
+            <line x1="160" y1="40" x2="160" y2="240"/>
+            <line x1="200" y1="40" x2="200" y2="240"/>
+            <line x1="240" y1="40" x2="240" y2="240"/>
+            <line x1="280" y1="40" x2="280" y2="240"/>
+            <line x1="40" y1="40" x2="280" y2="40"/>
+            <line x1="40" y1="80" x2="280" y2="80"/>
+            <line x1="40" y1="120" x2="280" y2="120"/>
+            <line x1="40" y1="160" x2="280" y2="160"/>
+            <line x1="40" y1="200" x2="280" y2="200"/>
+            <line x1="40" y1="240" x2="280" y2="240"/>
+          </g>
+          <g stroke="#4d473d" stroke-width="1.3">
+            <line x1="40" y1="240" x2="290" y2="240" marker-end="url(#rpArr)"/>
+            <line x1="40" y1="240" x2="40" y2="30" marker-end="url(#rpArr)"/>
+          </g>
+          <g font-family="Inter, sans-serif" font-size="10" fill="#8b8474">
+            <text x="40" y="258" text-anchor="middle">0</text>
+            <text x="80" y="258" text-anchor="middle">1</text>
+            <text x="120" y="258" text-anchor="middle">2</text>
+            <text x="160" y="258" text-anchor="middle">3</text>
+            <text x="32" y="244" text-anchor="end">0</text>
+            <text x="32" y="204" text-anchor="end">1</text>
+            <text x="32" y="164" text-anchor="end">2</text>
+            <text x="32" y="124" text-anchor="end">3</text>
+            <text x="32" y="84" text-anchor="end">4</text>
+            <text x="290" y="244" font-family="Inter, sans-serif" font-size="10" fill="#8b8474">x</text>
+            <text x="38" y="24" font-family="Inter, sans-serif" font-size="10" fill="#8b8474" text-anchor="end">y</text>
+          </g>
+          <line x1="40" y1="240" x2="160" y2="0" stroke="#b8431f" stroke-width="2"/>
+          <line x1="0" y1="200" x2="320" y2="40" stroke="#1e5a7a" stroke-width="2"/>
+          <circle cx="80" cy="160" r="4" fill="#6e2716"/>
+          <text x="90" y="156" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="14" fill="#6e2716">(1, 2)</text>
+          <text x="140" y="60" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="13" fill="#b8431f">2x − y = 0</text>
+          <text x="200" y="110" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="13" fill="#1e5a7a">−x + 2y = 3</text>
+        </svg>
+        <figcaption class="figure-caption">Le row picture du systeme. Deux droites, un point d'intersection : la solution $(x, y) = (1, 2)$.</figcaption>
+      </figure>
+
+      <p>
+        Cette image est intuitive et juste. Mais Strang la decrit comme <em>« the dumb picture »</em> — non par mepris, mais parce qu'elle ne montre pas la mecanique profonde de ce qui se passe. Elle dit <em>quelle</em> est la solution, pas <em>pourquoi</em>. Et surtout, elle se brise en grande dimension : a trois inconnues il faut imaginer trois plans qui s'intersectent, a quatre il faut imaginer quatre hyperplans dans $\mathbb{R}^4$, et l'intuition s'effondre.
+      </p>
+
+      <h2>Le column picture : combinaison de vecteurs</h2>
+
+      <p>
+        Strang reecrit alors le meme systeme sous une autre forme, et c'est ici que se joue la lecture qui changera tout. Au lieu de voir deux equations, il voit <strong>deux colonnes de coefficients</strong>, qui sont elles-memes des vecteurs.
+      </p>
+
+      <div class="math">
+        $$x \begin{bmatrix} 2 \\ -1 \end{bmatrix} + y \begin{bmatrix} -1 \\ 2 \end{bmatrix} = \begin{bmatrix} 0 \\ 3 \end{bmatrix}$$
+      </div>
+
+      <p>
+        Lue ainsi, l'equation ne demande plus « ou se croisent les droites ? ». Elle demande quelque chose de bien plus interessant : <strong>combien de fois prends-je le vecteur</strong> $(2, -1)$ <strong>et combien de fois le vecteur</strong> $(-1, 2)$ <strong>pour obtenir, en les ajoutant, le vecteur cible</strong> $(0, 3)$ ?
+      </p>
+
+      <p>
+        C'est exactement la notion de <em>combinaison lineaire</em>. Le membre de gauche n'est plus un systeme abstrait : c'est une <strong>combinaison lineaire des colonnes</strong>, et le membre de droite est le vecteur qu'on cherche a atteindre. Resoudre le systeme, c'est trouver les bons coefficients.
+      </p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Column picture - combinaison de deux colonnes vers (0,3)">
+          <defs>
+            <marker id="cpU" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#b8431f"/>
+            </marker>
+            <marker id="cpV" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#1e5a7a"/>
+            </marker>
+            <marker id="cpB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#b07a1a"/>
+            </marker>
+          </defs>
+          <g stroke="#ddd6c2" stroke-width="0.6">
+            <line x1="40" y1="40" x2="40" y2="280"/>
+            <line x1="80" y1="40" x2="80" y2="280"/>
+            <line x1="120" y1="40" x2="120" y2="280"/>
+            <line x1="160" y1="40" x2="160" y2="280"/>
+            <line x1="200" y1="40" x2="200" y2="280"/>
+            <line x1="240" y1="40" x2="240" y2="280"/>
+            <line x1="280" y1="40" x2="280" y2="280"/>
+            <line x1="40" y1="40" x2="280" y2="40"/>
+            <line x1="40" y1="80" x2="280" y2="80"/>
+            <line x1="40" y1="120" x2="280" y2="120"/>
+            <line x1="40" y1="160" x2="280" y2="160"/>
+            <line x1="40" y1="200" x2="280" y2="200"/>
+            <line x1="40" y1="240" x2="280" y2="240"/>
+            <line x1="40" y1="280" x2="280" y2="280"/>
+          </g>
+          <g stroke="#4d473d" stroke-width="1.3">
+            <line x1="40" y1="160" x2="290" y2="160"/>
+            <line x1="160" y1="40" x2="160" y2="290"/>
+          </g>
+          <g font-family="Inter, sans-serif" font-size="9.5" fill="#8b8474">
+            <text x="80" y="174" text-anchor="middle">−2</text>
+            <text x="120" y="174" text-anchor="middle">−1</text>
+            <text x="200" y="174" text-anchor="middle">1</text>
+            <text x="240" y="174" text-anchor="middle">2</text>
+            <text x="152" y="84" text-anchor="end">3</text>
+            <text x="152" y="124" text-anchor="end">2</text>
+            <text x="152" y="204" text-anchor="end">−1</text>
+            <text x="152" y="244" text-anchor="end">−2</text>
+          </g>
+          <line x1="160" y1="160" x2="240" y2="200" stroke="#b8431f" stroke-width="2.4" marker-end="url(#cpU)"/>
+          <line x1="240" y1="200" x2="200" y2="120" stroke="#1e5a7a" stroke-width="2.4" stroke-dasharray="2 2" opacity="0.55"/>
+          <line x1="200" y1="120" x2="160" y2="40" stroke="#1e5a7a" stroke-width="2.4" stroke-dasharray="2 2" opacity="0.55"/>
+          <line x1="160" y1="160" x2="120" y2="80" stroke="#1e5a7a" stroke-width="2.4" marker-end="url(#cpV)"/>
+          <line x1="160" y1="160" x2="160" y2="42" stroke="#b07a1a" stroke-width="3.2" marker-end="url(#cpB)" opacity="0.9"/>
+          <text x="200" y="200" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="13" fill="#b8431f">col 1 = (2, −1)</text>
+          <text x="50" y="100" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="13" fill="#1e5a7a">col 2 = (−1, 2)</text>
+          <text x="172" y="46" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="13" fill="#7d5610">b = (0, 3)</text>
+        </svg>
+        <figcaption class="figure-caption">Le column picture : on prend $1$ fois la colonne $(2,-1)$ puis $2$ fois la colonne $(-1, 2)$. La somme atteint le vecteur cible $(0, 3)$.</figcaption>
+      </figure>
+
+      <p>
+        On voit a l'image que prendre une fois la colonne $(2, -1)$, puis ajouter deux fois la colonne $(-1, 2)$, mene exactement a $(0, 3)$. Les coefficients $x = 1$ et $y = 2$ <em>sont</em> la solution, mais maintenant ils ont un sens geometrique : ce sont les <em>quantites</em> de chaque colonne qu'on additionne.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Le systeme $Ax = b$ se lit : « trouver une combinaison lineaire des colonnes de $A$ qui donne $b$ ».</strong> C'est la phrase que Strang repete pendant tout le semestre. Sans elle, les matrices restent un calcul. Avec elle, elles deviennent un langage.
+      </p>
+
+      <h2>Le passage en 3D</h2>
+
+      <p>
+        Strang generalise immediatement a un systeme $3 \times 3$. Il en ecrit un, du meme genre :
+      </p>
+
+      <div class="math">
+        $$\begin{aligned} 2x - y &= 0 \\ -x + 2y - z &= -1 \\ -3y + 4z &= 4 \end{aligned}$$
+      </div>
+
+      <p>
+        Dans le row picture, chaque equation est maintenant un <strong>plan</strong> dans $\mathbb{R}^3$. Trois plans qui s'intersectent en general en un seul point — la solution. C'est beau, mais visualiser trois plans qui se croisent sur un papier en deux dimensions est franchement difficile, et l'intuition flanche.
+      </p>
+
+      <p>
+        Dans le column picture, en revanche, l'image reste limpide : on a trois vecteurs-colonnes dans $\mathbb{R}^3$, et on cherche la combinaison qui les empile pour atteindre $b = (0, -1, 4)$.
+      </p>
+
+      <div class="math">
+        $$x \begin{bmatrix} 2 \\ -1 \\ 0 \end{bmatrix} + y \begin{bmatrix} -1 \\ 2 \\ -3 \end{bmatrix} + z \begin{bmatrix} 0 \\ -1 \\ 4 \end{bmatrix} = \begin{bmatrix} 0 \\ -1 \\ 4 \end{bmatrix}$$
+      </div>
+
+      <p>
+        Strang remarque, avec malice, que cette fois la solution se lit a l'oeil nu : <strong>$x = 0$, $y = 0$, $z = 1$</strong>. La troisieme colonne est <em>exactement</em> le vecteur cible. Inutile de prendre les deux autres. Le column picture rend visible une structure que le row picture aurait masquee derriere des plans qui se chevauchent.
+      </p>
+
+      <h2>La question profonde : toutes les cibles sont-elles atteignables ?</h2>
+
+      <p>
+        Une fois qu'on a accepte que $Ax = b$ veut dire « combinaison des colonnes », une nouvelle question devient irresistible. Strang la pose immediatement : <strong>peut-on, en choisissant les coefficients $x_1, x_2, \ldots$, atteindre n'importe quel vecteur $b$ ?</strong>
+      </p>
+
+      <p>
+        En $\mathbb{R}^2$, si les deux colonnes ne sont pas paralleles, on les combine pour atteindre tout le plan. Si elles sont paralleles, l'ensemble qu'on peut atteindre se reduit a une droite — et tout $b$ hors de cette droite est <em>inatteignable</em>. Le systeme n'a pas de solution.
+      </p>
+
+      <p>
+        En $\mathbb{R}^3$, on a trois colonnes. Si les trois pointent dans des directions reellement independantes, leurs combinaisons remplissent tout l'espace : pour tout $b$, il existe une solution. Si en revanche les trois colonnes sont coplanaires — toutes dans un meme plan — alors leurs combinaisons ne sortent jamais de ce plan, et les $b$ hors du plan sont perdus.
+      </p>
+
+      <p>
+        On a, sans s'en rendre compte, deja croise la notion de <strong>matrice singuliere</strong>. C'est exactement le cas ou les colonnes sont lineairement dependantes — coplanaires en 3D, paralleles en 2D — et ou il existe des $b$ que l'on ne peut pas atteindre. Tout le reste du semestre developpe cette idee.
+      </p>
+
+      <h2>Que veut dire « multiplier une matrice par un vecteur » ?</h2>
+
+      <p>
+        Strang termine sa premiere lecture par un detail qui parait pedant mais qui est fondateur. Quand on ecrit $Ax$, on a en fait deux manieres legitimes de calculer ce produit.
+      </p>
+
+      <p>
+        La premiere — celle qu'on apprend a l'ecole — est de prendre les <em>lignes</em> de $A$ une par une et de faire un produit scalaire avec $x$ :
+      </p>
+
+      <div class="math">
+        $$\begin{bmatrix} 2 & 5 \\ 1 & 3 \end{bmatrix} \begin{bmatrix} 1 \\ 2 \end{bmatrix} = \begin{bmatrix} 2 \cdot 1 + 5 \cdot 2 \\ 1 \cdot 1 + 3 \cdot 2 \end{bmatrix} = \begin{bmatrix} 12 \\ 7 \end{bmatrix}$$
+      </div>
+
+      <p>
+        La seconde — celle que Strang nous demande d'adopter pour de bon — voit $Ax$ comme <strong>une combinaison lineaire des colonnes de $A$, ponderee par les composantes de $x$</strong> :
+      </p>
+
+      <div class="math">
+        $$\begin{bmatrix} 2 & 5 \\ 1 & 3 \end{bmatrix} \begin{bmatrix} 1 \\ 2 \end{bmatrix} = 1 \cdot \begin{bmatrix} 2 \\ 1 \end{bmatrix} + 2 \cdot \begin{bmatrix} 5 \\ 3 \end{bmatrix} = \begin{bmatrix} 12 \\ 7 \end{bmatrix}$$
+      </div>
+
+      <p>
+        Les deux donnent le meme resultat — c'est evidemment la meme operation. Mais Strang insiste : pensez la seconde, toujours. C'est elle qui rend transparentes les notions a venir (espace colonne, rang, inversibilite, transformation lineaire). Le produit ligne-par-colonne est un algorithme. La combinaison de colonnes est une <em>idee</em>.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Pourquoi Strang appelle ca « regarder les colonnes »</span>
+        <p>
+          Tout son cours est construit autour de cette inversion de perspective. Une matrice $A$ de taille $m \times n$ peut se voir comme $m$ lignes empilees, ou comme $n$ colonnes juxtaposees. Le row picture mene au calcul ligne par ligne (resolution Gauss, elimination), qui est efficace. Le column picture mene aux espaces : l'<em>espace colonne</em> de $A$ — l'ensemble de toutes les combinaisons des colonnes — est l'image complete de la transformation $x \mapsto Ax$. Quand on demandera, plus tard, « pour quels $b$ le systeme $Ax = b$ a-t-il une solution ? », la reponse, immediate, sera : « pour tout $b$ dans l'espace colonne de $A$ ». Le row picture aurait mis dix lignes a y arriver.
+        </p>
+      </aside>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Un meme systeme $Ax = b$ se lit de deux manieres : par lignes — chaque equation est une droite, un plan, ou un hyperplan, et on cherche leur intersection — ou par colonnes — on cherche les coefficients d'une combinaison lineaire des colonnes de $A$ qui produit $b$.
+      </p>
+
+      <p>
+        La seconde lecture est celle qu'on garde. Elle dit que <em>multiplier une matrice par un vecteur, c'est combiner ses colonnes</em>. Elle prepare toutes les questions a venir : quelles cibles $b$ sont atteignables ? Quand existe-t-il une solution, et est-elle unique ? Que se passe-t-il quand les colonnes ne sont pas independantes ?
+      </p>
+
+      <p>
+        Strang sortira d'ici en repetant : « <em>look at the columns</em> ». Tout le reste de 18.06 est une variation sur ce theme.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="index.html">
+          <span class="nav-label">Precedent</span>
+          <span class="nav-title">← Sommaire Strang</span>
+        </a>
+        <a class="next" href="ch02-elimination.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">L02 — Elimination avec matrices →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

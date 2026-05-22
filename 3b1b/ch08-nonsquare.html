@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ep 08 — Matrices non carrees</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\(', right: '\)', display: false},
+        {left: '\[', right: '\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html" class="current">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Essence of Linear Algebra · Episode 08</div>
+      <h1>Matrices non carrees : passer d'une dimension a une autre</h1>
+      <a class="video-link" href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Voir la video originale (3blue1brown)</a>
+
+      <p class="lede">
+        Bref episode, mais riche : que se passe-t-il quand une matrice n'est pas carree ? Elle decrit alors une transformation entre deux espaces de dimensions <em>differentes</em>. La meme regle vaut — les colonnes restent les images des vecteurs de base — mais elle relie deux mondes au lieu de deformer un seul.
+      </p>
+
+      <p>
+        Une matrice <code>m × n</code> (lue « m lignes, n colonnes ») represente une transformation lineaire qui prend un vecteur de l'espace <code>ℝⁿ</code> et le projette dans <code>ℝᵐ</code>.
+      </p>
+
+      <ul>
+        <li>Le nombre de <strong>colonnes</strong> est le nombre de vecteurs de base de l'espace de depart : la dimension de l'entree.</li>
+        <li>Le nombre de <strong>lignes</strong> est le nombre de coordonnees necessaires pour decrire chaque vecteur image : la dimension de l'arrivee.</li>
+      </ul>
+
+      <h2>Exemple : matrice 3 × 2 (du plan vers l'espace)</h2>
+
+      <p>
+        Une matrice 3 × 2 envoie un vecteur 2D vers un vecteur 3D. Elle a deux colonnes, chacune avec trois nombres. Elle dit : voici ou atterrit <code>i&#770;</code> dans l'espace 3D, voici ou atterrit <code>j&#770;</code>.
+      </p>
+
+      <div class="math">$$\begin{bmatrix} 2 & 0 \\ 1 & 1 \\ 3 & 2 \end{bmatrix} \qquad \begin{aligned} \hat{\imath}_{2D} &\longrightarrow (2,\,1,\,3) \text{ en 3D} \\ \hat{\jmath}_{2D} &\longrightarrow (0,\,1,\,2) \text{ en 3D} \end{aligned}$$</div>
+
+      <p>
+        Geometriquement, cette matrice <em>embarque</em> le plan dans l'espace : tout le plan 2D devient un plan oblique passant par l'origine, dans l'espace 3D. Le column space (span des deux colonnes) est ce plan oblique — une copie de <code>ℝ²</code> dans <code>ℝ³</code>.
+      </p>
+
+      <h2>Exemple : matrice 2 × 3 (de l'espace vers le plan)</h2>
+
+      <p>
+        Inversement, une matrice 2 × 3 envoie un vecteur 3D vers un vecteur 2D. Elle a trois colonnes, chacune avec deux nombres. Elle dit ou atterrissent <code>i&#770;, j&#770;, k&#770;</code> dans le plan.
+      </p>
+
+      <div class="math">$$\begin{bmatrix} 1 & 0 & 2 \\ 4 & 1 & 3 \end{bmatrix} \qquad \begin{aligned} \hat{\imath}_{3D} &\longrightarrow (1,\,4) \\ \hat{\jmath}_{3D} &\longrightarrow (0,\,1) \\ \hat{k}_{3D} &\longrightarrow (2,\,3) \end{aligned}$$</div>
+
+      <p>
+        Geometriquement, cette matrice <em>aplatit</em> l'espace 3D sur le plan : c'est une sorte de projection, generalisee. Trois vecteurs en 3D produisent trois vecteurs en 2D, et ils ne peuvent pas etre tous lineairement independants (impossible en dimension 2) — il y a forcement des collisions, donc un null space non trivial.
+      </p>
+
+      <h2>Vecteur ligne : un cas particulier</h2>
+
+      <p>
+        Une matrice 1 × n est une seule ligne. Elle envoie un vecteur n-dimensionnel vers... un nombre (un vecteur 1D). C'est <em>une fonction lineaire de l'espace vers les reels</em>. Cet objet, en apparence anodin, va se reveler central a l'episode 9 : c'est l'idee de <strong>dualite</strong>.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Une matrice <code>m × n</code> raconte ou atterrissent <code>n</code> vecteurs de base, decrits chacun avec <code>m</code> coordonnees.</strong> Le nombre de colonnes est la dimension d'entree ; le nombre de lignes, la dimension de sortie.
+      </p>
+
+      <h2>Et le determinant ?</h2>
+
+      <p>
+        Le determinant n'est defini que pour les matrices carrees. La raison est geometrique : il mesure un facteur d'echelle de volumes, ce qui n'a de sens que si l'espace de depart et d'arrivee ont la meme dimension. Pour une 3 × 2 ou une 2 × 3, parler de « combien le volume est multiplie » n'a pas de sens — la dimension change.
+      </p>
+
+      <p>
+        Cela dit, on peut parler de <em>rang</em> meme pour une matrice non carree. Le rang d'une matrice <code>m × n</code> est la dimension du column space, c'est-a-dire au plus <code>min(m, n)</code>.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Pourquoi cet episode est si court chez 3b1b</span>
+        <p>
+          Grant le presente comme un « footnote video ». Tout ce qu'on a appris pour les matrices carrees se prolonge — il suffit d'ajuster « combien de colonnes, combien de lignes ». Mais la conclusion (une matrice 1 × n est une fonction lineaire vers <code>ℝ</code>) plante l'amorce de l'episode suivant, qui s'attaque au produit scalaire et a son lien profond avec ces matrices-fonctions.
+        </p>
+      </aside>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Une matrice <code>m × n</code> est une transformation lineaire de <code>ℝⁿ</code> vers <code>ℝᵐ</code>. Ses colonnes (au nombre de <code>n</code>) sont les images des vecteurs de base de l'espace de depart, exprimees dans <code>ℝᵐ</code>.
+      </p>
+
+      <p>
+        Les matrices non carrees servent a embarquer (3 × 2 : 2D vers 3D) ou aplatir (2 × 3 : 3D vers 2D). Le determinant n'a pas de sens dans ce cas — seul le rang reste defini.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="ch07-inverse.html">
+          <span class="nav-label">Precedent</span>
+          <span class="nav-title">← Ep 07 — Inverse</span>
+        </a>
+        <a class="next" href="ch09-dot-product.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">Ep 09 — Produit scalaire →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

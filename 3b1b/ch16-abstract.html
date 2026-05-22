@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ep 16 — Espaces vectoriels abstraits</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\(', right: '\)', display: false},
+        {left: '\[', right: '\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html" class="current">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Essence of Linear Algebra · Episode 16</div>
+      <h1>Espaces vectoriels abstraits</h1>
+      <a class="video-link" href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Voir la video originale (3blue1brown)</a>
+
+      <p class="lede">
+        Dernier episode, et il ferme la boucle. On a passe quinze chapitres a manipuler des fleches et des listes de nombres. Mais l'algebre lineaire ne <em>parle pas vraiment</em> de fleches. Elle parle de toute structure ou « additionner » et « multiplier par un scalaire » ont un sens. Et c'est la que les fonctions, les polynomes, les solutions d'equations differentielles entrent en scene.
+      </p>
+
+      <p>
+        Reviens a l'episode 1. Le mathematicien definissait un vecteur comme « tout objet qu'on peut additionner et scaler ». On a glisse rapidement dessus a l'epoque. Cette derniere video l'examine vraiment.
+      </p>
+
+      <h2>Les fonctions sont des vecteurs</h2>
+
+      <p>
+        Prends deux fonctions <code>f</code> et <code>g</code> qui prennent un reel et rendent un reel. Tu peux les <em>additionner</em> : <code>(f + g)(x) = f(x) + g(x)</code>. Le resultat est encore une fonction.
+      </p>
+
+      <p>
+        Tu peux aussi <em>scaler</em> une fonction : <code>(c·f)(x) = c·f(x)</code>. Le resultat est encore une fonction.
+      </p>
+
+      <p>
+        Et ces deux operations satisfont toutes les regles qu'on attend (commutativite, associativite, distributivite, element neutre — la fonction nulle). Donc <strong>l'ensemble des fonctions reelles forme un espace vectoriel</strong>. Les fonctions <em>sont</em> des vecteurs, au sens du mathematicien.
+      </p>
+
+      <h2>La derivee est une transformation lineaire</h2>
+
+      <p>
+        Sur cet espace de fonctions, considere l'operation « prendre la derivee » : <code>d/dx</code>. Elle prend une fonction et rend une autre fonction.
+      </p>
+
+      <p>
+        Est-elle <em>lineaire</em> ? Verifie les deux conditions :
+      </p>
+
+      <div class="math">$$\begin{aligned} \tfrac{d}{dx}(f + g) &= \tfrac{d}{dx}(f) + \tfrac{d}{dx}(g) \quad \checkmark \\ \tfrac{d}{dx}(c \cdot f) &= c \cdot \tfrac{d}{dx}(f) \quad \checkmark \end{aligned}$$</div>
+
+      <p>
+        La derivee est donc une transformation lineaire sur l'espace des fonctions. Et tout ce qu'on a appris sur les transformations lineaires s'applique : matrice, colonnes comme images des vecteurs de base, valeurs propres, etc.
+      </p>
+
+      <h2>Une matrice pour la derivee</h2>
+
+      <p>
+        Si on se restreint a l'espace des <em>polynomes</em>, on peut en donner une base. La base la plus simple : les puissances de x.
+      </p>
+
+      <div class="math">$$1, \; x, \; x^2, \; x^3, \; x^4, \; \ldots$$</div>
+
+      <p>
+        Tout polynome s'ecrit comme une combinaison lineaire de ces vecteurs de base. Par exemple <code>3 + 5x - x² + 2x³</code> a pour « coordonnees » <code>[3, 5, -1, 2, 0, 0, ...]</code>.
+      </p>
+
+      <p>
+        La derivee, en tant que transformation lineaire, a alors une matrice dans cette base. Ses colonnes sont les images des vecteurs de base : <code>d/dx(1) = 0</code>, <code>d/dx(x) = 1</code>, <code>d/dx(x²) = 2x</code>, <code>d/dx(x³) = 3x²</code>, etc. En coordonnees, ca donne :
+      </p>
+
+      <div class="math">$$\tfrac{d}{dx} = \begin{bmatrix} 0 & 1 & 0 & 0 & 0 & \cdots \\ 0 & 0 & 2 & 0 & 0 & \cdots \\ 0 & 0 & 0 & 3 & 0 & \cdots \\ 0 & 0 & 0 & 0 & 4 & \cdots \\ \vdots & & & & & \ddots \end{bmatrix}$$</div>
+
+      <p>
+        Une matrice infinie, certes, mais une matrice. Et la multiplier par le vecteur de coefficients d'un polynome donne le vecteur de coefficients de sa derivee. Tout fonctionne comme prevu.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Quand un mathematicien dit « vecteur », il pense a tout ce qui satisfait les regles — une fleche, une liste, une fonction, une suite, une solution d'equation differentielle.</strong> Et toutes les machinations apprises pour les fleches s'appliquent telles quelles.
+      </p>
+
+      <h2>Les huit axiomes</h2>
+
+      <p>
+        Plus precisement, un <strong>espace vectoriel</strong> est un ensemble <code>V</code> equipe d'une addition et d'une multiplication par scalaire, qui satisfont huit axiomes. Sans les detailler, ils encodent l'intuition « additionner et scaler se comportent comme on s'attend » :
+      </p>
+
+      <ul>
+        <li>Commutativite et associativite de l'addition.</li>
+        <li>Existence d'un element neutre (le « zero »).</li>
+        <li>Existence d'un oppose pour chaque vecteur.</li>
+        <li>Distributivite du scalaire sur l'addition de vecteurs.</li>
+        <li>Distributivite de l'addition de scalaires sur un vecteur.</li>
+        <li>Associativite du produit scalaire-scalaire.</li>
+        <li>Element neutre scalaire (multiplication par 1).</li>
+      </ul>
+
+      <p>
+        N'importe quel ensemble qui satisfait ces axiomes est un espace vectoriel, et tout le contenu de la serie s'y applique. C'est pour ca qu'on apprend l'algebre lineaire : pour avoir un boitier d'outils qui marche sur enormement de domaines.
+      </p>
+
+      <h2>Le conseil de fin de Grant</h2>
+
+      <p>
+        Sa conclusion : <em>les mathematiciens ne te demandent pas « qu'est-ce qu'un vecteur ? ». Ils demandent : « qu'est-ce qui se comporte comme un vecteur ? »</em>. La reponse, c'est tout ce qui satisfait les axiomes. La fleche n'est qu'un cas particulier, choisi pour son evidence visuelle.
+      </p>
+
+      <p>
+        L'algebre lineaire est un langage. La serie t'a donne la grammaire. Ce que tu en feras — appliquer aux signaux, aux equations differentielles, aux statistiques, au quantum, aux graphes, aux donnees… — depend de toi. Mais quoi que ce soit, tu reconnaitras les motifs : « tiens, c'est un produit scalaire » ; « tiens, c'est une valeur propre » ; « tiens, c'est un changement de base ». Et tu sauras quoi faire.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Une derniere idee : les invariants</span>
+        <p>
+          Une grande lecon transversale de la serie est l'importance des <em>quantites invariantes</em> sous transformation : determinant (preserve la multiplication), valeurs propres (intrinseques a la transformation), longueurs et angles (preserves par les rotations), etc. La mathematique avance souvent en identifiant ce qui ne change pas quand on change de point de vue. C'est ce qui rend les concepts <em>portables</em> entre domaines : ce qu'on extrait n'est jamais l'apparence, c'est la structure.
+        </p>
+      </aside>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Un espace vectoriel est tout ensemble equipe d'une addition et d'une multiplication par scalaire satisfaisant huit axiomes. Les fleches, les listes, les fonctions, les polynomes, les suites, les solutions d'equations differentielles : tous en sont des exemples.
+      </p>
+
+      <p>
+        Toutes les notions de la serie (transformations lineaires, matrices, determinant, valeurs propres, dualite…) s'appliquent telles quelles a ces espaces. Apprendre l'algebre lineaire, c'est apprendre un langage qui s'applique partout ou la structure est presente.
+      </p>
+
+      <p>
+        Le derniere instruction de Grant : « ne demande pas <em>qu'est-ce qu'un vecteur ?</em>, demande <em>qu'est-ce qui se comporte comme un vecteur ?</em>. » C'est la pensee mathematique mise en mots.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="ch15-eigen-trick.html">
+          <span class="nav-label">Precedent</span>
+          <span class="nav-title">← Ep 15 — Trick eigen 2x2</span>
+        </a>
+        <a class="next" href="index.html">
+          <span class="nav-label">Retour</span>
+          <span class="nav-title">↑ Sommaire</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

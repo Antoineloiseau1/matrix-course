@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La matrice ligne par ligne — Chapitre 5 · §7</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+  <style>
+    .diagram {
+      display: block;
+      margin: 1.8rem auto;
+      max-width: 100%;
+      height: auto;
+    }
+    .diagram-caption {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: #6b6b6b;
+      text-align: center;
+      margin-top: -0.5rem;
+      margin-bottom: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html" class="current">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 5 · §7</div>
+      <h1>La matrice ligne par ligne</h1>
+      <p class="lede">
+        On a un point de départ (le frustum, étape 5) et un point d'arrivée (le cube NDC, étape 6). Reste à remplir la matrice 4×4 qui réalise le passage. On va le faire case par case, en faisant tomber chaque nombre de la contrainte qui le justifie. À la fin, plus rien ne sera magique : cinq valeurs, et un mécanisme d'horlogerie.
+      </p>
+
+      <p>
+        La cible est claire. On veut une matrice $M$ telle que, pour tout point $(x, y, z, 1)$ à l'intérieur du frustum, le produit $M \cdot (x, y, z, 1)$ donne un vecteur homogène qui, après division par sa quatrième coordonnée, atterrit dans le cube NDC. Autrement dit, on cherche les seize coefficients d'une matrice — sauf que la plupart d'entre eux vont valoir zéro.
+      </p>
+
+      <h2>La forme du squelette</h2>
+
+      <p>
+        Avant de calculer le moindre coefficient, regardons quelle <em>tête</em> doit avoir la matrice. La structure des contraintes nous l'impose presque entièrement.
+      </p>
+
+      <p>
+        Première observation : $x_{ndc}$ ne doit dépendre que de $x$ (et de $z$ via la division finale). Pas de mélange avec $y$. Donc dans la première ligne, le coefficient devant $y$ est zéro. Par symétrie, dans la deuxième ligne, le coefficient devant $x$ est zéro. Les deux premières lignes sont diagonales sur la partie $x$/$y$.
+      </p>
+
+      <p>
+        Deuxième observation : $x_{ndc}$ et $y_{ndc}$ ne doivent dépendre ni de $z$ directement dans le numérateur, ni de la constante $1$. Tout l'effet de $z$ sur $x_{ndc}$ passe <em>uniquement</em> par la division finale. Ça veut dire que la première et la deuxième ligne sont nulles aux colonnes $z$ et $w$.
+      </p>
+
+      <p>
+        Troisième observation : $z_{ndc}$ doit dépendre de $z$ (sinon impossible de respecter $z = \text{near} \to 0$ et $z = \text{far} \to 1$) et il faudra un terme constant pour caler les bornes. Donc la troisième ligne a deux coefficients non nuls, en colonnes $z$ et $w$.
+      </p>
+
+      <p>
+        Quatrième observation, la plus subtile : la quatrième ligne ne calcule pas une coordonnée de l'image finale. Elle calcule $w'$, le diviseur qu'on va appliquer juste après. Pour que la division finale donne $x/z$ et $y/z$ comme la perspective l'exige, il faut que $w'$ vaille $z$. Donc la dernière ligne se contente de copier $z$ : un $1$ en colonne $z$, des zéros partout ailleurs.
+      </p>
+
+      <p>
+        On obtient le squelette suivant, avec cinq inconnues à déterminer :
+      </p>
+
+      $$M = \begin{pmatrix} s_x & 0 & 0 & 0 \\ 0 & s_y & 0 & 0 \\ 0 & 0 & a & b \\ 0 & 0 & 1 & 0 \end{pmatrix}$$
+
+      <p>
+        Onze zéros, cinq coefficients. La matrice 4×4 est principalement <em>vide</em>. Toute la perspective tient dans ces cinq nombres.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Cinq nombres. Tout le reste, ce sont des zéros. Sous le capot, la matrice 4×4 n'a rien d'une matrice 4×4 — c'est un mécanisme de scaling et de remappage, avec une bottom-row qui sert juste à relayer <em>z</em>.</strong>
+      </p>
+
+      <h2>La ligne du bas, d'abord</h2>
+
+      <p>
+        On commence par la dernière ligne parce que c'est elle qui explique pourquoi toute cette machinerie fonctionne. Avec $[0\ 0\ 1\ 0]$ appliquée à un point d'entrée $(x, y, z, 1)$ :
+      </p>
+
+      $$w' = 0 \times x + 0 \times y + 1 \times z + 0 \times 1 = z$$
+
+      <p>
+        Tout simplement $z$. C'est le mécanisme central du truc. La matrice calcule des coordonnées homogènes intermédiaires $(x', y', z', w')$, et la convention des coordonnées homogènes dit qu'on finit par diviser les trois premières par la quatrième. Si on s'arrange pour que la quatrième vaille exactement $z$, alors la division finale réalise gratuitement le $/z$ dont la perspective avait besoin (étape 4).
+      </p>
+
+      <p>
+        C'est l'astuce centrale, et toute la matrice est construite <em>autour</em> d'elle. Les autres lignes ne font que poser des numérateurs ; c'est la dernière ligne qui charge le dénominateur.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangente — handedness et conventions</span>
+        <p>
+          La dérivation qu'on vient de faire suppose un monde <strong>left-handed</strong> : la caméra est à l'origine et regarde vers les <em>z positifs</em>. Un point visible a un $z > 0$, qui croît à mesure qu'on s'éloigne. C'est ce qui rend la dernière ligne $[0\ 0\ 1\ 0]$ naturelle : on veut $w' = +z$ (positif), pour pouvoir diviser sans changer les signes.
+        </p>
+        <p>
+          Les conventions du monde graphique combinent <em>deux</em> choix indépendants : la main du monde (left-handed ou right-handed) et la plage NDC de Z ([-1, 1] ou [0, 1]). Ça donne quatre combinaisons :
+        </p>
+        <ul>
+          <li><strong>LH + Z ∈ [0, 1]</strong> : DirectX, et notre dérivation ici.</li>
+          <li><strong>RH + Z ∈ [0, 1]</strong> : Vulkan par défaut, et la plupart des moteurs modernes (caméra regarde $-z$, dernière ligne devient $[0\ 0\ -1\ 0]$).</li>
+          <li><strong>RH + Z ∈ [-1, 1]</strong> : OpenGL classique.</li>
+          <li><strong>LH + Z ∈ [-1, 1]</strong> : rare.</li>
+        </ul>
+        <p>
+          Beaucoup de bugs viennent d'un copier-coller entre ces mondes : la formule a l'air bonne, mais l'image se retrouve miroir (handedness fausse), ou les objets passent derrière le near plane sans raison (NDC z faux). Le piège classique de la handedness se reconnaît à un seul symptôme — <em>l'image apparaît mais miroir, et les contrôles sont inversés</em> — et il a un fix très mécanique : composer la matrice de projection à droite par une matrice de "flip Z" qui négativise la troisième colonne. C'est décrit en pratique à l'étape 08.
+        </p>
+      </aside>
+
+      <h2>Première ligne : on calibre <em>x</em></h2>
+
+      <p>
+        On attaque la première ligne avec son unique coefficient inconnu, $s_x$. Avec $[s_x\ 0\ 0\ 0]$ appliqué à $(x, y, z, 1)$ :
+      </p>
+
+      $$x' = s_x \times x$$
+
+      <p>
+        Puis vient la division perspective par $w' = z$ :
+      </p>
+
+      $$x_{ndc} = x' / w' = s_x \times x / z$$
+
+      <p>
+        Pour fixer $s_x$, on choisit une contrainte connue. Au bord droit du frustum, on a vu (étape 5) que $x = z \times \tan(\text{fov}/2) \times \text{ratio}$, et on veut (étape 6) que ce bord arrive à $x_{ndc} = +1$. On substitue :
+      </p>
+
+      $$s_x \times (z \times \tan(\text{fov}/2) \times \text{ratio}) / z = 1$$
+
+      <p>
+        Et voilà le moment magique : <strong>les deux $z$ se simplifient</strong>. Le $z$ qui multiplie au numérateur, et le $z$ au dénominateur (celui qui vient de $w' = z$), s'annulent. Ce qui reste ne dépend plus de la profondeur :
+      </p>
+
+      $$\begin{aligned} s_x \times \tan(\text{fov}/2) \times \text{ratio} &= 1 \\[0.4em] s_x &= \frac{1}{\tan(\text{fov}/2) \times \text{ratio}} \end{aligned}$$
+
+      <p>
+        Ce n'est pas un accident. C'est <em>exactement</em> ce qu'on cherchait depuis l'étape 3 : faire avaler la division par $z$ au pipeline linéaire sans qu'elle apparaisse explicitement dans la matrice. Le $z$ est présent (il habite la géométrie du frustum), il s'annule (par construction du cube NDC), et il ne reste que des constantes. La perspective est <em>diluée</em> dans une multiplication matricielle.
+      </p>
+
+      <p>
+        Vérification rapide. Si on prend un point pile au centre, $x = 0$ : alors $x_{ndc} = 0$. Le centre du frustum tombe au centre de l'écran. Cohérent. Si on prend un point au bord gauche, $x = -z \times \tan(\text{fov}/2) \times \text{ratio}$ : on obtient $x_{ndc} = -1$ par le même calcul avec un signe opposé. Cohérent.
+      </p>
+
+      <h2>Deuxième ligne : on calibre <em>y</em></h2>
+
+      <p>
+        Même musique pour $y$. La deuxième ligne $[0\ s_y\ 0\ 0]$ donne :
+      </p>
+
+      $$\begin{aligned} y' &= s_y \times y \\ y_{ndc} &= s_y \times y / z \end{aligned}$$
+
+      <p>
+        Au bord supérieur du frustum, on a $y = z \times \tan(\text{fov}/2)$ (sans ratio cette fois — le <code>fov</code> par convention est l'angle <em>vertical</em>, donc il s'applique directement à $y$). On veut $y_{ndc} = +1$ :
+      </p>
+
+      $$\begin{aligned} s_y \times (z \times \tan(\text{fov}/2)) / z &= 1 \\[0.3em] s_y \times \tan(\text{fov}/2) &= 1 \\[0.3em] s_y &= \frac{1}{\tan(\text{fov}/2)} \end{aligned}$$
+
+      <p>
+        Note que $s_y$ ne dépend <strong>pas</strong> du ratio. C'est logique : le ratio n'affecte que l'étalement horizontal du frustum. Un écran ultrawide ne change rien à ce que la caméra voit verticalement, donc rien à la façon dont on remappe $y$. Toute la dépendance en <code>ratio</code> est confinée à la ligne du $x$.
+      </p>
+
+      <h2>Troisième ligne : la profondeur, deux contraintes</h2>
+
+      <p>
+        La troisième ligne est la plus délicate, parce que $z$ y joue deux rôles à la fois : c'est l'entrée de la formule, et c'est aussi le diviseur (puisque $w' = z$). On a deux inconnues, $a$ et $b$, et il nous faut donc deux contraintes pour les fixer.
+      </p>
+
+      <p>
+        Avec $[0\ 0\ a\ b]$ appliqué à $(x, y, z, 1)$ :
+      </p>
+
+      $$\begin{aligned} z' &= a \times z + b \times 1 = a\,z + b \\ z_{ndc} &= z' / w' = (a\,z + b) / z = a + b/z \end{aligned}$$
+
+      <p>
+        Très important de bien voir cette dernière forme : <strong>$z_{ndc}$ est une fonction de $1/z$</strong>, pas de $z$. La structure mathématique du résultat est <em>hyperbolique</em>. On y revient dans une minute. D'abord, fixons $a$ et $b$ par les bornes du frustum.
+      </p>
+
+      <p>
+        Première contrainte (étape 6) : à $z = \text{near}$, on veut $z_{ndc} = 0$.
+      </p>
+
+      $$\begin{aligned} a + b/\text{near} &= 0 \\[0.2em] b &= -a \times \text{near} \end{aligned}$$
+
+      <p>
+        Deuxième contrainte : à $z = \text{far}$, on veut $z_{ndc} = 1$.
+      </p>
+
+      $$a + b/\text{far} = 1$$
+
+      <p>
+        On substitue la valeur de $b$ qu'on vient d'obtenir :
+      </p>
+
+      $$\begin{aligned} a + (-a \times \text{near}) / \text{far} &= 1 \\ a \times (1 - \text{near}/\text{far}) &= 1 \\ a \times (\text{far} - \text{near}) / \text{far} &= 1 \\ a &= \frac{\text{far}}{\text{far} - \text{near}} \end{aligned}$$
+
+      <p>
+        Et en réinjectant dans $b = -a \times \text{near}$ :
+      </p>
+
+      $$b = -\frac{\text{far} \times \text{near}}{\text{far} - \text{near}}$$
+
+      <p>
+        Deux contraintes, deux équations, deux inconnues — un classique d'algèbre linéaire qui apparaît au bon endroit du raisonnement. La dérivation est purement mécanique une fois qu'on a posé les deux bornes du frustum.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">méthode</span>
+        <p>
+          L'étape technique qui pose souvent problème dans cette dérivation est la résolution de $a + (-a \cdot \text{near})/\text{far} = 1$, parce que $a$ y apparaît <em>deux fois</em>. Le réflexe naturel — déplacer un terme à droite — donne $a = 1 + (a \cdot \text{near})/\text{far}$, mais $a$ est toujours des deux côtés et on n'a rien gagné.
+        </p>
+        <p>
+          La méthode propre est la <strong>factorisation</strong> : quand une inconnue apparaît dans plusieurs termes additionnés, on la sort en facteur. Ici, $a + (-a \cdot \text{near})/\text{far}$ s'écrit aussi $a \cdot 1 + a \cdot (-\text{near}/\text{far})$, et en factorisant $a$ :
+        </p>
+        $$a \cdot (1 - \text{near}/\text{far}) = 1$$
+        <p>
+          À partir de là, $a$ n'apparaît plus qu'une seule fois et il suffit de diviser les deux côtés par $(1 - \text{near}/\text{far})$ pour obtenir une forme équivalente du résultat :
+        </p>
+        $$a = \frac{1}{1 - \text{near}/\text{far}}$$
+        <p>
+          Cette écriture est mathématiquement correcte, mais on préfère la forme présentée plus haut, $a = \text{far} / (\text{far} - \text{near})$, parce qu'elle évite la fraction imbriquée. Pour passer de l'une à l'autre, on réduit le dénominateur au même dénominateur : $1 - \text{near}/\text{far} = (\text{far} - \text{near})/\text{far}$, et diviser par cette fraction équivaut à multiplier par son inverse $\text{far}/(\text{far} - \text{near})$. Les deux écritures désignent rigoureusement le même nombre — choisis celle qui se code le plus proprement (en Rust, la seconde n'a qu'une division au lieu de deux).
+        </p>
+        <p>
+          Le réflexe "factoriser plutôt que jongler entre les côtés" revient partout en algèbre linéaire, et il vaut la peine de le nommer une fois : <em>une inconnue qui apparaît plusieurs fois dans une somme se rassemble en facteur, et après rassemblement elle s'isole en une division</em>.
+        </p>
+      </aside>
+
+      <h2>L'aspect hyperbolique de <em>z</em></h2>
+
+      <p>
+        Revenons une seconde sur la formule trouvée pour la profondeur :
+      </p>
+
+      $$\begin{aligned} z_{ndc} &= a + b/z \\ &= \frac{\text{far}}{\text{far} - \text{near}} - \frac{\text{far} \times \text{near}}{\text{far} - \text{near}} \times \frac{1}{z} \end{aligned}$$
+
+      <p>
+        C'est une fonction <strong>affine en $1/z$</strong>, ce qui veut dire qu'elle est <strong>non linéaire en $z$</strong>. Si tu traces $z_{ndc}$ en fonction de $z$ entre <code>near</code> et <code>far</code>, tu obtiens une courbe — une hyperbole — qui monte très vite au début, puis se tasse progressivement vers $1$ à mesure que $z$ grandit.
+      </p>
+
+      <div class="sketch">
+        <svg class="diagram" viewBox="0 0 600 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- axes -->
+          <line x1="60" y1="240" x2="560" y2="240" stroke="#3a3a3a" stroke-width="1"/>
+          <line x1="60" y1="240" x2="60" y2="30" stroke="#3a3a3a" stroke-width="1"/>
+          <text x="555" y="258" font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#3a3a3a" text-anchor="end">z</text>
+          <text x="48" y="38" font-family="Iowan Old Style, Georgia, serif" font-size="13" font-style="italic" fill="#3a3a3a" text-anchor="end">z_ndc</text>
+
+          <!-- horizontal reference at z_ndc = 1 -->
+          <line x1="60" y1="55" x2="560" y2="55" stroke="#9a9a9a" stroke-width="0.7" stroke-dasharray="3,3"/>
+          <text x="68" y="50" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b">z_ndc = 1</text>
+
+          <!-- horizontal reference at z_ndc = 0 -->
+          <text x="68" y="252" font-family="Inter, sans-serif" font-size="11" fill="#6b6b6b">z_ndc = 0</text>
+
+          <!-- ticks for near and far -->
+          <line x1="110" y1="236" x2="110" y2="244" stroke="#3a3a3a" stroke-width="1"/>
+          <text x="110" y="262" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#3a3a3a" text-anchor="middle" font-style="italic">near</text>
+          <line x1="540" y1="236" x2="540" y2="244" stroke="#3a3a3a" stroke-width="1"/>
+          <text x="540" y="262" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#3a3a3a" text-anchor="middle" font-style="italic">far</text>
+
+          <!-- the hyperbolic depth curve : near = 1, far = 50, a = 50/49, b = -50/49 -->
+          <!-- z_ndc(z) = 50/49 - 50/49 * (1/z). We render z from 1 to 50, mapping z=1 to x=110 and z=50 to x=540. -->
+          <path d="M 110,240
+                   C 150,140 200,95 260,75
+                   S 400,60 540,55"
+                fill="none" stroke="#b8431f" stroke-width="2.4"/>
+
+          <!-- marker dots at the endpoints -->
+          <circle cx="110" cy="240" r="4" fill="#b8431f"/>
+          <circle cx="540" cy="55" r="4" fill="#b8431f"/>
+
+          <!-- annotation : "precision serree pres de la camera" -->
+          <line x1="135" y1="180" x2="180" y2="155" stroke="#1e5a7a" stroke-width="0.8"/>
+          <text x="240" y="155" font-family="Inter, sans-serif" font-size="11" fill="#1e5a7a">precision serree pres du near</text>
+
+          <!-- annotation : "ecart entasse loin" -->
+          <line x1="430" y1="62" x2="430" y2="100" stroke="#1e5a7a" stroke-width="0.8"/>
+          <text x="430" y="115" font-family="Inter, sans-serif" font-size="11" fill="#1e5a7a" text-anchor="middle">precision tassee loin</text>
+        </svg>
+        <p class="diagram-caption">La courbe de la profondeur projetée. Linéaire en <span style="font-style:italic">1/z</span>, donc une hyperbole en <span style="font-style:italic">z</span>. Les valeurs <span style="font-style:italic">z_ndc</span> s'étalent largement entre <span style="font-style:italic">near</span> et le tiers du frustum, puis se tassent toutes près de 1 au fond.</p>
+      </div>
+
+      <p>
+        Cette non-linéarité n'est pas un bug, c'est une <em>feature</em> du pipeline. Le buffer de profondeur stocke des valeurs $z_{ndc}$ en virgule fixe ou flottante, et la non-uniformité de l'échelle se traduit par une <strong>précision plus fine près de la caméra et plus grossière au loin</strong>. C'est exactement ce qu'on veut : au premier plan, les objets sont gros, le moindre artefact de tri en profondeur (le "z-fighting", deux surfaces qui clignotent l'une par-dessus l'autre parce que leurs $z$ sont trop proches) saute aux yeux, donc il faut beaucoup de précision. Au lointain, les objets sont petits, on n'y regarde pas de près, et un manque de précision passe inaperçu. Le depth buffer hyperbolique alloue automatiquement sa précision là où elle se voit.
+      </p>
+
+      <p>
+        En contrepartie, si tu places <code>near</code> très près de zéro (genre $0{,}001$), tu effondres la précision : presque toute la plage $[0, 1]$ du depth buffer est consommée par les premiers centimètres devant la caméra, et le reste de la scène tient dans une miette numérique. C'est la raison pour laquelle on apprend, en infographie, à <em>ne jamais</em> mettre le near plane trop près.
+      </p>
+
+      <h2>La matrice au complet</h2>
+
+      <p>
+        On réassemble tout. Les cinq coefficients qu'on a dérivés, placés dans leurs cases :
+      </p>
+
+      $$M = \begin{pmatrix} \dfrac{1}{\text{ratio} \times \tan(\text{fov}/2)} & 0 & 0 & 0 \\[0.6em] 0 & \dfrac{1}{\tan(\text{fov}/2)} & 0 & 0 \\[0.6em] 0 & 0 & \dfrac{\text{far}}{\text{far}-\text{near}} & -\dfrac{\text{far} \times \text{near}}{\text{far}-\text{near}} \\[0.6em] 0 & 0 & 1 & 0 \end{pmatrix}$$
+
+      <p>
+        Voilà. C'est ça, la matrice de projection perspective. Le code Rust de l'exercice 14 ne fera, in fine, que poser ces cinq coefficients aux bons endroits d'un tableau à plat. Tout l'enjeu intellectuel s'est passé avant : comprendre le frustum, comprendre le cube NDC, comprendre l'astuce des coordonnées homogènes, et comprendre pourquoi la quatrième ligne ressemble à un grain de sable mais relaie toute la perspective.
+      </p>
+
+      <h2>Une vérification numérique, pour finir</h2>
+
+      <p>
+        On peut s'assurer que la matrice fait son travail en y faisant passer un point connu. Prenons un point au coin supérieur-droit du <em>near plane</em> : par définition (étape 5), ses coordonnées sont
+      </p>
+
+      $$\begin{aligned} x &= \text{near} \times \tan(\text{fov}/2) \times \text{ratio} \\ y &= \text{near} \times \tan(\text{fov}/2) \\ z &= \text{near} \\ w &= 1 \end{aligned}$$
+
+      <p>
+        On veut, après la matrice et la division perspective, atterrir au coin $(1, 1, 0, 1)$ du cube NDC. Suivons le point ligne par ligne.
+      </p>
+
+      <p>
+        Première ligne :
+      </p>
+
+      $$\begin{aligned} x' &= s_x \times x \\ &= \left[\frac{1}{\text{ratio} \times \tan(\text{fov}/2)}\right] \times \left[\text{near} \times \tan(\text{fov}/2) \times \text{ratio}\right] \\ &= \text{near} \end{aligned}$$
+
+      <p>
+        Deuxième ligne :
+      </p>
+
+      $$\begin{aligned} y' &= s_y \times y \\ &= \left[\frac{1}{\tan(\text{fov}/2)}\right] \times \left[\text{near} \times \tan(\text{fov}/2)\right] \\ &= \text{near} \end{aligned}$$
+
+      <p>
+        Troisième ligne :
+      </p>
+
+      $$\begin{aligned} z' &= a \times z + b \\ &= \left[\frac{\text{far}}{\text{far}-\text{near}}\right] \times \text{near} + \left[-\frac{\text{far} \times \text{near}}{\text{far}-\text{near}}\right] \\ &= \frac{\text{far} \times \text{near} - \text{far} \times \text{near}}{\text{far}-\text{near}} \\ &= 0 \end{aligned}$$
+
+      <p>
+        Quatrième ligne :
+      </p>
+
+      $$w' = z = \text{near}$$
+
+      <p>
+        On a donc $(x', y', z', w') = (\text{near}, \text{near}, 0, \text{near})$. Division par $w' = \text{near}$ :
+      </p>
+
+      $$(x_{ndc}, y_{ndc}, z_{ndc}, 1) = (1, 1, 0, 1)$$
+
+      <p>
+        Pile au coin du cube NDC, comme promis. La même vérification fonctionne pour le coin opposé, sur le far plane : le $z$ passe de <code>near</code> à <code>far</code>, le calcul de $z'/w'$ donne $1$, et les bords se mappent symétriquement sur $-1$. Si tu veux la refaire toi-même avec le coin inférieur-gauche du far plane, c'est un bon exercice de ménage.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>Et après</h2>
+
+      <p>
+        On a la matrice. Ses cinq coefficients, on en connaît l'origine, la justification, et l'effet. Il ne reste qu'à la coder. La prochaine étape va traduire cette matrice en Rust, dans le module <code>matrix</code> du projet : une fonction <code>projection(fov, ratio, near, far)</code> qui rend un <code>Matrix&lt;f32&gt;</code> de taille 4×4, en column-major comme le reste du module, prête à être exportée dans un fichier <code>.txt</code> et chargée par le programme de démonstration. La partie passionnante est derrière nous ; ce qui suit, c'est de l'artisanat propre.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="06-cube-ndc.html">
+          <span class="nav-label">← Étape 06</span>
+          <span class="nav-title">Le cube NDC</span>
+        </a>
+        <a class="next" href="../ch6/01-pourquoi-complexes.html">
+          <span class="nav-label">Chapitre 06 →</span>
+          <span class="nav-title">Pourquoi les complexes</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Strang L03 — Multiplication et matrices inverses</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}]});"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../../3b1b/strang/ch03-multiplication.html" class="current">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">MIT 18.06 · Lecture 03</div>
+      <h1>Multiplication et matrices inverses</h1>
+      <a class="video-link" href="https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/resources/lecture-3-multiplication-and-inverse-matrices/" target="_blank" rel="noopener">Voir la lecture originale (MIT OCW)</a>
+
+      <p class="lede">
+        Strang revient sur l'operation qu'on croyait connaitre — le produit de deux matrices — et montre qu'on peut la voir de <em>cinq</em> manieres differentes. Toutes donnent le meme resultat ; mais chacune eclaire un coin different de l'algebre lineaire. Puis il aborde l'inverse : quand existe-t-il, comment le calculer, et pourquoi le bon test de singularite n'est pas celui qu'on croit.
+      </p>
+
+      <p>
+        Soit $A$ une matrice $m \times n$ et $B$ une matrice $n \times p$. Pour que $AB$ soit defini, il faut que le nombre de colonnes de $A$ coincide avec le nombre de lignes de $B$ — c'est ce $n$ « du milieu » qui doit etre commun. Le produit $C = AB$ est alors une matrice $m \times p$ : on garde les dimensions « extremes ». Strang ecrit toujours $m \times n$ fois $n \times p$ = $m \times p$ pour memoriser le motif.
+      </p>
+
+      <h2>Maniere 1 — Ligne fois colonne (la version lycee)</h2>
+
+      <p>
+        La premiere maniere est celle qu'on apprend tous : <strong>l'entree $(i, j)$ du produit est le produit scalaire de la ligne $i$ de $A$ par la colonne $j$ de $B$</strong>.
+      </p>
+
+      <div class="math">
+        $$c_{ij} = \sum_{k=1}^{n} a_{ik} \, b_{kj}$$
+      </div>
+
+      <p>
+        C'est correct, c'est universel, c'est ce que tout logiciel calcule. Mais Strang la considere comme la lecture la moins eclairante. Elle nous fait penser le produit cellule par cellule, ce qui rend invisible la <em>structure</em> globale. On va donc reformuler quatre fois le meme calcul.
+      </p>
+
+      <h2>Maniere 2 — Les colonnes de $AB$ sont $A$ fois les colonnes de $B$</h2>
+
+      <p>
+        Regroupons les colonnes. La colonne $j$ du produit $AB$ est ce qu'on obtient quand on applique $A$ a la colonne $j$ de $B$. Autrement dit :
+      </p>
+
+      <div class="math">
+        $$\text{col}_j(AB) = A \cdot \text{col}_j(B)$$
+      </div>
+
+      <p>
+        Si on note les colonnes de $B$ par $b_1, b_2, \ldots, b_p$, alors :
+      </p>
+
+      <div class="math">
+        $$AB = A \begin{bmatrix} \mid & \mid & & \mid \\ b_1 & b_2 & \cdots & b_p \\ \mid & \mid & & \mid \end{bmatrix} = \begin{bmatrix} \mid & \mid & & \mid \\ A b_1 & A b_2 & \cdots & A b_p \\ \mid & \mid & & \mid \end{bmatrix}$$
+      </div>
+
+      <p>
+        Chacun de ces $A b_j$ est lui-meme une combinaison lineaire des colonnes de $A$ — exactement la lecture qu'on a adoptee a la lecture 1. La conclusion : <strong>les colonnes de $AB$ sont toutes dans l'espace colonne de $A$</strong>. Ce fait, gratuit, est l'un des resultats les plus utilises de toute la theorie.
+      </p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 380 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vue par colonnes du produit AB">
+          <defs>
+            <marker id="arrColMul" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#b8431f"/>
+            </marker>
+          </defs>
+          <g font-family="JetBrains Mono, monospace" font-size="13" fill="#1c1a15">
+            <text x="20" y="60">[ a₁₁  a₁₂ ]</text>
+            <text x="20" y="85">[ a₂₁  a₂₂ ]</text>
+          </g>
+          <text x="122" y="79" font-family="Iowan Old Style, Georgia, serif" font-size="16" fill="#1c1a15">·</text>
+          <g font-family="JetBrains Mono, monospace" font-size="13" fill="#1c1a15">
+            <text x="140" y="60">[ b₁₁  b₁₂  b₁₃ ]</text>
+            <text x="140" y="85">[ b₂₁  b₂₂  b₂₃ ]</text>
+          </g>
+          <rect x="151" y="46" width="34" height="46" fill="none" stroke="#b8431f" stroke-width="1.3" rx="3"/>
+          <text x="168" y="108" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#6e2716">col 1 de B</text>
+          <line x1="225" y1="72" x2="290" y2="72" stroke="#b8431f" stroke-width="1.4" marker-end="url(#arrColMul)" stroke-dasharray="4 3"/>
+          <text x="257" y="62" text-anchor="middle" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="12" fill="#6e2716">A · col₁(B)</text>
+          <g font-family="JetBrains Mono, monospace" font-size="13" fill="#1c1a15">
+            <text x="295" y="60">[ c₁₁  c₁₂  c₁₃ ]</text>
+            <text x="295" y="85">[ c₂₁  c₂₂  c₂₃ ]</text>
+          </g>
+          <rect x="306" y="46" width="34" height="46" fill="none" stroke="#b8431f" stroke-width="1.3" rx="3"/>
+          <text x="323" y="108" text-anchor="middle" font-family="Inter, sans-serif" font-size="10.5" fill="#6e2716">col 1 de AB</text>
+          <text x="190" y="148" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#8b8474">Chaque colonne de B traverse A et devient la colonne correspondante de AB.</text>
+        </svg>
+        <figcaption class="figure-caption">Vue par colonnes : chaque colonne de $AB$ est une combinaison des colonnes de $A$, dictee par la colonne correspondante de $B$.</figcaption>
+      </figure>
+
+      <h2>Maniere 3 — Les lignes de $AB$ sont les lignes de $A$ fois $B$</h2>
+
+      <p>
+        Symetrique. La ligne $i$ du produit est la ligne $i$ de $A$ multipliee par $B$ tout entier :
+      </p>
+
+      <div class="math">
+        $$\text{row}_i(AB) = \text{row}_i(A) \cdot B$$
+      </div>
+
+      <p>
+        Et cette ligne $\text{row}_i(A) \cdot B$ est elle-meme une combinaison lineaire des <em>lignes</em> de $B$ — c'est l'image-miroir de la maniere 2. Conclusion : <strong>les lignes de $AB$ sont dans l'espace ligne de $B$</strong>. La aussi, c'est l'un des resultats qu'on reutilisera sans cesse.
+      </p>
+
+      <p>
+        Ces deux lectures, prises ensemble, ont une consequence remarquable : multiplier $A$ par $B$ ne produit que des combinaisons lineaires des structures presentes de chaque cote. Aucune information nouvelle ne naît du produit ; on melange ce qu'on avait deja.
+      </p>
+
+      <h2>Maniere 4 — Somme de matrices de rang 1</h2>
+
+      <p>
+        C'est la version preferee de Strang, celle qui revient toute la suite du cours. On exprime $AB$ comme une <strong>somme</strong> de produits exterieurs (colonne fois ligne) :
+      </p>
+
+      <div class="math">
+        $$AB = \sum_{k=1}^{n} \text{col}_k(A) \cdot \text{row}_k(B)$$
+      </div>
+
+      <p>
+        Chacun des termes $\text{col}_k(A) \cdot \text{row}_k(B)$ est une matrice $m \times p$, mais une matrice tres particuliere : ses colonnes sont toutes paralleles, et ses lignes aussi. C'est une <strong>matrice de rang 1</strong>. Le produit $AB$ se decompose donc en somme de $n$ briques de rang 1.
+      </p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 360 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Decomposition AB en somme de matrices de rang 1">
+          <g font-family="JetBrains Mono, monospace" font-size="12" fill="#1c1a15">
+            <text x="20" y="100">AB =</text>
+          </g>
+          <g font-family="JetBrains Mono, monospace" font-size="11" fill="#b8431f">
+            <text x="70" y="80">[ a₁₁ ]</text>
+            <text x="70" y="95">[ a₂₁ ]</text>
+            <text x="70" y="110">[ a₃₁ ]</text>
+          </g>
+          <text x="115" y="100" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="13" fill="#1c1a15">·</text>
+          <g font-family="JetBrains Mono, monospace" font-size="11" fill="#1e5a7a">
+            <text x="125" y="95">[ b₁₁  b₁₂ ]</text>
+          </g>
+          <text x="200" y="100" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1c1a15">+</text>
+          <g font-family="JetBrains Mono, monospace" font-size="11" fill="#b8431f">
+            <text x="220" y="80">[ a₁₂ ]</text>
+            <text x="220" y="95">[ a₂₂ ]</text>
+            <text x="220" y="110">[ a₃₂ ]</text>
+          </g>
+          <text x="265" y="100" font-family="Iowan Old Style, Georgia, serif" font-style="italic" font-size="13" fill="#1c1a15">·</text>
+          <g font-family="JetBrains Mono, monospace" font-size="11" fill="#1e5a7a">
+            <text x="275" y="95">[ b₂₁  b₂₂ ]</text>
+          </g>
+          <text x="180" y="150" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#8b8474">Chaque terme : colonne k de A (vecteur colonne) fois ligne k de B (vecteur ligne).</text>
+          <text x="180" y="166" text-anchor="middle" font-family="Inter, sans-serif" font-size="11.5" fill="#8b8474">Le resultat est une matrice de rang 1. On somme les rangs 1.</text>
+        </svg>
+        <figcaption class="figure-caption">$AB$ comme somme de produits exterieurs. C'est la decomposition qui anticipe la SVD, et qui revient partout en analyse de donnees.</figcaption>
+      </figure>
+
+      <p>
+        Pourquoi est-ce eclairant ? Parce que cela montre qu'<em>une matrice de petit rang peut etre stockee tres efficacement</em>. Si $AB$ peut s'ecrire comme la somme de seulement $r$ termes au lieu de $n$, le produit est de rang $r$ — et on n'a besoin que des $r$ colonnes correspondantes de $A$ et des $r$ lignes correspondantes de $B$. C'est l'idee germinale de la compression matricielle, de l'analyse en composantes principales, de la decomposition en valeurs singulieres.
+      </p>
+
+      <h2>Maniere 5 — Multiplication par blocs</h2>
+
+      <p>
+        La derniere lecture est moins philosophique mais redoutablement pratique. Si on decoupe $A$ et $B$ en blocs (sous-matrices), de tailles compatibles, alors $AB$ se calcule <em>exactement</em> comme un produit de matrices ordinaire, mais avec des blocs a la place des scalaires :
+      </p>
+
+      <div class="math">
+        $$\begin{bmatrix} A_1 & A_2 \\ A_3 & A_4 \end{bmatrix} \begin{bmatrix} B_1 & B_2 \\ B_3 & B_4 \end{bmatrix} = \begin{bmatrix} A_1 B_1 + A_2 B_3 & A_1 B_2 + A_2 B_4 \\ A_3 B_1 + A_4 B_3 & A_3 B_2 + A_4 B_4 \end{bmatrix}$$
+      </div>
+
+      <p>
+        C'est ce qu'on utilise pour les algorithmes paralleles, pour les GPU, et pour toutes les preuves elegantes ou il vaut mieux ne pas redescendre au niveau des entrees individuelles.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Cinq lectures, un seul produit.</strong> Quand quelqu'un parle de $AB$, l'oeil entraine choisit immediatement la lecture la plus eclairante pour la question posee. Strang dira plus tard : « <em>which form do you want?</em> ». Le bon reflexe en algebre lineaire est de toutes les avoir disponibles.
+      </p>
+
+      <h2>L'inverse : annuler une matrice</h2>
+
+      <p>
+        On passe au second sujet de la lecture. Une matrice carree $A$ a un <strong>inverse</strong> $A^{-1}$ si — et seulement si — il existe une matrice $A^{-1}$ telle que :
+      </p>
+
+      <div class="math">
+        $$A^{-1} A = I = A A^{-1}$$
+      </div>
+
+      <p>
+        Pour les matrices carrees, ces deux egalites sont automatiquement vraies en meme temps : si l'une a lieu, l'autre aussi. (Pour les matrices rectangulaires, la situation se complique — on a des inverses « a gauche » et « a droite » qui peuvent exister separement. Strang le glisse en passant.)
+      </p>
+
+      <p>
+        Toutes les matrices carrees n'ont pas d'inverse. Celles qui en ont s'appellent <strong>inversibles</strong> ou <strong>non singulieres</strong> ; les autres sont <strong>singulieres</strong>.
+      </p>
+
+      <h2>Le test de Strang : trouver un $x$ non nul qui annule $A$</h2>
+
+      <p>
+        Comment savoir si $A$ est singuliere ? Strang donne un test direct et qu'on peut appliquer a la main : <strong>$A$ est singuliere si et seulement s'il existe un vecteur $x$ non nul tel que $Ax = 0$</strong>.
+      </p>
+
+      <p>
+        Le raisonnement, dans un sens, est trois lignes : si $A^{-1}$ existait et que $Ax = 0$, alors on pourrait multiplier a gauche par $A^{-1}$ et obtenir $x = A^{-1} (Ax) = A^{-1} \cdot 0 = 0$. Donc si on trouve un $x$ non nul qui satisfait $Ax = 0$, c'est l'inverse qui ne peut pas exister.
+      </p>
+
+      <p>
+        Et geometriquement, c'est limpide : $Ax = 0$ veut dire « une combinaison non triviale des colonnes de $A$ donne le vecteur nul ». Autrement dit, les colonnes ne sont pas independantes. Or sans independance, on ne peut pas atteindre tous les $b$, et l'application $x \mapsto Ax$ n'est pas reversible.
+      </p>
+
+      <p>
+        Strang prend un exemple ostentatoire :
+      </p>
+
+      <div class="math">
+        $$A = \begin{bmatrix} 1 & 3 \\ 2 & 6 \end{bmatrix}$$
+      </div>
+
+      <p>
+        La seconde colonne est trois fois la premiere. Le vecteur $x = (3, -1)$ donne $Ax = (3 - 3, 6 - 6) = (0, 0)$. Donc $A$ est singuliere — pas d'inverse.
+      </p>
+
+      <h2>Gauss-Jordan : calculer l'inverse</h2>
+
+      <p>
+        Quand l'inverse existe, comment le trouver ? Strang propose une procedure aussi mecanique que l'elimination, baptisee <strong>Gauss-Jordan</strong>. L'idee : appliquer une suite d'operations elementaires sur la matrice augmentee $[A \mid I]$ jusqu'a transformer $A$ en $I$. Ce qui apparait du cote droit est alors $A^{-1}$.
+      </p>
+
+      <div class="math">
+        $$\bigl[\, A \;\big|\; I \,\bigr] \;\xrightarrow{\text{operations elementaires}}\; \bigl[\, I \;\big|\; A^{-1} \,\bigr]$$
+      </div>
+
+      <p>
+        Pourquoi ca marche ? Parce que chaque operation elementaire est une matrice $E$ multipliee a gauche. Si la sequence complete d'operations envoie $A$ sur $I$, c'est qu'on a applique une matrice $E$ telle que $E A = I$. Cela definit exactement $E = A^{-1}$. Et la meme sequence d'operations, appliquee a $I$ de l'autre cote, donne $E I = E = A^{-1}$. Le cote droit conserve donc, pas a pas, ce que ferait $A^{-1}$ a la matrice identite — et a la fin, il <em>est</em> $A^{-1}$.
+      </p>
+
+      <p>
+        Concrètement, sur $A = \begin{bmatrix} 1 & 3 \\ 2 & 7 \end{bmatrix}$ :
+      </p>
+
+      <div class="math">
+        $$\left[\begin{array}{cc|cc} 1 & 3 & 1 & 0 \\ 2 & 7 & 0 & 1 \end{array}\right] \;\xrightarrow{L_2 \leftarrow L_2 - 2L_1}\; \left[\begin{array}{cc|cc} 1 & 3 & 1 & 0 \\ 0 & 1 & -2 & 1 \end{array}\right]$$
+      </div>
+
+      <div class="math">
+        $$\xrightarrow{L_1 \leftarrow L_1 - 3L_2}\; \left[\begin{array}{cc|cc} 1 & 0 & 7 & -3 \\ 0 & 1 & -2 & 1 \end{array}\right]$$
+      </div>
+
+      <p>
+        Donc $A^{-1} = \begin{bmatrix} 7 & -3 \\ -2 & 1 \end{bmatrix}$. Verification : $A A^{-1} = I$, et le tour est joue.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Le lien avec l'elimination de la lecture 2</span>
+        <p>
+          La phase de descente — annuler sous les pivots — est exactement ce qu'on a fait a la lecture 2 : c'est le passage $A \to U$. La phase de remontee — annuler au-dessus des pivots et normaliser — pousse plus loin pour atteindre l'identite. Gauss-Jordan, c'est l'elimination de Gauss <em>continuee</em> jusqu'au bout. Du coup, le cout est environ deux fois celui de la simple elimination : raisonnable, mais inferieur a d'autres approches pour les grandes matrices, ou l'on prefere $LU$ et back-substitution. Strang le note : on ne calcule presque jamais $A^{-1}$ explicitement en pratique. On factorise et on resout.
+        </p>
+      </aside>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Le produit $AB$ se voit de cinq facons : (1) entree par entree en faisant des produits scalaires, (2) colonne par colonne en appliquant $A$ aux colonnes de $B$, (3) ligne par ligne en multipliant les lignes de $A$ par $B$, (4) comme une somme de matrices de rang 1, et (5) par blocs. Les trois centrales — (2), (3), (4) — sont celles qui eclairent la structure.
+      </p>
+
+      <p>
+        Une matrice carree $A$ a un inverse $A^{-1}$ si et seulement s'il <em>n'existe pas</em> de vecteur $x \neq 0$ tel que $Ax = 0$. Autrement dit, ses colonnes doivent etre lineairement independantes. Et quand l'inverse existe, on le calcule par <strong>Gauss-Jordan</strong> sur la matrice augmentee $[A \mid I]$, qui se transforme en $[I \mid A^{-1}]$.
+      </p>
+
+      <p>
+        Ces trois lectures Strang — geometrie des equations, elimination, multiplication/inverse — forment le socle. Tout le reste de 18.06 (sous-espaces, projections, orthogonalite, determinants, valeurs propres, SVD) reposera explicitement sur ces trois fondations. Et Strang ne se prive jamais de revenir y puiser une intuition, jusqu'a la lecture 34.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="ch02-elimination.html">
+          <span class="nav-label">Precedent</span>
+          <span class="nav-title">← L02 — Elimination</span>
+        </a>
+        <a class="next" href="index.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">Sommaire Strang →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

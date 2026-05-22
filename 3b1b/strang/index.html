@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Extension Strang — MIT 18.06, premiers chapitres</title>
+  <link rel="stylesheet" href="../styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+    onload="renderMathInElement(document.body, {delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}, {left: '\\[', right: '\\]', display: true}, {left: '\\(', right: '\\)', display: false}]});"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../../3b1b/strang/index.html" class="current">Sommaire</a></li>
+          <li><a href="../../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <p style="font-family: 'Inter', system-ui, sans-serif; font-size: 12.5px; margin: 0 0 2rem;">
+        <a href="../index.html" style="opacity: 0.7;">↩ Sommaire 3b1b</a> ·
+        <a href="../../index.html" style="opacity: 0.7;">⇲ Cours principal Matrix</a>
+      </p>
+      <div class="hero-index">
+        <h1>Extension Strang</h1>
+        <p class="tagline">MIT 18.06 — trois premieres lecons, vues par Gilbert Strang</p>
+      </div>
+
+      <p>
+        Cette extension prolonge le <a href="../index.html">companion 3blue1brown</a> avec la voix complementaire de <strong>Gilbert Strang</strong>, professeur emblematique du MIT, dont le cours <em>18.06 Linear Algebra</em> (Spring 2010) est l'autre cathedrale pedagogique de l'algebre lineaire.
+      </p>
+
+      <p>
+        La ou Grant Sanderson part de l'image — la fleche, l'espace qui se deforme — Strang part de la <em>matrice</em>, et plus precisement de ses colonnes. Sa marque de fabrique tient en une phrase qu'il repete : <em>« regardez les colonnes »</em>. Le row picture (geometrie des equations) raconte une histoire ; le column picture (combinaisons des colonnes) en raconte une autre, plus profonde. Strang fait passer du premier au second avec une patience qui transforme la matiere.
+      </p>
+
+      <p>
+        On couvre ici les trois premieres lecons du cours, celles qui posent toute la suite. Format identique au companion 3b1b : une page riche par lecon, intuition geometrique avant formule, math typographiee en KaTeX, asides pour les approfondissements, lien vers la video originale MIT OCW.
+      </p>
+
+      <h2>Les 3 premieres lecons</h2>
+
+      <div class="episode-list">
+
+        <a class="episode-card" href="ch01-geometry.html">
+          <span class="ep-num">Lecture 01</span>
+          <h3>La geometrie des equations lineaires</h3>
+          <p class="one-liner">Row picture vs column picture — la grande revelation.</p>
+        </a>
+
+        <a class="episode-card" href="ch02-elimination.html">
+          <span class="ep-num">Lecture 02</span>
+          <h3>Elimination avec matrices</h3>
+          <p class="one-liner">Comment Strang resout $Ax = b$ : pivots, $E_{ij}$, $A = LU$ qui pointe.</p>
+        </a>
+
+        <a class="episode-card" href="ch03-multiplication.html">
+          <span class="ep-num">Lecture 03</span>
+          <h3>Multiplication et inverse</h3>
+          <p class="one-liner">Cinq facons de voir $AB$, et Gauss-Jordan pour $A^{-1}$.</p>
+        </a>
+
+      </div>
+
+      <h2>Pourquoi Strang apres 3b1b</h2>
+
+      <p>
+        Les deux cours ne disent pas la meme chose. 3b1b vise l'<em>intuition geometrique</em> : ce qui arrive a l'espace quand on lui applique une matrice. Strang vise l'<em>algorithme</em> : comment, concretement, on calcule, on factorise, on resout. L'un sans l'autre laisse une moitie de l'histoire. Ensemble, ils donnent l'image complete.
+      </p>
+
+      <p>
+        On aurait pu choisir d'autres lecons — la SVD, les quatre sous-espaces fondamentaux, la factorisation $A = LU$ developpee. On commence ici par les trois premieres, qui posent les fondations : voir une matrice de trois manieres differentes (par lignes, par colonnes, comme operateur), et reduire un systeme par elimination. Tout le reste de 18.06 construit sur ce socle.
+      </p>
+
+      <h2>Liens externes</h2>
+
+      <ul>
+        <li>Cours complet sur MIT OpenCourseWare : <a href="https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/" target="_blank" rel="noopener">18.06 Linear Algebra, Spring 2010</a></li>
+        <li>Playlist YouTube des 34 lectures : <a href="https://www.youtube.com/playlist?list=PL49CF3715CB9EF31D" target="_blank" rel="noopener">MIT 18.06 Linear Algebra</a></li>
+        <li>Manuel associe : <em>Introduction to Linear Algebra</em>, 5e edition, Gilbert Strang, Wellesley-Cambridge Press</li>
+      </ul>
+
+      <p style="margin-top: 4rem; color: var(--muted); font-size: 0.85rem; text-align: center;">
+        Extension du companion 3blue1brown — resumes non officiels du cours 18.06 par Gilbert Strang.<br>
+        Toutes les credits pedagogiques vont a l'auteur original.
+      </p>
+    </main>
+  </div>
+</body>
+</html>

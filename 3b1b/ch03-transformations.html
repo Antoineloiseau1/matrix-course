@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ep 03 — Transformations lineaires et matrices</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\(', right: '\)', display: false},
+        {left: '\[', right: '\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html" class="current">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Essence of Linear Algebra · Episode 03</div>
+      <h1>Transformations lineaires et matrices</h1>
+      <a class="video-link" href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Voir la video originale (3blue1brown)</a>
+
+      <p class="lede">
+        L'episode central de la serie. Grant y revele ce qu'est vraiment une matrice : <em>la donnee de l'endroit ou atterrissent les vecteurs de base apres transformation</em>. Cette idee transforme — c'est le mot — la maniere dont on lit les calculs matriciels pour le reste de sa vie.
+      </p>
+
+      <p>
+        Une <strong>transformation</strong>, c'est juste une fonction qui prend un vecteur et en rend un autre. Le mot « transformation » plutot que « fonction » est un choix pedagogique : il invite a visualiser <em>tous les vecteurs simultanement</em> en train de bouger vers leur image, comme si l'espace entier se deformait.
+      </p>
+
+      <p>
+        Toutes les fonctions ne sont pas autorisees. Pour qu'une transformation soit <strong>lineaire</strong>, deux conditions visuelles doivent etre satisfaites :
+      </p>
+
+      <ul>
+        <li>Les lignes droites restent des lignes droites (pas de courbure).</li>
+        <li>L'origine reste fixe (le point <code>0</code> reste a sa place).</li>
+      </ul>
+
+      <p>
+        Plus precisement, la grille de l'espace doit rester <em>parallele et regulierement espacee</em> apres deformation. Une rotation, un cisaillement, un etirement — sont lineaires. Une rotation autour d'un point qui n'est pas l'origine, ou une fonction qui plie l'espace : non.
+      </p>
+
+      <h2>L'observation clef</h2>
+
+      <p>
+        Voici le moment <em>aha</em> de la serie. Si je connais une transformation lineaire <code>L</code>, et que je sais ou atterrissent <code>i&#770;</code> et <code>j&#770;</code>, alors je sais ou atterrit <em>n'importe quel</em> vecteur.
+      </p>
+
+      <p>
+        Pourquoi ? Parce qu'un vecteur quelconque s'ecrit <code>v = x·i&#770; + y·j&#770;</code>. Et une transformation lineaire, par definition, preserve les combinaisons lineaires :
+      </p>
+
+      <div class="math">$$L(\mathbf{v}) = L(x\,\hat{\imath} + y\,\hat{\jmath}) = x \, L(\hat{\imath}) + y \, L(\hat{\jmath})$$</div>
+
+      <p>
+        Donc <code>L(v)</code> est la <em>meme</em> combinaison <code>x·(...) + y·(...)</code>, mais avec les <em>nouvelles</em> images de <code>i&#770;</code> et <code>j&#770;</code> a la place des anciennes. Tout est code dans ces deux images.
+      </p>
+
+      <h2>La matrice : juste un rangement</h2>
+
+      <p>
+        On a donc besoin de stocker deux vecteurs : <code>L(i&#770;)</code> et <code>L(j&#770;)</code>. Une matrice 2×2 est exactement le rangement standard pour cela : <strong>la premiere colonne est ou atterrit <code>i&#770;</code></strong>, <strong>la seconde colonne est ou atterrit <code>j&#770;</code></strong>.
+      </p>
+
+      <div class="math">$$M = \begin{bmatrix} a & b \\ c & d \end{bmatrix} \qquad L(\hat{\imath}) = \begin{bmatrix} a \\ c \end{bmatrix} \qquad L(\hat{\jmath}) = \begin{bmatrix} b \\ d \end{bmatrix}$$</div>
+
+      <p>
+        Et la « multiplication matrice-vecteur » <code>M·v</code>, ce n'est rien d'autre que le calcul de la combinaison <code>x·L(i&#770;) + y·L(j&#770;)</code> :
+      </p>
+
+      <div class="math">$$\begin{bmatrix} a & b \\ c & d \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = x \begin{bmatrix} a \\ c \end{bmatrix} + y \begin{bmatrix} b \\ d \end{bmatrix} = \begin{bmatrix} ax + by \\ cx + dy \end{bmatrix}$$</div>
+
+      <p class="pull-quote">
+        <strong>Les colonnes d'une matrice sont les images des vecteurs de base.</strong> Multiplier une matrice par un vecteur, c'est combiner ces colonnes avec les coordonnees du vecteur.
+      </p>
+
+      <h2>Quelques exemples celebres</h2>
+
+      <p>
+        La rotation de 90° envoie <code>i&#770; = [1, 0]</code> vers <code>[0, 1]</code> et <code>j&#770; = [0, 1]</code> vers <code>[-1, 0]</code>. Sa matrice est donc :
+      </p>
+
+      <div class="math">$$\begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}$$</div>
+
+      <p>
+        Le cisaillement horizontal qui laisse <code>i&#770;</code> en place et envoie <code>j&#770;</code> vers <code>[1, 1]</code> :
+      </p>
+
+      <div class="math">$$\begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}$$</div>
+
+      <p>
+        L'etirement par 2 sur l'axe x et 3 sur l'axe y :
+      </p>
+
+      <div class="math">$$\begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix}$$</div>
+
+      <p>
+        Chaque matrice raconte litteralement, dans ses colonnes, l'histoire de la transformation. Lire une matrice, c'est lire deux fleches.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Une matrice n'est pas un sac de nombres</span>
+        <p>
+          Avant cet episode, une matrice se presentait comme un tableau de nombres avec des regles de calcul mysterieuses. Apres : c'est une transformation, et ses colonnes en sont la description visuelle complete. Tous les calculs matriciels qui suivent — produit, determinant, inverse — vont prendre un sens geometrique a partir de cette relecture. Si une formule matricielle te semble opaque, demande-toi : qu'est-ce qu'elle fait aux colonnes ? La reponse est presque toujours eclairante.
+        </p>
+      </aside>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Une transformation lineaire deforme l'espace en preservant la grille (droite, regulierement espacee, origine fixee). Elle est entierement determinee par les images des vecteurs de base.
+      </p>
+
+      <p>
+        Une matrice n × n encode une transformation lineaire de l'espace n-dimensionnel : ses <em>colonnes</em> sont les images des n vecteurs de base. La multiplication matrice-vecteur calcule la combinaison lineaire des colonnes par les coordonnees du vecteur.
+      </p>
+
+      <p>
+        Tous les calculs matriciels suivants se relisent a travers cette lentille — c'est la lecon a internaliser avant tout le reste.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="ch02-span.html">
+          <span class="nav-label">Precedent</span>
+          <span class="nav-title">← Ep 02 — Combinaisons, span</span>
+        </a>
+        <a class="next" href="ch04-composition.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">Ep 04 — Composition →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

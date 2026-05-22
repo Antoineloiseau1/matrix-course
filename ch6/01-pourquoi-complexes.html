@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pourquoi les nombres complexes — Chapitre 6 §1</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+
+  <style>
+    .cycle-illu {
+      display: block;
+      margin: 2rem auto;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html" class="current">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 6 · §1</div>
+      <h1>Pourquoi les nombres complexes</h1>
+      <p class="lede">
+        Pendant cinq chapitres, on a manipulé des vecteurs et des matrices à coefficients réels. C'était largement suffisant pour le pipeline 3D, pour Gauss, pour la projection. Mais l'exercice 15 du sujet nous invite à refaire tout ce travail avec un autre type de scalaire : les nombres complexes. Avant d'écrire la moindre ligne de Rust, il faut comprendre pourquoi cet objet existe, et pourquoi ce n'est pas une lubie de mathématicien.
+      </p>
+
+      <p>
+        On va commencer par un mur. Pose-toi la question, vraiment, prends quelques secondes : quel est le nombre $x$ tel que $x^2 = -1$ ? Essaie quelques candidats. $x = 1$ donne $1$. $x = -1$ donne $1$. $x = 2.7$ donne $7.29$. Quel que soit le nombre réel que tu choisis, positif, négatif, décimal, irrationnel, son carré est toujours positif ou nul. Jamais négatif. C'est une propriété fondamentale, presque tautologique : multiplier deux nombres de même signe donne du positif, et un nombre est forcément de même signe que lui-même.
+      </p>
+
+      <p>
+        Donc, dans le monde des nombres réels, l'équation $x^2 = -1$ n'a pas de solution. Point. Et pendant des siècles, c'était la fin de l'histoire : l'équation existe sur le papier, on la regarde, on hausse les épaules, on passe. Sauf que ce mur cachait quelque chose. Et quand on a osé le traverser, on a découvert tout un monde mathématique qui sous-tend aujourd'hui l'électronique, le traitement du signal, la mécanique quantique, l'infographie 2D et même certaines techniques de machine learning.
+      </p>
+
+      <h2>L'audace d'inventer</h2>
+
+      <p>
+        Au XVIe siècle, les mathématiciens italiens — Cardano, Bombelli — tombent sur ce mur d'une manière inattendue. Ils essaient de résoudre des équations cubiques (du troisième degré), et leurs formules les forcent à manipuler temporairement des racines carrées de nombres négatifs au milieu du calcul, alors même que le résultat final est un nombre réel parfaitement banal. C'est comme si la solution honnête d'un problème passait obligatoirement par un passage dans un univers parallèle.
+      </p>
+
+      <p>
+        Face à cette énigme, ils ont deux options. La première, raisonnable : déclarer le calcul invalide, chercher une autre méthode. La seconde, aventurière : accepter que ces racines bizarres existent au milieu du calcul, et voir si l'on peut les manipuler de manière cohérente. Cardano les appelle <em>quantités sophistiquées</em>. Bombelli les manipule formellement, sans se demander ce qu'elles sont. Et ça marche : les calculs intermédiaires se simplifient, les racines bizarres s'annulent entre elles, et le résultat réel apparaît correctement à la fin. Le passage par cet ailleurs n'était pas une erreur, c'était un raccourci.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangente</span>
+        <p>
+          Cette histoire ressemble à celle des nombres négatifs. Les Grecs ne les acceptaient pas — un nombre représentait une longueur ou une quantité, et une longueur ne peut pas être négative. Mais à force de manipuler des dettes, des températures sous zéro, des positions à gauche de l'origine, on a fini par les admettre. La même réaction frileuse s'est reproduite avec le zéro, avec les irrationnels comme $\sqrt{2}$, plus tard avec les complexes. À chaque élargissement, un siècle ou deux d'inconfort, puis l'évidence : ces nouveaux nombres étaient indispensables tout le temps.
+        </p>
+      </aside>
+
+      <h2>On baptise le nouveau nombre</h2>
+
+      <p>
+        Si l'on accepte cet acte de création, il faut un nom. On postule qu'il existe un nombre, baptisé $i$ (pour <em>imaginaire</em>, terme légué par Descartes au XVIIe siècle de manière un peu péremptoire), qui satisfait :
+      </p>
+
+      $$i^2 = -1$$
+
+      <p>
+        C'est tout. Une seule règle. Ce $i$ n'est pas sur la droite des nombres réels — s'il y était, on l'aurait trouvé. Il vit ailleurs, et pour l'instant on ne se demande pas où : c'est un symbole avec une propriété. La règle de l'algèbre du collège reste valide pour le reste : on peut multiplier, additionner, distribuer, factoriser $i$ comme une lettre algébrique classique. Seule la règle $i \times i = -1$ vient s'ajouter.
+      </p>
+
+      <p>
+        Cette règle a une conséquence immédiate, presque magique : les puissances de $i$ forment un <strong>cycle de quatre</strong>.
+      </p>
+
+      $$
+      \begin{aligned}
+      i^0 &= 1 \\
+      i^1 &= i \\
+      i^2 &= -1 \\
+      i^3 &= i^2 \times i = -1 \times i = -i \\
+      i^4 &= i^2 \times i^2 = (-1) \times (-1) = 1
+      \end{aligned}
+      $$
+
+      <p>
+        Arrivé à $i^4$, on retombe sur $1$. Et donc $i^5 = i$, $i^6 = -1$, etc. — le cycle redémarre. Quatre valeurs, $\{1, i, -1, -i\}$, qui se succèdent en boucle.
+      </p>
+
+      <svg class="cycle-illu" viewBox="0 0 460 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <!-- Axes -->
+        <line x1="60" y1="130" x2="400" y2="130" stroke="#ddd6c2" stroke-width="1"/>
+        <line x1="230" y1="30" x2="230" y2="230" stroke="#ddd6c2" stroke-width="1"/>
+
+        <!-- Cercle directeur -->
+        <circle cx="230" cy="130" r="78" fill="none" stroke="#ddd6c2" stroke-width="1" stroke-dasharray="3 3"/>
+
+        <!-- Points du cycle -->
+        <circle cx="308" cy="130" r="5" fill="#b8431f"/>
+        <text x="318" y="135" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#1c1a15">1 = i⁰ = i⁴</text>
+
+        <circle cx="230" cy="52"  r="5" fill="#b8431f"/>
+        <text x="240" y="49"  font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#1c1a15">i = i¹</text>
+
+        <circle cx="152" cy="130" r="5" fill="#b8431f"/>
+        <text x="60"  y="135" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#1c1a15">−1 = i²</text>
+
+        <circle cx="230" cy="208" r="5" fill="#b8431f"/>
+        <text x="240" y="213" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#1c1a15">−i = i³</text>
+
+        <!-- Fleches du cycle -->
+        <path d="M 300 122 A 75 75 0 0 0 238 56" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow)"/>
+        <path d="M 222 56 A 75 75 0 0 0 160 122"  fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow)"/>
+        <path d="M 160 138 A 75 75 0 0 0 222 204" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow)"/>
+        <path d="M 238 204 A 75 75 0 0 0 300 138" fill="none" stroke="#1e5a7a" stroke-width="1.4" marker-end="url(#arrow)"/>
+
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#1e5a7a"/>
+          </marker>
+        </defs>
+      </svg>
+
+      <p>
+        Garde cette image en tête. Au chapitre suivant, on verra que multiplier par $i$ correspond géométriquement à une <strong>rotation de 90 degrés</strong>. Quatre rotations de 90 degrés font un tour complet de $360^\circ$, ce qui explique pourquoi le cycle est de longueur quatre. Pour l'instant, c'est juste une curiosité algébrique, mais c'est le germe de toute la géométrie qui suivra.
+      </p>
+
+      <h2>Combiner $i$ avec des réels</h2>
+
+      <p>
+        Si $i$ se comporte comme une lettre algébrique normale (à part sa règle spéciale), alors on peut le combiner librement avec les réels. Les expressions $1 + i$, $3 - 2i$, $\pi i$, $0.5 + 7i$ sont toutes légitimes : un réel additionné ou soustrait avec un multiple de $i$. Et si l'on en additionne deux, par exemple :
+      </p>
+
+      $$
+      \begin{aligned}
+      (2 + 3i) + (5 - i) &= (2 + 5) + (3i - i) \\
+                          &= 7 + 2i
+      \end{aligned}
+      $$
+
+      <p>
+        on regroupe d'un côté la partie sans $i$, de l'autre la partie avec $i$, et l'on retombe sur la même forme : <em>un réel, plus un autre réel multiplié par $i$</em>. Cette structure, $a + bi$, va s'avérer être la <strong>forme canonique</strong> dans laquelle tout nombre complexe peut s'écrire — pas seulement les sommes simples comme ci-dessus, mais aussi les produits, les quotients, les puissances. On développera cela en détail au chapitre suivant.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Un nombre complexe est juste un couple de deux réels.</strong>
+        La partie devant $i$, et la partie sans $i$. Le mot "imaginaire" sonne mystérieux, mais informatiquement, c'est deux flottants côte à côte.
+      </p>
+
+      <h2>L'ensemble $\mathbb{C}$</h2>
+
+      <p>
+        On note $\mathbb{C}$ l'ensemble de tous les nombres de la forme $a + bi$, avec $a$ et $b$ réels. Cet ensemble contient tous les réels comme cas particulier : $a = a + 0i$, autrement dit un réel $a$ est juste un complexe dont la partie devant $i$ vaut zéro. Donc $\mathbb{R} \subset \mathbb{C}$ — les complexes englobent les réels, ils ne les remplacent pas.
+      </p>
+
+      <p>
+        Et tout comme $\mathbb{R}$ obéit aux règles arithmétiques classiques (associativité, commutativité, distributivité, existence d'un inverse pour la multiplication sauf pour zéro), $\mathbb{C}$ obéit aux mêmes règles. On dit que $\mathbb{C}$ est un <strong>corps</strong>, terme mathématique exact pour désigner "un ensemble de nombres où l'on peut faire $+, -, \times, \div$ avec les propriétés usuelles". $\mathbb{R}$ et $\mathbb{C}$ sont tous deux des corps. Les entiers $\mathbb{Z}$, eux, n'en sont pas un (puisque $1 \div 2 = 0.5$ sort de $\mathbb{Z}$).
+      </p>
+
+      <p>
+        Le mot anglais pour "corps" est <em>field</em>. C'est exactement le nom du trait Rust qu'on a mis en place dès l'exercice 00 : <code>trait Field</code>. Quand on écrira <code>impl Field for Complex</code>, on dira littéralement "le type Complex obéit aux règles d'un corps". Le pont entre une notion mathématique vieille de plus d'un siècle et un trait Rust de 2024 est exactement là.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">tangente</span>
+        <p>
+          La généralisation peut continuer. Les <em>quaternions</em>, découverts par Hamilton en 1843, étendent les complexes à quatre dimensions au lieu de deux : on a $i$, $j$, $k$ qui satisfont $i^2 = j^2 = k^2 = ijk = -1$. Ils sont utilisés massivement en infographie pour interpoler des rotations 3D sans souffrir des fameuses singularités de Cardan. Plus loin encore, les <em>octonions</em> vont à huit dimensions, mais perdent la commutativité ET l'associativité. À chaque étage de la généralisation, on gagne quelque chose et on perd autre chose. Les complexes, eux, sont le point idéal : on gagne la résolution de toutes les équations polynomiales (théorème fondamental de l'algèbre) sans rien perdre des bonnes propriétés arithmétiques.
+        </p>
+      </aside>
+
+      <h2>Pourquoi on les a gardés</h2>
+
+      <p>
+        Cardano les a inventés pour ne pas se faire bloquer dans un calcul. Mais s'ils étaient restés une astuce de calcul, on les aurait probablement abandonnés. Ce qui les a fait survivre — et les a rendus omniprésents — c'est qu'ils décrivent <strong>de vraies choses dans le monde physique et numérique</strong>.
+      </p>
+
+      <ul>
+        <li>
+          <strong>Le traitement du signal</strong> : un signal sinusoïdal $A \cos(\omega t + \varphi)$ s'écrit beaucoup plus simplement comme la partie réelle d'une exponentielle complexe $A e^{i(\omega t + \varphi)}$. Toute la transformée de Fourier, qui décompose un son ou une image en fréquences élémentaires, vit naturellement dans $\mathbb{C}$.
+        </li>
+        <li>
+          <strong>L'électronique</strong> : l'impédance d'un condensateur ou d'une bobine est une grandeur complexe. Les ingénieurs électriciens passent leur vie dans $\mathbb{C}$.
+        </li>
+        <li>
+          <strong>La mécanique quantique</strong> : la fonction d'onde d'une particule est à valeurs complexes, et c'est pas un artifice technique — la phase complexe est une donnée physique mesurable à travers les interférences.
+        </li>
+        <li>
+          <strong>Les rotations 2D</strong> : multiplier par un complexe de module $1$ fait tourner un point dans le plan. Une rotation devient une multiplication. On y reviendra au prochain chapitre.
+        </li>
+        <li>
+          <strong>Les fractales</strong> : l'ensemble de Mandelbrot, le plus célèbre objet fractal, est défini par une récurrence simple sur des complexes — $z_{n+1} = z_n^2 + c$. Sans $\mathbb{C}$, pas de fractale.
+        </li>
+      </ul>
+
+      <p>
+        Aucune de ces applications n'a été prévue par Cardano. Mais l'objet qu'il a inventé pour débloquer une formule s'est révélé encoder, profondément, certaines des structures les plus utiles du monde réel. C'est l'une des plus belles histoires de cette discipline : ouvrir une porte par nécessité calculatoire, et découvrir derrière un continent entier.
+      </p>
+
+      <hr class="ornament">
+
+      <h2>La suite</h2>
+
+      <p>
+        On a maintenant le pourquoi. Au chapitre suivant, on va passer au <em>comment</em> : comment additionner, soustraire, multiplier, diviser deux complexes ; comment représenter un complexe comme un point dans le plan ; pourquoi multiplier par $i$ est exactement une rotation de quart de tour. C'est l'algèbre et la géométrie de $\mathbb{C}$ — les deux faces du même objet — qui nous donneront tout ce qu'il faut pour écrire la struct <code>Complex</code> en Rust.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="../ch5/07-matrice-ligne-par-ligne.html">
+          <span class="nav-label">← Chapitre 5</span>
+          <span class="nav-title">Matrice ligne par ligne</span>
+        </a>
+        <a class="next" href="02-algebre-geometrie.html">
+          <span class="nav-label">§2 →</span>
+          <span class="nav-title">Algèbre et géométrie de C</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

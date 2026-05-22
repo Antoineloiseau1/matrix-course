@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Les normes — Chapitre 2 §2</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html" class="current">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 2 · §2</div>
+      <h1>Les normes</h1>
+      <p class="lede">
+        On croit savoir ce que veut dire « la taille » d'une flèche, jusqu'au moment où on se rend compte qu'il y a au moins trois façons raisonnables de la mesurer. Trois géométries différentes pour répondre à la même question. Cette fiche raconte pourquoi elles cohabitent toutes, ce que chacune voit, et pourquoi changer de norme revient à changer la forme de ce qu'on appelle « l'unité ».
+      </p>
+
+      <p>
+        On a vu dans la fiche précédente que le produit scalaire d'un vecteur avec lui-même donnait le carré de sa longueur. Le mot « longueur » a glissé dans la phrase sans qu'on s'y arrête. Maintenant on s'y arrête. Qu'est-ce que c'est, exactement, la longueur d'une flèche ? Et surtout — est-ce qu'il y en a une seule, ou plusieurs ?
+      </p>
+
+      <h2>L'intuition de départ : une flèche et sa longueur</h2>
+
+      <p>
+        Mettons de côté les axiomes pour l'instant. Un vecteur, c'est une flèche partant de l'origine. Sa <strong>norme</strong>, c'est <em>la distance entre la queue et la pointe</em> — exactement ce qu'on lirait avec une règle posée le long de la flèche.
+      </p>
+
+      <svg class="illu" viewBox="0 0 420 160" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c2s2-u" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+        </defs>
+        <!-- Brace under the arrow -->
+        <path d="M 60 100 q 0 12 12 12 l 130 0 q 12 0 12 12 q 0 -12 12 -12 l 130 0 q 12 0 12 -12" fill="none" stroke="#1e5a7a" stroke-width="1.3"/>
+        <text x="218" y="148" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1e5a7a" font-style="italic" text-anchor="middle">‖u‖ = distance entre O et la pointe</text>
+        <!-- The arrow -->
+        <line x1="60" y1="80" x2="370" y2="80" stroke="#b8431f" stroke-width="2.6" marker-end="url(#arrow-c2s2-u)"/>
+        <text x="215" y="62" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#b8431f" font-style="italic" text-anchor="middle">u</text>
+        <!-- Origin and tip -->
+        <circle cx="60" cy="80" r="3.5" fill="#1c1a15"/>
+        <text x="50" y="78" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1c1a15" text-anchor="end">O</text>
+        <circle cx="370" cy="80" r="3.5" fill="#b8431f"/>
+        <text x="380" y="78" font-family="Inter, sans-serif" font-size="11" fill="#8b8474">tip</text>
+      </svg>
+
+      <p>
+        Rien de mystérieux. Tout ce qu'on va bâtir dans cette fiche n'est qu'une extension de cette idée : on va lui donner des règles, puis on va découvrir qu'il y a plusieurs façons de la respecter.
+      </p>
+
+      <h2>Comment on la calcule : Pythagore</h2>
+
+      <p>
+        En 2D, un vecteur $u = (u_x, u_y)$ est la flèche qui va de l'origine au point $(u_x, u_y)$. Cette flèche est <em>l'hypoténuse</em> d'un triangle rectangle dont les deux côtés sont $u_x$ (horizontal) et $u_y$ (vertical). Le théorème de Pythagore donne directement la réponse :
+      </p>
+
+      <svg class="illu" viewBox="0 0 360 280" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow-c2s2-pyth" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#b8431f"/>
+          </marker>
+        </defs>
+        <!-- Triangle right angle at bottom right -->
+        <line x1="80" y1="220" x2="280" y2="220" stroke="#1c1a15" stroke-width="1.6"/>
+        <line x1="280" y1="220" x2="280" y2="80" stroke="#1c1a15" stroke-width="1.6"/>
+        <!-- Hypotenuse = u vector -->
+        <line x1="80" y1="220" x2="280" y2="80" stroke="#b8431f" stroke-width="2.6" marker-end="url(#arrow-c2s2-pyth)"/>
+        <!-- Right angle marker -->
+        <polyline points="272,220 272,212 280,212" fill="none" stroke="#1c1a15" stroke-width="1.2"/>
+        <!-- Labels -->
+        <text x="180" y="240" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1c1a15" font-style="italic" text-anchor="middle">uₓ</text>
+        <text x="295" y="155" font-family="Iowan Old Style, Georgia, serif" font-size="14" fill="#1c1a15" font-style="italic">u_y</text>
+        <text x="160" y="135" font-family="Iowan Old Style, Georgia, serif" font-size="15" fill="#b8431f" font-style="italic">‖u‖</text>
+        <!-- O and tip -->
+        <circle cx="80" cy="220" r="3.5" fill="#1c1a15"/>
+        <text x="68" y="240" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1c1a15" text-anchor="end">O</text>
+        <circle cx="280" cy="80" r="3.5" fill="#b8431f"/>
+        <text x="290" y="68" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#b8431f">tip (uₓ, u_y)</text>
+      </svg>
+      <p class="illu-caption">Le vecteur u est l'hypoténuse d'un triangle rectangle de côtés uₓ et u_y. Pythagore donne ‖u‖² = uₓ² + u_y².</p>
+
+      $$\|u\|^2 = u_x^2 + u_y^2 \quad \Longrightarrow \quad \|u\| = \sqrt{u_x^2 + u_y^2}$$
+
+      <p>
+        En 3D, on empile deux triangles rectangles l'un sur l'autre, et la formule s'allonge d'un terme. En dimension $n$, c'est pareil : on prend la racine de la somme des carrés des composantes. C'est exactement la formule que tout le monde connaît depuis le collège, simplement étendue au nombre de dimensions qu'on veut.
+      </p>
+
+      <h2>Convention de notation</h2>
+
+      <p>
+        Une petite mise au point qui évite beaucoup de confusion plus tard. Quand on écrit $|v|$ ou $\|v\|$ <strong>sans indice</strong>, on parle <em>toujours</em> de la norme euclidienne — celle de Pythagore, celle qui correspond à la vraie longueur géométrique de la flèche. C'est la norme par défaut, le sens premier du mot « longueur ».
+      </p>
+
+      <p>
+        Les deux autres normes qu'on va voir s'écrivent avec un indice : $\|v\|_1$ pour la norme 1, $\|v\|_\infty$ pour la norme infinie. Quand l'indice manque, c'est la norme 2 qui parle.
+      </p>
+
+      <h2>Définition axiomatique</h2>
+
+      <p>
+        Si on veut comprendre pourquoi il existe plusieurs normes et pas une seule, il faut sortir de l'image de la flèche et formaliser. Une <em>norme</em>, c'est une fonction qui prend un vecteur et rend un nombre réel positif. Mais pas n'importe quelle fonction : il faut qu'elle se comporte comme une mesure de taille devrait se comporter. Trois règles, qu'on appelle <em>axiomes</em> :
+      </p>
+
+      <p>
+        <strong>(a) Positivité.</strong> La taille d'un vecteur est toujours positive ou nulle, et elle ne vaut zéro <em>que</em> pour le vecteur nul.
+      </p>
+
+      $$\|v\| \geq 0 \text{ pour tout } v, \qquad \|v\| = 0 \Leftrightarrow v = 0$$
+
+      <p>
+        C'est l'évidence : seule la flèche réduite à un point a une taille de zéro. Toute autre flèche, aussi petite soit-elle, a une taille strictement positive. Sinon le mot « taille » perd tout son sens.
+      </p>
+
+      <p>
+        <strong>(b) Homogénéité.</strong> Si on multiplie un vecteur par un scalaire $k$, sa taille est multipliée par la valeur absolue de $k$.
+      </p>
+
+      $$\|k \cdot v\| = |k| \times \|v\|$$
+
+      <p>
+        Doubler une flèche, c'est doubler sa taille. La multiplier par $-3$, c'est tripler sa taille — pas la diviser ou la rendre négative. La valeur absolue est cruciale : un signe négatif retourne la flèche mais ne change pas sa longueur. L'orientation, oui ; la taille, non.
+      </p>
+
+      <p>
+        <strong>(c) Inégalité triangulaire.</strong> La taille de la somme de deux vecteurs est toujours inférieure ou égale à la somme des tailles.
+      </p>
+
+      $$\|u + v\| \leq \|u\| + \|v\|$$
+
+      <p>
+        C'est la version vectorielle du dicton « la ligne droite est le plus court chemin ». Si tu enchaînes deux flèches bout à bout, le trajet direct de l'origine au bout final est plus court — ou au pire égal — que les deux trajets cumulés. Le seul cas d'égalité, c'est quand les deux flèches pointent exactement dans la même direction.
+      </p>
+
+      <p>
+        Ces trois règles capturent ce qu'on attend d'une mesure de taille. Toute fonction qui les respecte mérite d'être appelée une norme. Et il y en a une infinité. On va voir les trois principales.
+      </p>
+
+      <h2>Norme 1 : la distance du taxi</h2>
+
+      <p>
+        La première norme se calcule en faisant la somme des valeurs absolues des composantes — sans élever au carré, sans racine carrée, sans rien d'autre.
+      </p>
+
+      $$\|v\|_1 = |v_1| + |v_2| + \dots + |v_n|$$
+
+      <p>
+        Exemple : pour $v = (3, 4)$, la norme 1 vaut $3 + 4 = 7$. Pour $v = (-2, 5, 1)$, elle vaut $2 + 5 + 1 = 8$. Les signes disparaissent, chaque composante apporte sa contribution indépendante.
+      </p>
+
+      <p>
+        L'image qui colle à cette norme, c'est celle d'un taxi dans Manhattan. Une ville quadrillée, des rues parfaitement nord-sud et est-ouest. Le taxi ne peut pas couper en diagonale à travers les immeubles : il roule le long des rues. Pour aller du coin $(0, 0)$ au coin $(3, 4)$, il doit parcourir 3 blocs horizontalement <em>plus</em> 4 blocs verticalement, soit 7 blocs au total. Peu importe l'ordre dans lequel il les fait — la distance parcourue est la même.
+      </p>
+
+      <p>
+        C'est exactement ça, la norme 1. On accumule les écarts dimension par dimension, sans jamais profiter du raccourci diagonal. D'où ses autres noms : <em>norme taxicab</em>, <em>norme Manhattan</em>, <em>norme L1</em>.
+      </p>
+
+      <h2>Norme 2 : Pythagore, la vraie longueur</h2>
+
+      <p>
+        La deuxième norme est celle qu'on a commencée plus haut : la racine carrée de la somme des carrés des composantes.
+      </p>
+
+      $$\|v\|_2 = \sqrt{v_1^2 + v_2^2 + \dots + v_n^2}$$
+
+      <p>
+        Pour $v = (3, 4)$, on calcule $\sqrt{9 + 16} = \sqrt{25} = 5$. C'est le fameux triangle 3-4-5 du collège, et le 5 est exactement la longueur de l'hypoténuse — la distance en ligne droite, à vol d'oiseau, de l'origine au point $(3, 4)$.
+      </p>
+
+      <p>
+        C'est la norme qui correspond à la longueur géométrique authentique. Si tu poses une règle le long de la flèche, c'est ce nombre-là que tu lis. Pythagore généralisé s'occupe simplement de propager cette idée à la 3D, puis à la dimension $n$ sans drame supplémentaire.
+      </p>
+
+      <p>
+        Cette norme est aussi celle qu'on a rencontrée implicitement dans la fiche précédente : on avait vu que $u \cdot u = \|u\|^2$. Autrement dit, $\|u\|_2 = \sqrt{u \cdot u}$. Le produit scalaire d'un vecteur avec lui-même produit exactement le carré de la longueur euclidienne. Les deux notions sont jumelles.
+      </p>
+
+      <h2>Norme infinie : le pire écart</h2>
+
+      <p>
+        La troisième norme ne fait pas de somme du tout. Elle regarde toutes les composantes et garde seulement la plus grande en valeur absolue.
+      </p>
+
+      $$\|v\|_\infty = \max(|v_1|, |v_2|, \dots, |v_n|)$$
+
+      <p>
+        Pour $v = (3, 4)$, c'est $\max(3, 4) = 4$. Pour $v = (-7, 2, 5)$, c'est $\max(7, 2, 5) = 7$. Toutes les autres composantes sont ignorées ; seul le pire écart compte.
+      </p>
+
+      <p>
+        Cette norme répond à une question particulière : « jusqu'où ce vecteur s'éloigne-t-il de l'origine, au pire, sur une seule dimension à la fois ? ». Si chaque composante représente un écart par rapport à une valeur idéale, la norme infinie te dit quelle dimension est la plus problématique. Les autres pourraient être parfaites — c'est la pire qui te résume le vecteur.
+      </p>
+
+      <p>
+        Le nom « infinie » vient d'une famille plus large de normes paramétrées par un nombre $p$. La norme 1 est le cas $p = 1$, la norme euclidienne le cas $p = 2$, et quand $p$ tend vers l'infini, la plus grande composante finit par dominer toute la somme — il ne reste qu'elle. D'où le symbole $\infty$.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Trois normes, trois géométries différentes pour la même question.</strong> Et à chaque fois, ce qui change n'est pas ce qu'on mesure, mais la forme qu'on donne à « l'unité de longueur ».
+      </p>
+
+      <h2>Les sphères unités : voir les normes</h2>
+
+      <p>
+        La meilleure façon de comprendre la différence entre ces trois normes, c'est de dessiner leur <em>sphère unité</em> — l'ensemble des vecteurs dont la norme vaut exactement 1. Pour la norme euclidienne en 2D, on retombe sur un cercle classique. Pour les deux autres, la forme est complètement différente.
+      </p>
+
+      <svg class="illu" viewBox="0 0 660 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- Trois panneaux : norme 2 (cercle), norme 1 (losange), norme infinie (carré) -->
+        <!-- Panel 1 : norme 2 -->
+        <g transform="translate(110, 110)">
+          <text x="0" y="-90" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" text-anchor="middle">norme 2 (euclidienne)</text>
+          <!-- Axes -->
+          <line x1="-75" y1="0" x2="75" y2="0" stroke="#1c1a15" stroke-width="1"/>
+          <line x1="0" y1="-75" x2="0" y2="75" stroke="#1c1a15" stroke-width="1"/>
+          <!-- Cercle unité -->
+          <circle cx="0" cy="0" r="60" fill="none" stroke="#b8431f" stroke-width="2.2"/>
+          <text x="0" y="100" font-family="Inter, sans-serif" font-size="11" fill="#8b8474" text-anchor="middle">cercle</text>
+          <text x="0" y="116" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15" font-style="italic" text-anchor="middle">x² + y² = 1</text>
+        </g>
+        <!-- Panel 2 : norme 1 -->
+        <g transform="translate(330, 110)">
+          <text x="0" y="-90" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" text-anchor="middle">norme 1 (Manhattan)</text>
+          <line x1="-75" y1="0" x2="75" y2="0" stroke="#1c1a15" stroke-width="1"/>
+          <line x1="0" y1="-75" x2="0" y2="75" stroke="#1c1a15" stroke-width="1"/>
+          <!-- Losange -->
+          <polygon points="0,-60 60,0 0,60 -60,0" fill="none" stroke="#b8431f" stroke-width="2.2"/>
+          <text x="0" y="100" font-family="Inter, sans-serif" font-size="11" fill="#8b8474" text-anchor="middle">losange</text>
+          <text x="0" y="116" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15" font-style="italic" text-anchor="middle">|x| + |y| = 1</text>
+        </g>
+        <!-- Panel 3 : norme infinie -->
+        <g transform="translate(550, 110)">
+          <text x="0" y="-90" font-family="Iowan Old Style, Georgia, serif" font-size="13" fill="#1e5a7a" text-anchor="middle">norme infinie (max)</text>
+          <line x1="-75" y1="0" x2="75" y2="0" stroke="#1c1a15" stroke-width="1"/>
+          <line x1="0" y1="-75" x2="0" y2="75" stroke="#1c1a15" stroke-width="1"/>
+          <!-- Carré -->
+          <rect x="-60" y="-60" width="120" height="120" fill="none" stroke="#b8431f" stroke-width="2.2"/>
+          <text x="0" y="100" font-family="Inter, sans-serif" font-size="11" fill="#8b8474" text-anchor="middle">carré</text>
+          <text x="0" y="116" font-family="Iowan Old Style, Georgia, serif" font-size="12" fill="#1c1a15" font-style="italic" text-anchor="middle">max(|x|, |y|) = 1</text>
+        </g>
+      </svg>
+      <p class="illu-caption">Trois sphères unités en 2D, trois formes différentes : changer de norme, c'est changer la forme qu'on appelle « rond ».</p>
+
+      <p>
+        Trois formes, trois réponses à la question « quels vecteurs ont une taille de 1 ? ». Le cercle est rond parce que Pythagore traite toutes les directions sur un pied d'égalité. Le losange a ses pointes sur les axes parce que la norme 1 « dépense » toute son unité sur une seule direction quand on s'aligne avec un axe — alors qu'en diagonale, il faut répartir 0.5 sur chaque composante, ce qui consomme la même unité plus rapidement. Le carré, lui, a ses côtés parallèles aux axes parce que la norme infinie ignore tout sauf la composante dominante : tant qu'aucune composante ne dépasse 1, on est dans la sphère unité.
+      </p>
+
+      <p>
+        Cette image est extraordinairement utile à retenir, parce qu'elle résume tout. <strong>Changer de norme, c'est changer la forme qu'on appelle « rond ».</strong> Les notions de « proche », « petit », « unité » se déplacent avec la forme. Le losange est l'unité quand on roule en taxi ; le cercle l'est quand on vole ; le carré l'est quand on regarde la pire dimension.
+      </p>
+
+      <h2>Inégalités entre les normes</h2>
+
+      <p>
+        Sur un même vecteur, les trois normes ne donnent pas le même nombre, mais elles obéissent toujours à un ordre fixe :
+      </p>
+
+      $$\|v\|_\infty \leq \|v\|_2 \leq \|v\|_1$$
+
+      <p>
+        On peut le vérifier sur $v = (3, 4)$ : on trouve $4 \leq 5 \leq 7$. La norme infinie donne le plus petit nombre, la norme euclidienne un nombre intermédiaire, la norme 1 le plus grand. Ce n'est pas un hasard — ça raconte la même histoire que les trois formes précédentes.
+      </p>
+
+      <p>
+        Trois façons de raconter le même trajet de l'origine vers $(3, 4)$ :
+      </p>
+
+      <ul>
+        <li>Le <strong>marcheur urbain</strong> (norme 1) suit les rues, fait le plus long trajet : 7.</li>
+        <li>Le <strong>corbeau</strong> (norme 2) vole en ligne droite, prend le raccourci : 5.</li>
+        <li>Un <strong>axe seul</strong> (norme infinie) ne regarde que la dimension dominante : 4.</li>
+      </ul>
+
+      <p>
+        Le taxi fait toujours un détour par rapport au vol d'oiseau, qui lui-même parcourt davantage qu'une seule de ses dimensions. L'inégalité est stricte dès qu'au moins deux composantes sont non nulles ; quand le vecteur est aligné sur un axe, les trois normes coïncident.
+      </p>
+
+      <h2>À quoi servent les normes</h2>
+
+      <p>
+        On pourrait croire que tout ça n'est qu'un exercice de classification, mais les normes apparaissent partout dès qu'on veut quantifier quelque chose dans un espace vectoriel.
+      </p>
+
+      <p>
+        <strong>Mesurer une distance.</strong> La distance entre deux points $u$ et $v$ est simplement la norme de leur différence : $\mathrm{distance}(u, v) = \|u - v\|$. Selon la norme choisie, ce sera une distance à vol d'oiseau, une distance « grille de ville », ou le pire écart dimension par dimension. Trois réponses valides, qu'on choisit selon ce qu'on veut mesurer.
+      </p>
+
+      <p>
+        <strong>Mesurer une erreur.</strong> En statistique et en apprentissage automatique, on compare souvent une prédiction à une vérité, et on quantifie l'écart par une norme. La norme 2 donne la célèbre <em>méthode des moindres carrés</em>, qui pénalise fortement les grosses erreurs. La norme 1 est plus robuste aux valeurs aberrantes. La norme infinie garantit qu'aucune dimension n'a une erreur trop grande. Le choix de la norme détermine ce que l'algorithme considère comme « inacceptable ».
+      </p>
+
+      <p>
+        <strong>Normaliser un vecteur.</strong> Quand on veut garder une direction mais oublier la longueur, on divise un vecteur par sa norme. Le résultat est un vecteur <em>unitaire</em> — même direction, longueur 1. C'est l'opération de base en graphique 3D pour les vecteurs normaux à une surface, en physique pour séparer une direction d'une intensité, et en analyse de données pour comparer des objets uniquement par leur orientation.
+      </p>
+
+      <p>
+        <strong>Critère de convergence.</strong> Dans tout algorithme itératif qui cherche une solution petit à petit, on a besoin d'un moment où on s'arrête. La règle générale s'écrit : « tant que $\|x_{n+1} - x_n\| > \varepsilon$, continuer ». Quand l'écart entre deux itérations devient minuscule, on a convergé. La norme quantifie ce « presque plus de mouvement ».
+      </p>
+
+      <p>
+        <strong>Régularisation en apprentissage.</strong> Pour empêcher un modèle de s'ajuster trop fidèlement aux données d'entraînement, on ajoute une pénalité sur la taille de ses paramètres. Une pénalité en norme 1 (qu'on appelle <em>Lasso</em>) tend à annuler complètement certains paramètres, ce qui simplifie le modèle. Une pénalité en norme 2 (<em>Ridge</em>) rend les paramètres petits sans les annuler totalement. Deux normes, deux comportements profondément différents — encore une fois, le choix de la norme encode une préférence géométrique.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Tangente · Le pont avec le produit scalaire</span>
+        <p>
+          On a glissé plus haut sur une égalité qui mérite d'être soulignée : la norme euclidienne d'un vecteur est exactement la racine carrée de son produit scalaire avec lui-même, autrement dit $\|u\|_2 = \sqrt{u \cdot u}$. Ce n'est pas une coïncidence — c'est le pont entre la fiche précédente et celle-ci. Le produit scalaire que tu calculais sans bien voir à quoi il servait, en l'appliquant à un vecteur sur lui-même, produit le carré d'une vraie longueur. Toute la géométrie euclidienne sort, en réalité, de cette simple opération. La norme est la <em>fille</em> du produit scalaire — sa version « auto-appliquée ». Et c'est aussi pour ça que la norme euclidienne est la norme « par défaut » : elle est la seule des trois à être fabriquée par un produit scalaire. Les normes 1 et infinie n'ont pas cette parenté — elles vivent leur vie sans avoir besoin d'une opération à deux entrées pour exister.
+        </p>
+      </aside>
+
+      <hr class="ornament" />
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Une norme répond à la question « quelle est la taille de cette flèche ? », mais il n'y a pas de réponse unique. Quatre points à garder en tête :
+      </p>
+
+      <ol>
+        <li><strong>Trois normes principales.</strong> Norme 1 : somme des valeurs absolues, distance du taxi. Norme 2 : racine de la somme des carrés, distance euclidienne, vraie longueur de Pythagore. Norme infinie : la plus grande composante en valeur absolue, le pire écart.</li>
+        <li><strong>Notation par défaut.</strong> Quand on écrit $|v|$ ou $\|v\|$ sans indice, on parle de la norme euclidienne. C'est la convention partout.</li>
+        <li><strong>Trois axiomes communs.</strong> Positivité, homogénéité, inégalité triangulaire. N'importe quelle fonction qui les satisfait est une norme valide.</li>
+        <li><strong>Trois géométries différentes.</strong> Cercle, losange, carré — chaque norme dessine sa propre sphère unité, et choisir une norme revient à choisir la forme de ce qu'on appelle « rond ». C'est le contexte qui dicte laquelle est pertinente.</li>
+      </ol>
+
+      <p>
+        On va maintenant pouvoir aborder la prochaine question, qui combine produit scalaire et norme euclidienne : si $u \cdot v = \|u\| \times \|v\| \times \cos(\theta)$, on tient une formule directe pour extraire l'angle entre deux vecteurs à partir de leurs coordonnées. C'est l'objet de la fiche suivante.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="01-produit-scalaire.html">
+          <span class="nav-label">Précédent</span>
+          <span class="nav-title">← §1 — Produit scalaire</span>
+        </a>
+        <a class="next" href="03-cosinus.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">§3 — Cosinus →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ep 13 — Changement de base</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\(', right: '\)', display: false},
+        {left: '\[', right: '\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html" class="current">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Essence of Linear Algebra · Episode 13</div>
+      <h1>Changement de base</h1>
+      <a class="video-link" href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Voir la video originale (3blue1brown)</a>
+
+      <p class="lede">
+        Toutes les coordonnees qu'on a manipulees depuis le debut dependaient implicitement d'un choix : la base standard <code>{i&#770;, j&#770;, k&#770;}</code>. Cet episode demande ce qui se passe quand quelqu'un d'autre — Grant l'appelle Jennifer — choisit <em>une autre</em> base. Comment traduire entre nos coordonnees et les siennes ? Comment exprimer la meme transformation dans sa langue ?
+      </p>
+
+      <p>
+        Imagine que Jennifer utilise comme vecteurs de base <code>b₁ = [2, 1]</code> et <code>b₂ = [-1, 1]</code> — dans <em>notre</em> repere. Pour Jennifer, ces deux vecteurs sont « les vecteurs unite vers la droite et vers le haut » de son systeme. Elle voit son <code>b₁</code> comme nous voyons notre <code>i&#770;</code>.
+      </p>
+
+      <p>
+        Un meme vecteur du plan a donc deux jeux de coordonnees : les notres (dans <code>{i&#770;, j&#770;}</code>) et celles de Jennifer (dans <code>{b₁, b₂}</code>). Comment passer de l'un a l'autre ?
+      </p>
+
+      <h2>La matrice de changement de base</h2>
+
+      <p>
+        Si Jennifer dit a son vecteur « j'ai pour coordonnees <code>[a, b]</code> », ca veut dire pour elle <code>a·b₁ + b·b₂</code>. Mais cette combinaison lineaire est calculable dans <em>notre</em> repere, puisque <code>b₁</code> et <code>b₂</code> y sont exprimes :
+      </p>
+
+      <div class="math">$$a \, \mathbf{b}_1 + b \, \mathbf{b}_2 = a \begin{bmatrix} 2 \\ 1 \end{bmatrix} + b \begin{bmatrix} -1 \\ 1 \end{bmatrix} = \begin{bmatrix} 2a - b \\ a + b \end{bmatrix}$$</div>
+
+      <p>
+        Tiens : c'est exactement le produit matrice-vecteur, avec la matrice <code>M = [[2, -1], [1, 1]]</code> dont les colonnes sont <code>b₁</code> et <code>b₂</code>.
+      </p>
+
+      <div class="math">$$M \cdot [\text{coords Jennifer}] = [\text{coords nous}]$$</div>
+
+      <p>
+        La matrice <code>M</code> est appelee <strong>matrice de changement de base</strong> : ses colonnes sont les vecteurs de base de Jennifer, ecrits dans notre langue.
+      </p>
+
+      <p>
+        Pour aller dans l'autre sens — passer de nos coordonnees a celles de Jennifer — on applique <code>M⁻¹</code>.
+      </p>
+
+      <div class="math">$$M^{-1} \cdot [\text{coords nous}] = [\text{coords Jennifer}]$$</div>
+
+      <h2>Traduire une transformation</h2>
+
+      <p>
+        Maintenant on a une transformation, decrite dans <em>notre</em> base par la matrice <code>A</code>. Jennifer veut savoir ce que cette transformation lui ferait, dans <em>sa</em> base. Quelle est la matrice de la transformation, vue par Jennifer ?
+      </p>
+
+      <p>
+        Voici le raisonnement : prends un vecteur exprime dans la base de Jennifer (coordonnees <code>v</code>). Le pipeline pour lui appliquer la transformation, decrite chez nous, ressemble a ca :
+      </p>
+
+      <ol>
+        <li>Traduis dans notre langue : <code>M · v</code>.</li>
+        <li>Applique la transformation : <code>A · (M · v)</code>.</li>
+        <li>Retraduis dans la langue de Jennifer : <code>M⁻¹ · (A · M · v)</code>.</li>
+      </ol>
+
+      <p>
+        Donc la matrice qui represente la <em>meme transformation</em> dans la base de Jennifer est :
+      </p>
+
+      <div class="math">$$A' = M^{-1} \cdot A \cdot M$$</div>
+
+      <p class="pull-quote">
+        <strong><code>M⁻¹ A M</code> est la meme transformation que <code>A</code>, racontee dans une autre langue.</strong> M traduit de Jennifer vers nous ; M⁻¹ traduit dans l'autre sens ; A agit entre les deux.
+      </p>
+
+      <h2>Conjugaison et invariants</h2>
+
+      <p>
+        Cette construction <code>A ↦ M⁻¹ A M</code> est ce qu'on appelle une <em>conjugaison</em> (en algebre lineaire et plus largement en algebre). Elle preserve plusieurs proprietes : le determinant, la trace, les valeurs propres. Ces invariants sont des proprietes intrinseques de la <em>transformation</em>, qui ne dependent pas du systeme de coordonnees choisi pour l'exprimer.
+      </p>
+
+      <p>
+        En revanche, les entrees de la matrice changent quand on change de base. Une matrice est juste <em>une description</em> de la transformation dans une base donnee.
+      </p>
+
+      <h2>Bases bien choisies</h2>
+
+      <p>
+        Le pouvoir du changement de base, c'est qu'on peut <em>choisir</em> une base ou une transformation devient particulierement simple a decrire. C'est l'idee qui motive l'episode 14 : si la base est constituee de vecteurs <em>propres</em> de la transformation, alors la matrice exprimee dans cette base est <em>diagonale</em>. Tout devient trivial a calculer.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Le piege a memoriser : qui multiplie quoi</span>
+        <p>
+          Il est facile de se tromper sur l'ordre <code>M⁻¹ A M</code> vs <code>M A M⁻¹</code>. Le truc pour s'y retrouver : ecris le pipeline. Tu manipules un vecteur de Jennifer, tu veux qu'il sorte aussi en Jennifer. Donc la composition se lit de droite a gauche : <code>M</code> en premier (entree → notre langue), puis <code>A</code> (notre transformation), puis <code>M⁻¹</code> (sortie → langue de Jennifer). Ecris la sequence avec le vecteur a droite : <code>(M⁻¹) · (A) · (M) · v</code>. La matrice equivalente est <code>M⁻¹ A M</code>.
+        </p>
+      </aside>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Choisir une base, c'est choisir un systeme de coordonnees. Differents observateurs peuvent decrire le meme vecteur ou la meme transformation avec des chiffres differents.
+      </p>
+
+      <p>
+        La matrice <code>M</code> dont les colonnes sont les vecteurs de la nouvelle base (exprimes dans l'ancienne) traduit les coordonnees de la nouvelle base vers l'ancienne. <code>M⁻¹</code> fait le chemin inverse.
+      </p>
+
+      <p>
+        Pour traduire une transformation <code>A</code> de l'ancienne base vers la nouvelle, on conjugue : <code>A' = M⁻¹ A M</code>. Cette operation preserve les proprietes intrinseques de la transformation (determinant, trace, valeurs propres).
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="ch12-cramer.html">
+          <span class="nav-label">Precedent</span>
+          <span class="nav-title">← Ep 12 — Cramer</span>
+        </a>
+        <a class="next" href="ch14-eigen.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">Ep 14 — Eigen →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

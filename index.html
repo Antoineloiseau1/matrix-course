@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cours d'algèbre linéaire — pour le web</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="ch2/02-normes.html">Normes</a></li>
+          <li><a href="ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="3b1b/index.html">Sommaire</a></li>
+          <li><a href="3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="hero-index">
+        <h1>Cours d'algèbre linéaire</h1>
+        <p class="tagline">Une promenade de la flèche au pipeline 3D</p>
+      </div>
+
+      <p>
+        Ce cours raconte l'algèbre linéaire telle qu'elle s'utilise vraiment. On part d'un objet aussi banal qu'une flèche dans le plan, et on arrive à la mathématique qui fait tourner les jeux vidéo et les moteurs de rendu 3D. Entre les deux, on traverse les transformations linéaires, les systèmes d'équations, l'élimination de Gauss, le déterminant, l'inverse, le rang — chaque concept présenté avec sa motivation et son intuition géométrique avant la formule.
+      </p>
+
+      <p>
+        Le format est conversational, environ 2000 mots par section. Plusieurs sections intègrent des <strong>visuels interactifs en JavaScript</strong> : glisse les vecteurs, ajuste les sliders, regarde l'espace se déformer en temps réel. C'est écrit pour la lecture linéaire (chapitre 1 vers chapitre 6), mais chaque section reste autonome si tu veux y atterrir directement.
+      </p>
+
+      <p>
+        Pas de prérequis particuliers. Une familiarité avec le collège (Pythagore, équation d'une droite) suffit. On glose tous les termes techniques au fur et à mesure de leur introduction.
+      </p>
+
+      <h2>Sommaire</h2>
+
+      <div class="chapter-list">
+
+        <a class="chapter-card" href="ch1/01-trois-facons.html">
+          <div class="ch-num">Chapitre 01</div>
+          <h3>Le vecteur, flèche et chiffres à la fois</h3>
+          <p class="sections">
+            §1 Trois façons de voir un même objet ·
+            §2 La combinaison linéaire ·
+            §3 L'interpolation linéaire
+          </p>
+        </a>
+
+        <a class="chapter-card" href="ch2/01-produit-scalaire.html">
+          <div class="ch-num">Chapitre 02</div>
+          <h3>Mesurer la géométrie</h3>
+          <p class="sections">
+            §1 Le produit scalaire ·
+            §2 Les normes ·
+            §3 Cosinus et angle entre deux vecteurs ·
+            §4 Le produit vectoriel
+          </p>
+        </a>
+
+        <a class="chapter-card" href="ch3/01-transformation.html">
+          <div class="ch-num">Chapitre 03</div>
+          <h3>La matrice est une transformation</h3>
+          <p class="sections">
+            §1 Qu'est-ce qu'une transformation linéaire ·
+            §2 Multiplier une matrice ·
+            §3 Trace, transposée, matrices spéciales
+          </p>
+        </a>
+
+        <a class="chapter-card" href="ch4/01-systemes.html">
+          <div class="ch-num">Chapitre 04</div>
+          <h3>Résoudre, c'est inverser</h3>
+          <p class="sections">
+            §1 Les systèmes linéaires ·
+            §2 L'élimination de Gauss ·
+            §3 Le déterminant ·
+            §4 Inverse et rang
+          </p>
+        </a>
+
+        <a class="chapter-card" href="ch5/01-le-probleme.html">
+          <div class="ch-num">Chapitre 05</div>
+          <h3>Projection 3D</h3>
+          <p class="sections">
+            §1 Le problème ·
+            §2 Triangles semblables ·
+            §3 Non linéaire ·
+            §4 Coordonnées homogènes ·
+            §5 Le frustum ·
+            §6 Le cube NDC ·
+            §7 Matrice ligne par ligne
+          </p>
+        </a>
+
+        <a class="chapter-card" href="ch6/01-pourquoi-complexes.html">
+          <div class="ch-num">Chapitre 06</div>
+          <h3>Les espaces complexes</h3>
+          <p class="sections">
+            §1 Pourquoi les complexes ·
+            §2 Algèbre et géométrie de C ·
+            §3 K = C dans nos structures
+          </p>
+        </a>
+
+      </div>
+
+      <h2>Companions intégrés</h2>
+
+      <p>
+        Deux compagnons-notebook complètent le cours principal, dans le même style typographique. Ce sont des résumés non officiels destinés à accompagner les deux références majeures qui ont influencé ce cours.
+      </p>
+
+      <div class="chapter-list">
+
+        <a class="chapter-card" href="3b1b/index.html">
+          <div class="ch-num">Companion</div>
+          <h3>Essence of Linear Algebra — 3blue1brown</h3>
+          <p class="sections">
+            16 épisodes résumés — vecteurs, span, transformations, déterminant, valeurs propres, abstraction.
+            <br>Compagnon de la <a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">playlist 3blue1brown</a>.
+          </p>
+        </a>
+
+        <a class="chapter-card" href="3b1b/strang/index.html">
+          <div class="ch-num">Companion</div>
+          <h3>MIT 18.06 — Gilbert Strang</h3>
+          <p class="sections">
+            3 leçons résumées — géométrie des équations, élimination, multiplication matricielle.
+            <br>Compagnon du <a href="https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/" target="_blank" rel="noopener">cours MIT OCW 18.06 (Spring 2010)</a>.
+          </p>
+        </a>
+
+      </div>
+
+      <p style="margin-top: 4rem; color: var(--muted); font-size: 0.85rem; text-align: center;">
+        Cours principal en libre lecture — 24 sections, environ 45 000 mots.<br>
+        Companions complémentaires : 16 + 3 leçons, environ 30 000 mots supplémentaires.
+      </p>
+    </main>
+  </div>
+</body>
+</html>

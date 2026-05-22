@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ep 02 — Combinaisons lineaires, span, base</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\(', right: '\)', display: false},
+        {left: '\[', right: '\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html" class="current">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Essence of Linear Algebra · Episode 02</div>
+      <h1>Combinaisons lineaires, span, vecteurs de base</h1>
+      <a class="video-link" href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener">Voir la video originale (3blue1brown)</a>
+
+      <p class="lede">
+        Deuxieme episode, deuxieme decalage de perspective : ce qu'on appelait « les coordonnees » d'un vecteur, c'est en fait <em>des scalaires appliques a deux vecteurs prives</em>. Cette reformulation, en apparence anodine, ouvre tout le reste — span, base, dependance lineaire, et plus tard, les matrices comme transformations.
+      </p>
+
+      <p>
+        On note traditionnellement <code>i&#770;</code> (« i-hat ») le vecteur unite qui pointe a droite — celui qui vaut <code>[1, 0]</code> — et <code>j&#770;</code> (« j-hat ») le vecteur unite qui pointe en haut — qui vaut <code>[0, 1]</code>. Ce sont les <strong>vecteurs de base</strong> du systeme de coordonnees standard.
+      </p>
+
+      <p>
+        Reecrivons un vecteur classique sous cet angle :
+      </p>
+
+      <div class="math">$$\begin{bmatrix} 3 \\ 4 \end{bmatrix} = 3 \begin{bmatrix} 1 \\ 0 \end{bmatrix} + 4 \begin{bmatrix} 0 \\ 1 \end{bmatrix} = 3\,\hat{\imath} + 4\,\hat{\jmath}$$</div>
+
+      <p>
+        Les coordonnees ne sont rien d'autre que <em>les scalaires devant les vecteurs de base</em>. Le « 3 » dit : etire <code>i&#770;</code> par trois. Le « 4 » dit : etire <code>j&#770;</code> par quatre. Le vecteur entier est la somme des deux etirages.
+      </p>
+
+      <h2>La combinaison lineaire</h2>
+
+      <p>
+        Quand on prend deux vecteurs <code>v</code> et <code>w</code>, qu'on les scale chacun par un nombre, et qu'on les additionne, on obtient ce qu'on appelle une <strong>combinaison lineaire</strong> de <code>v</code> et <code>w</code> :
+      </p>
+
+      <div class="math">$$a \, \mathbf{v} + b \, \mathbf{w}$$</div>
+
+      <p>
+        Le mot « lineaire » dans « combinaison lineaire » a une signification visuelle precise. Imagine qu'on fixe <code>w</code> et qu'on fait varier <code>a</code> seulement : la pointe de <code>a·v + b·w</code> trace une <em>ligne droite</em>. Si on fixe <code>a</code> et qu'on fait varier <code>b</code> : encore une ligne droite. C'est l'absence de courbure qui justifie le nom.
+      </p>
+
+      <h2>Le span : tout ce qu'on peut atteindre</h2>
+
+      <p>
+        Le <strong>span</strong> de <code>v</code> et <code>w</code> est l'ensemble de tous les vecteurs qu'on peut former par combinaison lineaire de ces deux-la, en faisant varier <code>a</code> et <code>b</code> sur tous les reels.
+      </p>
+
+      <p>
+        En 2D, si <code>v</code> et <code>w</code> pointent dans des directions differentes, leur span est le <strong>plan entier</strong> — on peut atteindre tout point en dosant correctement <code>a</code> et <code>b</code>. C'est la situation generique.
+      </p>
+
+      <p>
+        Mais si <code>v</code> et <code>w</code> sont <em>colineaires</em> (l'un est un multiple de l'autre), alors toutes leurs combinaisons restent sur une meme ligne passant par l'origine. Le span se reduit a cette ligne. On a perdu une dimension.
+      </p>
+
+      <p>
+        En 3D, le span de deux vecteurs non colineaires est un plan ; celui de trois vecteurs non coplanaires est l'espace entier.
+      </p>
+
+      <p class="pull-quote">
+        <strong>Le span d'un ensemble de vecteurs est l'ensemble de tous les points qu'on peut atteindre en les combinant lineairement.</strong> Quand des vecteurs « gaspillent une dimension », leur span est plus petit qu'attendu.
+      </p>
+
+      <h2>Dependance et independance lineaires</h2>
+
+      <p>
+        Quand un vecteur de l'ensemble est deja dans le span des autres — quand il n'apporte pas de direction nouvelle — on dit que l'ensemble est <strong>lineairement dependant</strong>. Geometriquement, c'est exactement la situation ou ajouter ce vecteur n'agrandit pas le span.
+      </p>
+
+      <p>
+        A l'inverse, un ensemble est <strong>lineairement independant</strong> si chaque vecteur ajoute une direction reellement nouvelle, qui n'etait pas dans le span des precedents.
+      </p>
+
+      <h2>La base : la quantite juste, dans la bonne direction</h2>
+
+      <p>
+        Une <strong>base</strong> d'un espace est un ensemble de vecteurs qui (1) <em>span</em> l'espace tout entier, et (2) est <em>lineairement independant</em>. Pas trop peu (sinon on ne couvre pas tout), pas trop (sinon il y a de la redondance).
+      </p>
+
+      <p>
+        La base standard de 2D, c'est <code>{i&#770;, j&#770;}</code>. La base standard de 3D, c'est <code>{i&#770;, j&#770;, k&#770;}</code> avec <code>k&#770; = [0, 0, 1]</code> pointant vers la profondeur. Mais il existe une infinite d'autres bases possibles — on en reparlera a l'episode 13.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Pourquoi insister sur ce vocabulaire</span>
+        <p>
+          Les notions de span, de base et d'independance lineaire ne sont pas du remplissage academique : elles sont le langage qui rendra l'episode 3 lisible. Quand on dira « une matrice est une transformation lineaire », on voudra dire qu'on connait ou atterrissent les vecteurs de base — et que tout le reste decoule par combinaison lineaire. Aucun de ces mots n'est gratuit.
+        </p>
+      </aside>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        Un vecteur <code>[x, y]</code> est, plus profondement, la combinaison lineaire <code>x·i&#770; + y·j&#770;</code>. Les nombres sont des scalaires appliques aux vecteurs de base.
+      </p>
+
+      <p>
+        Le span d'un ensemble de vecteurs est tout ce qu'on peut atteindre en les combinant lineairement. Generiquement, deux vecteurs spannent un plan, trois vecteurs spannent un espace. Si le span « manque » une dimension, l'ensemble est lineairement dependant.
+      </p>
+
+      <p>
+        Une base est un ensemble independant qui spanne tout l'espace. Le choix de la base est libre — mais une fois fait, les coordonnees d'un vecteur sont les scalaires uniques qui permettent de le reconstruire a partir des vecteurs de base.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="ch01-vectors.html">
+          <span class="nav-label">Precedent</span>
+          <span class="nav-title">← Ep 01 — Vecteurs</span>
+        </a>
+        <a class="next" href="ch03-transformations.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">Ep 03 — Transformations →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>

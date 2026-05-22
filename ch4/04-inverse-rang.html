@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inverse et rang — Chapitre 4 §4</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {
+      delimiters: [
+        {left: '$$', right: '$$', display: true},
+        {left: '$', right: '$', display: false},
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });"></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="toc">
+      <div class="toc-title">Cours</div>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">01</span> Le vecteur</summary>
+        <ol>
+          <li><a href="../ch1/01-trois-facons.html">Trois façons de voir</a></li>
+          <li><a href="../ch1/02-combinaison.html">Combinaison linéaire</a></li>
+          <li><a href="../ch1/03-interpolation.html">Interpolation linéaire</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">02</span> Mesurer la géométrie</summary>
+        <ol>
+          <li><a href="../ch2/01-produit-scalaire.html">Produit scalaire</a></li>
+          <li><a href="../ch2/02-normes.html">Normes</a></li>
+          <li><a href="../ch2/03-cosinus.html">Cosinus</a></li>
+          <li><a href="../ch2/04-cross-product.html">Produit vectoriel</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">03</span> La matrice transforme</summary>
+        <ol>
+          <li><a href="../ch3/01-transformation.html">Transformation linéaire</a></li>
+          <li><a href="../ch3/02-multiplication.html">Multiplier une matrice</a></li>
+          <li><a href="../ch3/03-trace-transpose.html">Trace, transposée</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter" open>
+        <summary class="toc-chapter-name"><span class="num">04</span> Résoudre, inverser</summary>
+        <ol>
+          <li><a href="../ch4/01-systemes.html">Systèmes linéaires</a></li>
+          <li><a href="../ch4/02-gauss.html">Élimination de Gauss</a></li>
+          <li><a href="../ch4/03-determinant.html">Déterminant</a></li>
+          <li><a href="../ch4/04-inverse-rang.html" class="current">Inverse et rang</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">05</span> Projection 3D</summary>
+        <ol>
+          <li><a href="../ch5/01-le-probleme.html">Le problème</a></li>
+          <li><a href="../ch5/02-triangles-semblables.html">Triangles semblables</a></li>
+          <li><a href="../ch5/03-non-lineaire.html">Non linéaire</a></li>
+          <li><a href="../ch5/04-coordonnees-homogenes.html">Coordonnées homogènes</a></li>
+          <li><a href="../ch5/05-frustum.html">Le frustum</a></li>
+          <li><a href="../ch5/06-cube-ndc.html">Le cube NDC</a></li>
+          <li><a href="../ch5/07-matrice-ligne-par-ligne.html">Matrice ligne par ligne</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">06</span> Espaces complexes</summary>
+        <ol>
+          <li><a href="../ch6/01-pourquoi-complexes.html">Pourquoi les complexes</a></li>
+          <li><a href="../ch6/02-algebre-geometrie.html">Algèbre et géométrie</a></li>
+          <li><a href="../ch6/03-K-egal-C.html">K = C dans nos structures</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Companion 3b1b</summary>
+        <ol>
+          <li><a href="../3b1b/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/ch01-vectors.html">01 · Vecteurs</a></li>
+          <li><a href="../3b1b/ch02-span.html">02 · Combinaisons, span</a></li>
+          <li><a href="../3b1b/ch03-transformations.html">03 · Transformations</a></li>
+          <li><a href="../3b1b/ch04-composition.html">04 · Composition</a></li>
+          <li><a href="../3b1b/ch05-3d.html">05 · 3D</a></li>
+          <li><a href="../3b1b/ch06-determinant.html">06 · Déterminant</a></li>
+          <li><a href="../3b1b/ch07-inverse.html">07 · Inverse, column space</a></li>
+          <li><a href="../3b1b/ch08-nonsquare.html">08 · Matrices non carrées</a></li>
+          <li><a href="../3b1b/ch09-dot-product.html">09 · Produit scalaire</a></li>
+          <li><a href="../3b1b/ch10-cross-product.html">10 · Produit vectoriel I</a></li>
+          <li><a href="../3b1b/ch11-cross-product-2.html">11 · Produit vectoriel II</a></li>
+          <li><a href="../3b1b/ch12-cramer.html">12 · Cramer</a></li>
+          <li><a href="../3b1b/ch13-change-of-basis.html">13 · Changement de base</a></li>
+          <li><a href="../3b1b/ch14-eigen.html">14 · Eigen</a></li>
+          <li><a href="../3b1b/ch15-eigen-trick.html">15 · Trick eigen 2x2</a></li>
+          <li><a href="../3b1b/ch16-abstract.html">16 · Abstrait</a></li>
+        </ol>
+      </details>
+
+      <details class="toc-chapter">
+        <summary class="toc-chapter-name"><span class="num">⇲</span> Extension Strang</summary>
+        <ol>
+          <li><a href="../3b1b/strang/index.html">Sommaire</a></li>
+          <li><a href="../3b1b/strang/ch01-geometry.html">01 · Géométrie</a></li>
+          <li><a href="../3b1b/strang/ch02-elimination.html">02 · Élimination</a></li>
+          <li><a href="../3b1b/strang/ch03-multiplication.html">03 · Multiplication</a></li>
+        </ol>
+      </details>
+
+      <p style="margin-top: 1.5rem;"><a href="../index.html">← Accueil</a></p>
+    </aside>
+
+    <main>
+      <div class="chapter-meta">Chapitre 4 · §4</div>
+      <h1>Inverse et rang</h1>
+      <p class="lede">
+        Une transformation, on l'a vu, déforme l'espace. On va maintenant chercher celle qui <em>défait</em> cette déformation — la matrice qui rejoue le film à l'envers. Et tant qu'on y est, on va apprendre à mesurer combien d'espace une transformation a vraiment gardé vivant après son passage. Deux idées apparentées : l'inverse et le rang. Elles se parlent tellement qu'on va les traiter ensemble.
+      </p>
+
+      <p>
+        Le déterminant a déjà répondu à une question binaire : la transformation écrase-t-elle l'espace, ou pas ? Mais savoir qu'on <em>peut</em> remonter ne suffit pas — il reste à expliquer <em>comment</em>. C'est la première moitié de la section. La seconde généralise la question : même quand la matrice n'est pas inversible, on peut quantifier finement ce qui survit à la transformation, et c'est ce que mesure le rang.
+      </p>
+
+      <h2>Défaire la transformation</h2>
+
+      <p>
+        Commençons par formuler la chose proprement. Soit $A$ une matrice carrée. L'<strong>inverse</strong> de $A$, notée $A^{-1}$, est la matrice qui, composée avec $A$, redonne l'identité. Concrètement :
+      </p>
+
+      $$A \cdot A^{-1} = A^{-1} \cdot A = I$$
+
+      <p>
+        L'identité $I$, rappelle-toi, c'est la transformation qui ne fait rien — chaque vecteur reste à sa place. Demander que la composition de $A$ et $A^{-1}$ donne $I$, c'est exactement dire que $A^{-1}$ annule l'effet de $A$. Si $A$ envoie un vecteur $v$ sur $A \cdot v$, alors $A^{-1}$ ramène $A \cdot v$ exactement là d'où il est parti. C'est une recette pour faire marche arrière.
+      </p>
+
+      <p>
+        Remarque qu'on impose les deux égalités — <em>à gauche</em> et <em>à droite</em>. En général, pour des matrices, l'ordre des facteurs compte : $A \cdot B$ et $B \cdot A$ sont rarement la même chose. Mais pour l'inverse, on a la chance que les deux compositions coïncident.
+      </p>
+
+      <h2>L'image géométrique : tordre, puis détordre</h2>
+
+      <p>
+        Si tu visualises $A$ comme un quadrillage étiré, cisaillé, tourné, alors $A^{-1}$ est exactement la transformation qui remet ce quadrillage dans son état d'origine. Pas approximativement : <em>exactement</em>. La composition des deux laisse l'espace strictement immobile.
+      </p>
+
+      <p>
+        Cette image te dit immédiatement quand l'inverse ne peut pas exister. Si $A$ écrase l'espace — par exemple si elle aplatit tout le plan sur une seule droite — alors plusieurs points de départ différents ont fini sur le même point d'arrivée. Il n'y a aucun moyen, en regardant le point d'arrivée, de deviner d'où il venait. L'information est perdue. Aucune transformation $A^{-1}$ ne pourra reconstruire ce qui a été détruit.
+      </p>
+
+      <p>
+        Or « écraser au moins une dimension », c'est exactement ce que signale un <strong>déterminant nul</strong>. On a donc une équivalence directe :
+      </p>
+
+      $$A \text{ est inversible} \quad \Leftrightarrow \quad \det(A) \neq 0$$
+
+      <p>
+        Le déterminant fait office de détecteur. Tant qu'il survit non nul, le volume final n'est pas plat, l'information n'a pas été perdue, et la transformation inverse existe. On dira aussi, avec le rang, que la matrice a <strong>rang plein</strong> — qu'elle exploite toutes les dimensions disponibles à la sortie. Les mêmes vérités dites sous des angles différents.
+      </p>
+
+      <h2>L'algorithme : Gauss-Jordan sur la matrice augmentée</h2>
+
+      <p>
+        On veut maintenant calculer $A^{-1}$. L'astuce est joliment économique : on va réutiliser l'algorithme de Gauss-Jordan qu'on connaît déjà, sans rien y ajouter — il suffit de l'appliquer à un objet légèrement différent.
+      </p>
+
+      <p>
+        On accole à la matrice $A$ la matrice identité $I$ à sa droite. On obtient ce qu'on appelle la <strong>matrice augmentée</strong>, notée $[A | I]$, qui a deux fois plus de colonnes que $A$. La barre verticale n'est qu'un repère visuel pour se rappeler que les deux moitiés ont des rôles distincts. À gauche, la matrice qu'on veut inverser. À droite, le repère de départ, intact.
+      </p>
+
+      $$[A | I] = \left( \begin{array}{cc|cc} a & b & 1 & 0 \\ c & d & 0 & 1 \end{array} \right)$$
+
+      <p>
+        Maintenant, on applique l'élimination de Gauss-Jordan sur les <em>lignes</em> de cet objet entier, comme s'il s'agissait d'une seule grande matrice. On normalise les pivots, on annule les coefficients au-dessus et en dessous des pivots, exactement comme on l'a fait pour résoudre un système. La seule différence : à chaque opération, on l'applique <em>aussi</em> à la moitié droite, qui se transforme en conséquence.
+      </p>
+
+      <p>
+        Quand la moitié gauche est devenue l'identité, l'algorithme s'arrête. À ce moment-là, par un petit miracle qu'on va expliquer juste après, la moitié droite contient exactement $A^{-1}$.
+      </p>
+
+      $$[A | I] \xrightarrow{\text{Gauss-Jordan}} [I | A^{-1}]$$
+
+      <p class="pull-quote">
+        On réduit la moitié gauche à l'identité. La moitié droite, qui partait de l'identité, devient l'inverse.
+      </p>
+
+      <h2>Pourquoi ce miracle fonctionne</h2>
+
+      <p>
+        Chaque opération élémentaire sur les lignes peut être vue comme la multiplication <em>à gauche</em> par une certaine matrice. Cette matrice s'appelle une <strong>matrice élémentaire</strong> : c'est juste l'identité à laquelle on a appliqué l'opération en question. Pour échanger les deux premières lignes d'une matrice $M$, par exemple, on multiplie $M$ à gauche par l'identité avec ses deux premières lignes interverties.
+      </p>
+
+      <p>
+        L'algorithme de Gauss-Jordan consiste en une longue suite de telles opérations. Disons qu'on applique successivement $E_1$, puis $E_2$, …, jusqu'à $E_k$. Le résultat sur la moitié gauche est :
+      </p>
+
+      $$E_k \cdot \dots \cdot E_2 \cdot E_1 \cdot A = I$$
+
+      <p>
+        Et puisque ces mêmes opérations sont appliquées à la moitié droite, qui partait de $I$, le résultat sur la moitié droite est :
+      </p>
+
+      $$E_k \cdot \dots \cdot E_2 \cdot E_1 \cdot I = E_k \cdot \dots \cdot E_2 \cdot E_1$$
+
+      <p>
+        Or, l'égalité du dessus dit précisément que le produit $E_k \cdot \dots \cdot E_1$ est l'inverse de $A$. C'est la définition même : la matrice qui, multipliée par $A$, donne l'identité. La moitié droite, qui a accumulé discrètement toutes les opérations, finit donc par contenir $A^{-1}$.
+      </p>
+
+      <p>
+        On a trouvé l'inverse <em>sans jamais l'avoir cherché directement</em>. On a juste enregistré, dans la moitié droite, la succession des gestes qui transforment $A$ en $I$. Cette succession, mise bout à bout, est exactement la transformation qui défait $A$.
+      </p>
+
+      <h2>Un exemple chiffré, du début à la fin</h2>
+
+      <p>
+        Prenons une matrice 2×2 concrète, sans vice caché :
+      </p>
+
+      $$A = \begin{pmatrix} 2 & 1 \\ 5 & 3 \end{pmatrix}$$
+
+      <p>
+        Son déterminant vaut $2 \times 3 - 1 \times 5 = 1$, non nul, donc $A$ est inversible. On accole l'identité à droite :
+      </p>
+
+      $$[A | I] = \left( \begin{array}{cc|cc} 2 & 1 & 1 & 0 \\ 5 & 3 & 0 & 1 \end{array} \right)$$
+
+      <p>
+        Première étape : amener un pivot égal à 1 dans la position (0, 0). On divise la première ligne par 2.
+      </p>
+
+      $$L_1 \leftarrow L_1 / 2 : \quad \left( \begin{array}{cc|cc} 1 & 0.5 & 0.5 & 0 \\ 5 & 3 & 0 & 1 \end{array} \right)$$
+
+      <p>
+        Deuxième étape : annuler le coefficient en (1, 0). On retire 5 fois la première ligne à la seconde.
+      </p>
+
+      $$L_2 \leftarrow L_2 - 5 \cdot L_1 : \quad \left( \begin{array}{cc|cc} 1 & 0.5 & 0.5 & 0 \\ 0 & 0.5 & -2.5 & 1 \end{array} \right)$$
+
+      <p>
+        Troisième étape : normaliser le pivot en (1, 1). On divise la seconde ligne par 0.5, c'est-à-dire qu'on la multiplie par 2.
+      </p>
+
+      $$L_2 \leftarrow L_2 / 0.5 : \quad \left( \begin{array}{cc|cc} 1 & 0.5 & 0.5 & 0 \\ 0 & 1 & -5 & 2 \end{array} \right)$$
+
+      <p>
+        Dernière étape : annuler le coefficient en (0, 1). On retire 0.5 fois la seconde ligne à la première.
+      </p>
+
+      $$L_1 \leftarrow L_1 - 0.5 \cdot L_2 : \quad \left( \begin{array}{cc|cc} 1 & 0 & 3 & -1 \\ 0 & 1 & -5 & 2 \end{array} \right)$$
+
+      <p>
+        La moitié gauche est devenue l'identité. La moitié droite a accumulé l'inverse. On lit donc :
+      </p>
+
+      $$A^{-1} = \begin{pmatrix} 3 & -1 \\ -5 & 2 \end{pmatrix}$$
+
+      <p>
+        Vérification directe : on multiplie $A$ par $A^{-1}$ pour s'assurer qu'on retombe sur l'identité.
+      </p>
+
+      $$A \cdot A^{-1} = \begin{pmatrix} 2 & 1 \\ 5 & 3 \end{pmatrix} \cdot \begin{pmatrix} 3 & -1 \\ -5 & 2 \end{pmatrix} = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}$$
+
+      <p>
+        L'identité, sans résidu. L'inverse est correct.
+      </p>
+
+      <hr class="ornament" />
+
+      <h2>Le rang : ce qui survit à la transformation</h2>
+
+      <p>
+        On passe maintenant à une question plus fine, qui prend tout son sens pour les matrices qui ne sont <em>pas</em> inversibles, et qui généralise tout ce qu'on vient de voir. Quand une transformation écrase l'espace, elle ne le fait pas n'importe comment. Elle préserve certaines directions et en élimine d'autres. Le <strong>rang</strong> est le nombre qui mesure précisément combien de dimensions survivent au passage.
+      </p>
+
+      <p>
+        Pour le définir proprement, il nous faut nommer trois espaces liés à une matrice.
+      </p>
+
+      <p>
+        Le premier, c'est le <strong>domaine</strong>. C'est l'espace de départ, l'endroit où vivent les vecteurs <em>avant</em> qu'on leur applique la matrice. Pour une matrice avec $m$ colonnes, le domaine est l'espace de dimension $m$ tout entier — l'ensemble des entrées possibles.
+      </p>
+
+      <p>
+        Le deuxième, c'est l'<strong>image</strong> de la matrice. C'est l'ensemble de tous les vecteurs qu'on peut obtenir en sortie, c'est-à-dire tous les $A \cdot v$ quand $v$ parcourt le domaine. Si $A$ aplatit l'espace tridimensionnel sur un plan, alors son image est ce plan-là. Si $A$ préserve toutes les dimensions, l'image est l'espace tout entier.
+      </p>
+
+      <p>
+        Le troisième, c'est le <strong>noyau</strong> — aussi appelé <em>nullspace</em>. C'est l'ensemble des vecteurs $v$ du domaine qui sont envoyés sur le vecteur nul par la transformation : les $v$ tels que $A \cdot v = 0$. Si la transformation aplatit l'espace, le noyau contient les directions qu'elle annihile. Pour une matrice qui ne perd aucune information, le noyau est réduit au seul vecteur nul.
+      </p>
+
+      <p>
+        Le rang se définit comme la <strong>dimension de l'image</strong>. Pas le nombre de vecteurs dans l'image — il y en a une infinité — mais le nombre de directions indépendantes qu'elle contient. Si l'image est l'espace tridimensionnel tout entier, le rang vaut 3. Si l'image est un plan, le rang vaut 2. Si l'image est une droite, le rang vaut 1.
+      </p>
+
+      <p class="pull-quote">
+        Le rang = dimension de l'image. Les directions qui survivent à la transformation.
+      </p>
+
+      <h2>Le théorème du rang</h2>
+
+      <p>
+        Voici le résultat central qui relie les trois espaces qu'on vient de nommer. Il s'énonce en une ligne :
+      </p>
+
+      $$\mathrm{rang}(A) + \dim(\mathrm{noyau}\,A) = \text{nombre de colonnes de } A$$
+
+      <p>
+        L'intuition est belle. Le domaine, qui a $m$ dimensions, se partage en deux. Une partie va vers l'image et constitue le rang. L'autre disparaît dans le noyau. Chaque dimension de l'entrée a un destin : soit elle est préservée dans la sortie, soit elle est annihilée. Aucune ne se perd dans les limbes, aucune ne se crée par magie.
+      </p>
+
+      <p>
+        Pour une matrice inversible, le noyau est trivial — réduit au seul vecteur nul — donc sa dimension est zéro. Le théorème se simplifie en $\mathrm{rang}(A) = m$, ce qu'on appelle un <strong>rang plein</strong>. Pour une matrice qui écrase, le noyau est non trivial et le rang chute strictement en dessous de $m$.
+      </p>
+
+      <h2>Comment on calcule le rang en pratique</h2>
+
+      <p>
+        En pratique, on a une recette directe : on applique l'algorithme de Gauss à la matrice, et on compte les pivots qui apparaissent dans la forme réduite.
+      </p>
+
+      <p>
+        Chaque pivot correspond à une direction indépendante qui survit à la réduction. Les lignes qui se retrouvent entièrement nulles à la fin sont celles qui étaient redondantes — combinaisons linéaires des autres — et qui se sont fait démasquer par l'élimination. Compter les pivots, c'est donc compter les directions vraiment indépendantes que la matrice exporte vers l'image.
+      </p>
+
+      $$\mathrm{rang}(A) = \text{nombre de lignes non nulles dans la forme échelonnée réduite de } A$$
+
+      <p>
+        Cette formule est algorithmique : on possède déjà le moteur qui fournit la forme échelonnée, il ne reste qu'à compter. La même machine qui résout les systèmes, inverse les matrices et calcule les déterminants donne aussi le rang. Quatre questions, un seul algorithme.
+      </p>
+
+      <aside class="tangent">
+        <span class="tangent-label">Cinq façons de dire la même chose</span>
+        <p>
+          Pour une matrice carrée, on dispose maintenant d'une cascade d'équivalences. Toutes ces propositions sont strictement équivalentes :
+        </p>
+        <ul>
+          <li>La matrice est inversible.</li>
+          <li>Son déterminant est non nul.</li>
+          <li>Son rang est plein, égal à son nombre de colonnes.</li>
+          <li>Ses colonnes sont linéairement indépendantes — aucune n'est combinaison linéaire des autres.</li>
+          <li>Son noyau est trivial — le seul vecteur qu'elle envoie sur zéro est le vecteur nul.</li>
+        </ul>
+        <p>
+          La même vérité énoncée cinq fois, dans cinq langages différents. Pour une 2×2, le déterminant est immédiat. Pour une matrice plus large, le rang via Gauss est généralement plus économique. Pour comprendre <em>pourquoi</em> une matrice est singulière, c'est l'indépendance des colonnes qui parle le plus clair.
+        </p>
+      </aside>
+
+      <h2>Deux exemples concrets</h2>
+
+      <p>
+        Reprenons la matrice de la première partie :
+      </p>
+
+      $$A = \begin{pmatrix} 2 & 1 \\ 5 & 3 \end{pmatrix}$$
+
+      <p>
+        Son déterminant vaut 1, elle est inversible. Le théorème du rang nous garantit que son rang vaut 2 — plein. Les deux pivots qu'on a trouvés dans le calcul de l'inverse, en (0, 0) puis en (1, 1), sont tous deux non nuls. Deux pivots, deux lignes non nulles, rang 2.
+      </p>
+
+      <p>
+        Comparons maintenant à une matrice <em>singulière</em> — non inversible :
+      </p>
+
+      $$B = \begin{pmatrix} 1 & 2 \\ 2 & 4 \end{pmatrix}$$
+
+      <p>
+        La seconde ligne est deux fois la première : $L_2 = 2 \cdot L_1$. Son déterminant vaut $1 \times 4 - 2 \times 2 = 0$. Si on applique Gauss, la première étape annule entièrement la seconde ligne. La forme échelonnée n'a alors qu'une seule ligne non nulle, donc le rang vaut 1, pas 2.
+      </p>
+
+      <p>
+        Géométriquement : les deux colonnes $(1, 2)$ et $(2, 4)$ sont colinéaires — la seconde est deux fois la première. Elles ne pointent que dans une seule direction. La transformation aplatit donc tout le plan sur une droite. L'image est cette droite, de dimension 1. Et le théorème du rang nous dit que le noyau est de dimension $2 - 1 = 1$ : il y a bien une direction entière annihilée par la transformation.
+      </p>
+
+      <h2>Ce qu'il faut retenir</h2>
+
+      <p>
+        L'inverse et le rang sont deux faces du même questionnement : combien d'information une transformation linéaire conserve-t-elle, et peut-on remonter le temps quand elle en conserve assez ?
+      </p>
+
+      <p>
+        L'inverse existe si et seulement si la matrice ne perd aucune information — déterminant non nul, ou de manière équivalente rang plein. On le calcule en accolant l'identité à droite et en réduisant la moitié gauche en identité par Gauss-Jordan ; la moitié droite contient alors l'inverse. Le mécanisme : chaque opération élémentaire est une multiplication par une matrice élémentaire, et le produit accumulé de ces matrices est précisément l'inverse cherché.
+      </p>
+
+      <p>
+        Le rang, lui, est défini pour n'importe quelle matrice. C'est la dimension de l'image, le nombre de directions indépendantes que la transformation exporte. On le calcule en comptant les pivots dans la forme échelonnée. Il est relié au noyau par le théorème du rang : la somme des deux dimensions égale toujours le nombre de colonnes. Tout ce qui rentre va quelque part — soit dans l'image, soit dans le noyau, jamais ailleurs.
+      </p>
+
+      <p>
+        Ces deux notions clôturent le chapitre sur l'inversion. On sait résoudre un système, décider si une matrice est inversible, mesurer son déterminant, calculer son inverse et lire son rang. Tout un atelier qui ne repose, au fond, que sur un seul algorithme — Gauss — utilisé sous quatre angles différents. La beauté du chapitre 4 est cette économie de moyens.
+      </p>
+
+      <nav class="chapter-nav">
+        <a class="prev" href="03-determinant.html">
+          <span class="nav-label">Précédent</span>
+          <span class="nav-title">← §3 — Déterminant</span>
+        </a>
+        <a class="next" href="../ch5/01-le-probleme.html">
+          <span class="nav-label">Suivant</span>
+          <span class="nav-title">§1 — Le problème →</span>
+        </a>
+      </nav>
+    </main>
+  </div>
+</body>
+</html>
